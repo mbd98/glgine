@@ -130,15 +130,15 @@ int main(int argc, char *argv[])
 
 	GLuint depthMap, depthMapFbo;
 
-	Renderable floor, cube;
+	Renderable *floor, *cube;
 	GLuint snowTexture = loadTexture("assets/textures/snow.png");
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
 	GLuint shadowShader = loadShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
 
-	createSquare(floor, sceneShader, shadowShader, snowTexture);
-	createCube(cube, sceneShader, shadowShader, snowTexture);
-	floor.model = glm::scale(floor.model, glm::vec3(100.0f));
-	cube.model = glm::translate(cube.model, glm::vec3(0.0f, 2.0f, 0.0f));
+	floor = createSquare();
+	cube = createCube();
+	//floor.model = glm::scale(floor.model, glm::vec3(100.0f));
+	//cube.model = glm::translate(cube.model, glm::vec3(0.0f, 2.0f, 0.0f));
 
 	glm::vec3 lightPosition(0.0f, 6.0f, 0.0f);
 	glm::vec3 lightFocus(0.0f, 0.0f, 0.0f);
