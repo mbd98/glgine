@@ -58,8 +58,6 @@ public:
 	void render(GLuint shader) override;
 };
 
-// 1.2
-
 class CharB : public ComplexRenderable
 {
 private:
@@ -112,3 +110,34 @@ public:
 	~CharD();
 	void render(GLuint shader) override;
 };
+
+class CharR : public ComplexRenderable
+{
+private:
+	ComplexRenderable *top;
+	ComplexRenderable *left;
+	ComplexRenderable *topRight;
+	ComplexRenderable *bottomRight;
+	ComplexRenderable *middle;
+public:
+	CharR();
+	~CharR();
+	void render(GLuint shader) override;
+};
+
+class CharE : public ComplexRenderable
+{
+private:
+	ComplexRenderable *top;
+	ComplexRenderable *left;
+	ComplexRenderable *bottom;
+	ComplexRenderable *middle;
+public:
+	CharE();
+	~CharE();
+	void render(GLuint shader) override;
+};
+
+// 1.2
+
+

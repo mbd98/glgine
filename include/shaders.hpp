@@ -17,6 +17,9 @@ extern const char * const VIEW_POSITION;
 extern const char * const TEXTURE_PRESENT;
 extern const char * const OBJECT_COLOR;
 extern const char * const DO_LIGHTING;
+extern const char * const LIGHT_INNER;
+extern const char * const LIGHT_OUTER;
+extern const char * const SHINE;
 
 extern GLuint loadShader(const char*, const char*);
 extern void setUniformMat4(GLuint, const char*, const glm::mat4&);

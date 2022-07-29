@@ -19,6 +19,9 @@ const char * const VIEW_POSITION = "viewPosition";
 const char * const TEXTURE_PRESENT = "texturePresent";
 const char * const OBJECT_COLOR = "objectColor";
 const char * const DO_LIGHTING = "doLighting";
+const char * const LIGHT_INNER = "light_cutoff_inner";
+const char * const LIGHT_OUTER = "light_cutoff_outer";
+const char * const SHINE = "shine";
 
 GLuint loadShader(const char *vertexPath, const char *fragmentPath)
 {

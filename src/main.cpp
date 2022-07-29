@@ -18,6 +18,140 @@ static double cursorLastX;
 static double cursorLastY;
 static double lastTime;
 static double dt;
+static bool doShadows = true;
+static bool doLights = true;
+
+static ComplexRenderable *currentBoard = nullptr;
+static ComplexRenderable *boards[6];
+
+static void key(GLFWwindow*, int key, int, int action, int mods)
+{
+	if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	{
+		camera.translateForward(dt);
+	}
+	if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	{
+		camera.translateForward(-dt);
+	}
+	if (key == GLFW_KEY_A && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	{
+		camera.translateRight(-dt);
+	}
+	if (key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	{
+		camera.translateRight(dt);
+	}
+	if (key == GLFW_KEY_SPACE && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	{
+		camera.translateUp((mods & GLFW_MOD_CONTROL ? -1.0f : 1.0f) * dt);
+	}
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+	{
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+	if ((mods & GLFW_MOD_CONTROL) && key == GLFW_KEY_Q && action == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(window, GL_TRUE);
+	}
+	if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS)
+	{
+		camera.setTranslateSpeed(5.0f);
+	}
+	if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_RELEASE)
+	{
+		camera.setTranslateSpeed(1.0f);
+	}
+	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+	{
+		currentBoard = boards[0];
+	}
+	if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+	{
+		currentBoard = boards[1];
+	}
+	if (key == GLFW_KEY_3 && action == GLFW_PRESS)
+	{
+		currentBoard = boards[2];
+	}
+	if (key == GLFW_KEY_4 && action == GLFW_PRESS)
+	{
+		currentBoard = boards[3];
+	}
+	if (key == GLFW_KEY_5 && action == GLFW_PRESS)
+	{
+		currentBoard = boards[4];
+	}
+	if (key == GLFW_KEY_6 && action == GLFW_PRESS)
+	{
+		currentBoard = boards[5];
+	}
+	if (currentBoard != nullptr)
+	{
+		if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
+		{
+			currentBoard->setPosition(currentBoard->getPosition() + glm::vec3(currentBoard->getRotation() * glm::vec4(0.0f, 0.0f, 5 * dt, 0.0f)));
+		}
+		if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT))
+		{
+			currentBoard->setPosition(currentBoard->getPosition() - glm::vec3(currentBoard->getRotation() * glm::vec4(0.0f, 0.0f, 5 * dt, 0.0f)));
+		}
+		if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT))
+		{
+			if (mods & GLFW_MOD_CONTROL)
+			{
+				currentBoard->setAngles(currentBoard->getAngles() - glm::vec3(0.0f, dt, 0.0f));
+			}
+			else
+			{
+				currentBoard->setPosition(currentBoard->getPosition() - glm::vec3(currentBoard->getRotation() * glm::vec4(5 * dt, 0.0f, 0.0f, 0.0f)));
+			}
+		}
+		if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT))
+		{
+			if (mods & GLFW_MOD_CONTROL)
+			{
+				currentBoard->setAngles(currentBoard->getAngles() + glm::vec3(0.0f, dt, 0.0f));
+			}
+			else
+			{
+				currentBoard->setPosition(currentBoard->getPosition() + glm::vec3(currentBoard->getRotation() * glm::vec4(5 * dt, 0.0f, 0.0f, 0.0f)));
+			}
+		}
+	}
+	if (key == GLFW_KEY_X && action == GLFW_PRESS)
+	{
+		doShadows = !doShadows;
+	}
+	if (key == GLFW_KEY_L && action == GLFW_PRESS)
+	{
+		doLights = !doLights;
+	}
+}
+
+static void framebuf(GLFWwindow*, int width, int height)
+{
+	camera.setAspectRatio((float)width / (float)height);
+}
+
+static void mouseclick(GLFWwindow*, int button, int action, int mods)
+{
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	if (glfwRawMouseMotionSupported())
+		glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+}
+
+static void cursor(GLFWwindow*, double x, double y)
+{
+	double dx = x - cursorLastX;
+	double dy = y - cursorLastY;
+	cursorLastX = x;
+	cursorLastY = y;
+	if (dx != 0)
+		camera.rotateRight(dx * dt);
+	if (dy != 0)
+		camera.rotateUp(dy * dt);
+}
 
 int main(int argc, char *argv[])
 {
@@ -71,84 +205,41 @@ int main(int argc, char *argv[])
 	glEnable(GL_CULL_FACE);
 	camera.setAspectRatio((float)width / (float)height);
 	camera.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
-	key_handlers.push_back([](GLFWwindow*, int key, int, int action, int mods){
-		if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		{
-			camera.translateForward(dt);
-		}
-		if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		{
-			camera.translateForward(-dt);
-		}
-		if (key == GLFW_KEY_A && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		{
-			camera.translateRight(-dt);
-		}
-		if (key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		{
-			camera.translateRight(dt);
-		}
-		if (key == GLFW_KEY_SPACE && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		{
-			camera.translateUp((mods & GLFW_MOD_CONTROL ? -1.0f : 1.0f) * dt);
-		}
-		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		{
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		}
-		if ((mods & GLFW_MOD_CONTROL) && key == GLFW_KEY_Q && action == GLFW_PRESS)
-		{
-			glfwSetWindowShouldClose(window, GL_TRUE);
-		}
-		if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS)
-		{
-			camera.setTranslateSpeed(5.0f);
-		}
-		if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_RELEASE)
-		{
-			camera.setTranslateSpeed(1.0f);
-		}
-	});
-	fb_size_handlers.push_back([](GLFWwindow*, int width, int height){
-		camera.setAspectRatio((float)width / (float)height);
-	});
-	mouse_button_handlers.push_back([](GLFWwindow*, int button, int action, int mods){
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		if (glfwRawMouseMotionSupported())
-			glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
-	});
+	key_handlers.push_back(key);
+	fb_size_handlers.push_back(framebuf);
+	mouse_button_handlers.push_back(mouseclick);
 	glfwGetCursorPos(window, &cursorLastX, &cursorLastY);
-	cursor_pos_handlers.push_back([](GLFWwindow*, double x, double y) {
-		double dx = x - cursorLastX;
-		double dy = y - cursorLastY;
-		cursorLastX = x;
-		cursorLastY = y;
-		if (dx != 0)
-			camera.rotateRight(dx * dt);
-		if (dy != 0)
-			camera.rotateUp(dy * dt);
-	});
+	cursor_pos_handlers.push_back(cursor);
 
 	GLuint depthMap, depthMapFbo;
 
-	ComplexRenderable *floor, *currentBoard, *grid, *skybox;
-	ComplexRenderable *skateboards[6];
+	ComplexRenderable *floor, *grid, *skybox;
 	GLuint snowTexture = loadTexture("assets/textures/snow.png");
+	GLuint skyTexture = loadTexture("assets/textures/sky.jpg");
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
 	GLuint shadowShader = loadShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
 
+	boards[0] = new Skateboard(new CharB());
+	boards[1] = new Skateboard(new CharO());
+	boards[2] = new Skateboard(new CharU());
+	boards[3] = new Skateboard(new CharD());
+	boards[4] = new Skateboard(new CharR());
+	boards[5] = new Skateboard(new CharE());
+
 	floor = new SimpleComplexRenderable(createSquare());
-	currentBoard = new Skateboard(new CharU());
 	grid = new SimpleComplexRenderable(createGrid(100, 100, 1.0f, -50.0f, -50.0f));
 	skybox = new SimpleComplexRenderable(createCuboid(glm::vec3(-50.0f), glm::vec3(100.0f)));
 	floor->setScales(glm::vec3(100.0f));
 	floor->setTexture(snowTexture);
 	skybox->setScales(glm::vec3(-1.0f));
+	skybox->setTexture(skyTexture);
 
 	// Need slight perturbation on x & z, otherwise the light won't show, not sure why...
-	glm::vec3 lightPosition(0.001f, 10.0f, 0.001f);
+	glm::vec3 lightPosition(0.001f, 1.0f, 10.0f);
 	glm::vec3 lightFocus(0.0f, 0.0f, 0.0f);
 	glm::vec3 lightDirection = glm::normalize(lightFocus - lightPosition);
+	float lightInner = glm::radians(20.0f);
+	float lightOuter = glm::radians(30.0f);
 	float lightNear = 1.0f;
 	float lightFar = 180.0f;
 
@@ -184,8 +275,13 @@ int main(int argc, char *argv[])
 		setUniformMat4(shadowShader, LIGHT, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
 		                                    * glm::lookAt(lightPosition, lightFocus, glm::vec3(0.0f, 1.0f, 0.0f)));
 
-		floor->render(shadowShader);
-		currentBoard->render(shadowShader);
+		if (doShadows)
+		{
+			floor->render(shadowShader);
+			for (auto &b: boards)
+				b->render(shadowShader);
+			boards[0]->render(shadowShader);
+		}
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glViewport(0, 0, scrWidth, scrHeight);
@@ -202,14 +298,17 @@ int main(int argc, char *argv[])
 		setUniformVec3(sceneShader, LIGHT_COLOR, glm::vec3(1.0f, 1.0f, 1.0f));
 		setUniformVec3(sceneShader, LIGHT_POSITION, lightPosition);
 		setUniformVec3(sceneShader, VIEW_POSITION, camera.getPosition());
+		setUniformInt(sceneShader, DO_LIGHTING, doLights);
+		setUniformFloat(sceneShader, LIGHT_INNER, glm::cos(lightInner));
+		setUniformFloat(sceneShader, LIGHT_OUTER, glm::cos(lightOuter));
 
-		setUniformInt(sceneShader, DO_LIGHTING, 1);
 		floor->render(sceneShader);
-		currentBoard->render(sceneShader);
-		setUniformVec3(sceneShader, OBJECT_COLOR, glm::vec3(1.0f, 1.0f, 0.0f));
+		for (auto &b : boards)
+			b->render(sceneShader);
+		setUniformVec4(sceneShader, OBJECT_COLOR, glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 		setUniformInt(sceneShader, DO_LIGHTING, 0);
 		grid->render(sceneShader);
-		setUniformVec3(sceneShader, OBJECT_COLOR, glm::vec3(135.0f/255.0f, 206.0f/255.0f, 235.0f/255.0f));
+		setUniformVec4(sceneShader, OBJECT_COLOR, glm::vec4(135.0f/255.0f, 206.0f/255.0f, 235.0f/255.0f, 1.0f));
 		skybox->render(sceneShader);
 
 		glfwSwapBuffers(window);
