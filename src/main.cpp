@@ -5,6 +5,7 @@
 #include <callbacks.hpp>
 #include <camera.hpp>
 #include <renderutils.hpp>
+#include <complexrenderable.hpp>
 #include <shaders.hpp>
 #include <textures.hpp>
 
@@ -130,17 +131,22 @@ int main(int argc, char *argv[])
 
 	GLuint depthMap, depthMapFbo;
 
-	Renderable *floor, *cube;
+	ComplexRenderable *floor, *currentBoard, *grid, *skybox;
+	ComplexRenderable *skateboards[6];
 	GLuint snowTexture = loadTexture("assets/textures/snow.png");
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
 	GLuint shadowShader = loadShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
 
-	floor = createSquare();
-	cube = createCube();
-	//floor.model = glm::scale(floor.model, glm::vec3(100.0f));
-	//cube.model = glm::translate(cube.model, glm::vec3(0.0f, 2.0f, 0.0f));
+	floor = new SimpleComplexRenderable(createSquare());
+	currentBoard = new Skateboard(new CharU());
+	grid = new SimpleComplexRenderable(createGrid(100, 100, 1.0f, -50.0f, -50.0f));
+	skybox = new SimpleComplexRenderable(createCuboid(glm::vec3(-50.0f), glm::vec3(100.0f)));
+	floor->setScales(glm::vec3(100.0f));
+	floor->setTexture(snowTexture);
+	skybox->setScales(glm::vec3(-1.0f));
 
-	glm::vec3 lightPosition(0.0f, 6.0f, 0.0f);
+	// Need slight perturbation on x & z, otherwise the light won't show, not sure why...
+	glm::vec3 lightPosition(0.001f, 10.0f, 0.001f);
 	glm::vec3 lightFocus(0.0f, 0.0f, 0.0f);
 	glm::vec3 lightDirection = glm::normalize(lightFocus - lightPosition);
 	float lightNear = 1.0f;
@@ -167,24 +173,45 @@ int main(int argc, char *argv[])
 		glfwGetWindowSize(window, &scrWidth, &scrHeight);
 		dt = glfwGetTime() - lastTime;
 		lastTime += dt;
-		setUniformMat4(sceneShader, "light", glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
-		                                     * glm::lookAt(lightPosition, lightFocus, glm::vec3(0.0f, 1.0f, 0.0f)));
-		setUniformMat4(shadowShader, "light", glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
-		                                     * glm::lookAt(lightPosition, lightFocus, glm::vec3(0.0f, 1.0f, 0.0f)));
-		setUniformVec3(sceneShader, "lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-		setUniformVec3(sceneShader, "lightPosition", lightPosition);
-		setUniformVec3(sceneShader, "viewPosition", camera.getPosition());
+
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo);
 		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 		glClear(GL_DEPTH_BUFFER_BIT);
-		shade(cube, camera, depthMap);
-		shade(floor, camera, depthMap);
+		glUseProgram(shadowShader);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, depthMap);
+		setUniformInt(shadowShader, SHADOW_MAP, 1);
+		setUniformMat4(shadowShader, LIGHT, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
+		                                    * glm::lookAt(lightPosition, lightFocus, glm::vec3(0.0f, 1.0f, 0.0f)));
+
+		floor->render(shadowShader);
+		currentBoard->render(shadowShader);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glViewport(0, 0, scrWidth, scrHeight);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		render(cube, camera, depthMap);
-		render(floor, camera, depthMap);
+
+		glUseProgram(sceneShader);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, depthMap);
+		setUniformInt(sceneShader, SHADOW_MAP, 1);
+		setUniformMat4(sceneShader, VIEW, camera.getView());
+		setUniformMat4(sceneShader, PROJECTION, camera.getProjection());
+		setUniformMat4(sceneShader, LIGHT, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
+		                                   * glm::lookAt(lightPosition, lightFocus, glm::vec3(0.0f, 1.0f, 0.0f)));
+		setUniformVec3(sceneShader, LIGHT_COLOR, glm::vec3(1.0f, 1.0f, 1.0f));
+		setUniformVec3(sceneShader, LIGHT_POSITION, lightPosition);
+		setUniformVec3(sceneShader, VIEW_POSITION, camera.getPosition());
+
+		setUniformInt(sceneShader, DO_LIGHTING, 1);
+		floor->render(sceneShader);
+		currentBoard->render(sceneShader);
+		setUniformVec3(sceneShader, OBJECT_COLOR, glm::vec3(1.0f, 1.0f, 0.0f));
+		setUniformInt(sceneShader, DO_LIGHTING, 0);
+		grid->render(sceneShader);
+		setUniformVec3(sceneShader, OBJECT_COLOR, glm::vec3(135.0f/255.0f, 206.0f/255.0f, 235.0f/255.0f));
+		skybox->render(sceneShader);
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

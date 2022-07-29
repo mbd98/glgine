@@ -22,7 +22,7 @@ protected:
 	Renderable(int vertexCount, GLenum type);
 	virtual void doRender() = 0;
 public:
-	~Renderable();
+	virtual ~Renderable();
 	void render();
 };
 
@@ -30,19 +30,19 @@ class VertexRenderable : public Renderable
 {
 protected:
 	GLuint vbo;
-	virtual void doRender() override;
+	void doRender() override;
 public:
 	VertexRenderable(const std::vector<Vertex> &vertices, GLenum type);
-	~VertexRenderable();
+	~VertexRenderable() override;
 };
 
 class IndexedRenderable : public VertexRenderable
 {
 protected:
 	GLuint ebo;
-	virtual void doRender() override;
+	void doRender() override;
 public:
 	IndexedRenderable(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices, GLenum type);
-	~IndexedRenderable();
+	~IndexedRenderable() override;
 };
 

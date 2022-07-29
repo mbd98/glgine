@@ -7,12 +7,15 @@ in vec2 texCoord;
 
 uniform sampler2D textureMap;
 uniform sampler2D shadowMap;
+uniform vec3 objectColor;
 uniform vec3 lightColor;
 uniform vec3 lightPosition;
 uniform float ambientStrength = 0.1;
 uniform float diffuseStrength = 0.6;
 uniform float specularStrength = 0.3;
 uniform vec3 viewPosition;
+uniform bool texturePresent;
+uniform bool doLighting;
 
 out vec4 FragColor;
 
@@ -34,5 +37,13 @@ void main()
 	vec3 viewDirection = normalize(viewPosition - fragPosition);
 	vec3 reflectDirection = reflect(-lightDirection, normalize(fragNormal));
 	vec3 specular = specularStrength * pow(max(dot(viewDirection, reflectDirection), 0.0), 32) * lightColor;
-	FragColor = vec4(ambient + shadow * (diffuse + specular), 1.0) * texture(textureMap, texCoord);
+	vec3 color;
+	if (texturePresent)
+		color = texture(textureMap, texCoord).rgb;
+	else
+		color = objectColor;
+	if (doLighting)
+		FragColor = vec4(ambient + shadow * (diffuse + specular) * color, 1.0);
+	else
+		FragColor = vec4(color, 1.0);
 }

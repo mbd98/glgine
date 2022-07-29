@@ -33,10 +33,8 @@ void render(const Renderable &r, const Camera &camera, GLuint depthMap)
 }
  */
 
-Renderable * createCube()
+Renderable * createCuboid(const glm::vec3 &pos, const glm::vec3 &delta)
 {
-	const glm::vec3 pos = glm::vec3(-0.5f);
-	const glm::vec3 delta = glm::vec3(1.0f);
 	const glm::vec3 vertices[] = {
 			pos,
 			pos + glm::vec3(0.0f, 0.0f, delta.z),

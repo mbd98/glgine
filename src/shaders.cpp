@@ -4,6 +4,22 @@
 #include <sstream>
 #include <shaders.hpp>
 
+const char * const MODEL = "model";
+const char * const VIEW = "view";
+const char * const PROJECTION = "projection";
+const char * const LIGHT = "light";
+const char * const TEXTURE_MAP = "textureMap";
+const char * const SHADOW_MAP = "shadowMap";
+const char * const LIGHT_COLOR = "lightColor";
+const char * const LIGHT_POSITION = "lightPosition";
+const char * const AMBIENT_STRENGTH = "ambientStrength";
+const char * const DIFFUSE_STRENGTH = "diffuseStrength";
+const char * const SPECULAR_STRENGTH = "specularStrength";
+const char * const VIEW_POSITION = "viewPosition";
+const char * const TEXTURE_PRESENT = "texturePresent";
+const char * const OBJECT_COLOR = "objectColor";
+const char * const DO_LIGHTING = "doLighting";
+
 GLuint loadShader(const char *vertexPath, const char *fragmentPath)
 {
 	GLuint vertex, fragment, program;
