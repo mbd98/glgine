@@ -2,6 +2,7 @@
 #include <renderutils.hpp>
 #include <shaders.hpp>
 #include <textures.hpp>
+#include <utility>
 
 // tail-recursive to prevent stack overflow
 glm::mat4 ComplexRenderable::hwtHelper(const glm::mat4 &m) const
@@ -135,6 +136,7 @@ Skateboard::Skateboard(ComplexRenderable *character) : ComplexRenderable(), char
 	wheels[2]->setPosition(wheels[2]->getPosition() + glm::vec3(1.5f, 0.5f, -1.5f));
 	wheels[3]->setPosition(wheels[3]->getPosition() + glm::vec3(1.5f, 0.5f, 1.5f));
 	character->setParent(this);
+	character->setPosition(glm::vec3(0.0f, 1.2f, 0.0f));
 }
 
 Skateboard::~Skateboard()
@@ -160,190 +162,97 @@ void Skateboard::render(GLuint shader)
 	setUniformFloat(shader, SHINE, 32.0f);
 }
 
-CharB::CharB() : ComplexRenderable()
+TimexChar::TimexChar(bool doBottom,
+                     bool doBottomLeft,
+                     bool doBottomRight,
+                     bool doMiddle,
+                     bool doTopLeft,
+                     bool doTopRight,
+                     bool doTop)
+		: bottom(nullptr),
+		  bottomLeft(nullptr),
+		  bottomRight(nullptr),
+		  middle(nullptr),
+		  topLeft(nullptr),
+		  topRight(nullptr),
+		  top(nullptr)
 {
-	bottom = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 1.2f, -0.1f), glm::vec3(4.0f, 0.5f, 0.2f)));
-	bottom->setParent(this);
-	left = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 1.2f, -0.1f), glm::vec3(0.5f, 5.0f, 0.2f)));
-	left->setParent(this);
-	bottomRight = new SimpleComplexRenderable(createCuboid(glm::vec3(1.5f, 1.2f, -0.1f), glm::vec3(0.5f, 2.0f, 0.2f)));
-	bottomRight->setParent(this);
-	topRight = new SimpleComplexRenderable(createCuboid(glm::vec3(1.5f, 4.2f, -0.1f), glm::vec3(0.5f, 2.0f, 0.2f)));
-	topRight->setParent(this);
-	top = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 6.2f, -0.1f), glm::vec3(4.0f, 0.5f, 0.2f)));
-	top->setParent(this);
-	middle = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 3.2f, -0.1f), glm::vec3(3.5f, 1.0f, 0.2f)));
-	middle->setParent(this);
+	if (doBottom)
+	{
+		bottom = new SimpleComplexRenderable(createCuboid(glm::vec3(0.2f, 0.0f, 0.0f), glm::vec3(0.6f, 0.2f, 0.2f)));
+		bottom->setParent(this);
+	}
+	if (doBottomLeft)
+	{
+		bottomLeft = new SimpleComplexRenderable(
+				createCuboid(glm::vec3(0.0f, 0.2f, 0.0f), glm::vec3(0.2f, 0.6f, 0.2f)));
+		bottomLeft->setParent(this);
+	}
+	if (doBottomRight)
+	{
+		bottomRight = new SimpleComplexRenderable(
+				createCuboid(glm::vec3(0.8f, 0.2f, 0.0f), glm::vec3(0.2f, 0.6f, 0.2f)));
+		bottomRight->setParent(this);
+	}
+	if (doMiddle)
+	{
+		middle = new SimpleComplexRenderable(createCuboid(glm::vec3(0.2f, 0.8f, 0.0f), glm::vec3(0.6f, 0.2f, 0.2f)));
+		middle->setParent(this);
+	}
+	if (doTopLeft)
+	{
+		topLeft = new SimpleComplexRenderable(createCuboid(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.2f, 0.6f, 0.2f)));
+		topLeft->setParent(this);
+	}
+	if (doTopRight)
+	{
+		topRight = new SimpleComplexRenderable(createCuboid(glm::vec3(0.8f, 1.0f, 0.0f), glm::vec3(0.2f, 0.6f, 0.2f)));
+		topRight->setParent(this);
+	}
+	if (doTop)
+	{
+		top = new SimpleComplexRenderable(createCuboid(glm::vec3(0.2f, 1.6f, 0.0f), glm::vec3(0.6f, 0.2f, 0.2f)));
+		top->setParent(this);
+	}
 }
 
-CharB::~CharB()
+TimexChar::~TimexChar()
 {
-	delete top;
-	delete left;
-	delete topRight;
-	delete bottomRight;
 	delete bottom;
-	delete middle;
-}
-
-void CharB::render(GLuint shader)
-{
-	setUniformVec4(shader, OBJECT_COLOR, glm::vec4(glm::vec3(0.0f),1.0f));
-	setUniformInt(shader, TEXTURE_PRESENT, 0);
-	bottom->render(shader);
-	left->render(shader);
-	bottomRight->render(shader);
-	topRight->render(shader);
-	top->render(shader);
-	middle->render(shader);
-}
-
-CharO::CharO() : ComplexRenderable()
-{
-	bottom = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 1.2f, -0.1f), glm::vec3(4.0f, 0.5f, 0.2f)));
-	bottom->setParent(this);
-	left = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 1.2f, -0.1f), glm::vec3(0.5f, 5.0f, 0.2f)));
-	left->setParent(this);
-	right = new SimpleComplexRenderable(createCuboid(glm::vec3(1.5f, 1.2f, -0.1f), glm::vec3(0.5f, 5.0f, 0.2f)));
-	right->setParent(this);
-	top = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 6.2f, -0.1f), glm::vec3(4.0f, 0.5f, 0.2f)));
-	top->setParent(this);
-}
-
-CharO::~CharO()
-{
-	delete top;
-	delete left;
-	delete right;
-	delete bottom;
-}
-
-void CharO::render(GLuint shader)
-{
-	setUniformVec4(shader, OBJECT_COLOR, glm::vec4(glm::vec3(1.0f / 6.0f), 1.0f));
-	setUniformInt(shader, TEXTURE_PRESENT, 0);
-	bottom->render(shader);
-	left->render(shader);
-	right->render(shader);
-	top->render(shader);
-}
-
-CharU::CharU() : ComplexRenderable()
-{
-	bottom = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 1.2f, -0.1f), glm::vec3(4.0f, 0.5f, 0.2f)));
-	bottom->setParent(this);
-	left = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 1.2f, -0.1f), glm::vec3(0.5f, 5.0f, 0.2f)));
-	left->setParent(this);
-	right = new SimpleComplexRenderable(createCuboid(glm::vec3(1.5f, 1.2f, -0.1f), glm::vec3(0.5f, 5.0f, 0.2f)));
-	right->setParent(this);
-}
-
-CharU::~CharU()
-{
-	delete left;
-	delete right;
-	delete bottom;
-}
-
-void CharU::render(GLuint shader)
-{
-	setUniformVec4(shader, OBJECT_COLOR, glm::vec4(glm::vec3(2.0f / 6.0f), 1.0f));
-	setUniformInt(shader, TEXTURE_PRESENT, 0);
-	bottom->render(shader);
-	left->render(shader);
-	right->render(shader);
-}
-
-CharD::CharD() : ComplexRenderable()
-{
-	bottom = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 1.2f, -0.1f), glm::vec3(3.5f, 0.5f, 0.2f)));
-	bottom->setParent(this);
-	left = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 1.2f, -0.1f), glm::vec3(0.5f, 5.0f, 0.2f)));
-	left->setParent(this);
-	right = new SimpleComplexRenderable(createCuboid(glm::vec3(1.5f, 1.7f, -0.1f), glm::vec3(0.5f, 4.5f, 0.2f)));
-	right->setParent(this);
-	top = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 6.2f, -0.1f), glm::vec3(3.5f, 0.5f, 0.2f)));
-	top->setParent(this);
-}
-
-CharD::~CharD()
-{
-	delete top;
-	delete left;
-	delete right;
-	delete bottom;
-}
-
-void CharD::render(GLuint shader)
-{
-	setUniformVec4(shader, OBJECT_COLOR, glm::vec4(glm::vec3(3.0f / 6.0f), 1.0f));
-	setUniformInt(shader, TEXTURE_PRESENT, 0);
-	bottom->render(shader);
-	left->render(shader);
-	right->render(shader);
-	top->render(shader);
-}
-
-CharR::CharR() : ComplexRenderable()
-{
-	left = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 1.2f, -0.1f), glm::vec3(0.5f, 5.0f, 0.2f)));
-	left->setParent(this);
-	bottomRight = new SimpleComplexRenderable(createCuboid(glm::vec3(1.5f, 1.2f, -0.1f), glm::vec3(0.5f, 2.0f, 0.2f)));
-	bottomRight->setParent(this);
-	topRight = new SimpleComplexRenderable(createCuboid(glm::vec3(1.5f, 4.2f, -0.1f), glm::vec3(0.5f, 2.0f, 0.2f)));
-	topRight->setParent(this);
-	top = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 6.2f, -0.1f), glm::vec3(4.0f, 0.5f, 0.2f)));
-	top->setParent(this);
-	middle = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 3.2f, -0.1f), glm::vec3(3.5f, 1.0f, 0.2f)));
-	middle->setParent(this);
-}
-
-CharR::~CharR()
-{
-	delete top;
-	delete left;
-	delete topRight;
+	delete bottomLeft;
 	delete bottomRight;
 	delete middle;
-}
-
-void CharR::render(GLuint shader)
-{
-	setUniformVec4(shader, OBJECT_COLOR, glm::vec4(glm::vec3(4.0f / 6.0f), 1.0f));
-	setUniformInt(shader, TEXTURE_PRESENT, 0);
-	left->render(shader);
-	bottomRight->render(shader);
-	topRight->render(shader);
-	top->render(shader);
-	middle->render(shader);
-}
-
-CharE::CharE() : ComplexRenderable()
-{
-	bottom = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 1.2f, -0.1f), glm::vec3(4.0f, 0.5f, 0.2f)));
-	bottom->setParent(this);
-	left = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 1.2f, -0.1f), glm::vec3(0.5f, 5.0f, 0.2f)));
-	left->setParent(this);
-	top = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 6.2f, -0.1f), glm::vec3(4.0f, 0.5f, 0.2f)));
-	top->setParent(this);
-	middle = new SimpleComplexRenderable(createCuboid(glm::vec3(-2.0f, 3.2f, -0.1f), glm::vec3(3.5f, 1.0f, 0.2f)));
-	middle->setParent(this);
-}
-
-CharE::~CharE()
-{
+	delete topLeft;
+	delete topRight;
 	delete top;
-	delete left;
-	delete bottom;
-	delete middle;
 }
 
-void CharE::render(GLuint shader)
+void TimexChar::render(GLuint shader)
 {
-	setUniformVec4(shader, OBJECT_COLOR, glm::vec4(glm::vec3(5.0f / 6.0f), 1.0f));
-	setUniformInt(shader, TEXTURE_PRESENT, 0);
-	bottom->render(shader);
-	left->render(shader);
-	top->render(shader);
-	middle->render(shader);
+	if (bottom)
+		bottom->render(shader);
+	if (bottomLeft)
+		bottomLeft->render(shader);
+	if (bottomRight)
+		bottomRight->render(shader);
+	if (middle)
+		middle->render(shader);
+	if (topLeft)
+		topLeft->render(shader);
+	if (topRight)
+		topRight->render(shader);
+	if (top)
+		top->render(shader);
+}
+
+Multi::Multi(std::vector<ComplexRenderable *> renderables) : renderables(std::move(renderables))
+{}
+
+void Multi::render(GLuint shader)
+{
+	for (auto &r : renderables)
+	{
+		r->setParent(this->getParent());
+		r->render(shader);
+	}
 }

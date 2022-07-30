@@ -9,16 +9,19 @@ uniform mat4 view;
 uniform mat4 projection;
 uniform mat4 light;
 
-out vec3 fragNormal;
-out vec3 fragPosition;
-out vec4 fragLightPosition;
-out vec2 texCoord;
+out VertexData
+{
+	vec3 fragNormal;
+	vec3 fragPosition;
+	vec4 fragLightPosition;
+	vec2 texCoord;
+} vertexOut;
 
 void main()
 {
 	gl_Position = projection * view * model * vec4(position, 1.0);
-	fragNormal = vec3(model * vec4(normal, 0.0));
-	fragPosition = vec3(model * vec4(position, 1.0));
-	fragLightPosition = light * vec4(fragPosition, 1.0);
-	texCoord = textureCoord;
+	vertexOut.fragNormal = vec3(model * vec4(normal, 0.0));
+	vertexOut.fragPosition = vec3(model * vec4(position, 1.0));
+	vertexOut.fragLightPosition = light * vec4(vertexOut.fragPosition, 1.0);
+	vertexOut.texCoord = textureCoord;
 }

@@ -2,10 +2,13 @@
 
 const float PI = 3.1415926535897932384626433832795;
 
-in vec3 fragNormal;
-in vec3 fragPosition;
-in vec4 fragLightPosition;
-in vec2 texCoord;
+in VertexData
+{
+	vec3 fragNormal;
+	vec3 fragPosition;
+	vec4 fragLightPosition;
+	vec2 texCoord;
+} fragIn;
 
 uniform sampler2D textureMap;
 uniform sampler2D shadowMap;
@@ -16,8 +19,8 @@ uniform float ambientStrength = 0.1;
 uniform float diffuseStrength = 0.6;
 uniform float specularStrength = 0.3;
 uniform vec3 viewPosition;
-uniform bool texturePresent;
-uniform bool doLighting;
+uniform bool texturePresent = true;
+uniform bool doLighting = true;
 uniform float light_cutoff_inner;
 uniform float light_cutoff_outer;
 uniform float shine = 32;
@@ -34,7 +37,7 @@ float calculateShadow(vec4 fragLightPos, float bias)
 }
 
 float calculateSpotlight(vec3 ld) {
-    float theta = dot(normalize(fragPosition - lightPosition), ld);
+    float theta = dot(normalize(fragIn.fragPosition - lightPosition), ld);
 
     if(theta > light_cutoff_inner) {
         return 1.0;
@@ -47,18 +50,20 @@ float calculateSpotlight(vec3 ld) {
 
 void main()
 {
-	vec3 lightDirection = normalize(lightPosition - fragPosition);
-    float shadow = /*calculateSpotlight(lightDirection) */ calculateShadow(fragLightPosition, 0.003);
+	vec3 lightDirection = normalize(lightPosition - fragIn.fragPosition);
+    float shadow = /*calculateSpotlight(lightDirection) */ calculateShadow(fragIn.fragLightPosition, 0.003);
 	vec3 ambient = ambientStrength * lightColor;
-	vec3 diffuse = diffuseStrength * max(dot(normalize(fragNormal), lightDirection), 0.0) * lightColor;
-	vec3 viewDirection = normalize(viewPosition - fragPosition);
-	vec3 reflectDirection = reflect(-lightDirection, normalize(fragNormal));
+	vec3 diffuse = diffuseStrength * max(dot(normalize(fragIn.fragNormal), lightDirection), 0.0) * lightColor;
+	vec3 viewDirection = normalize(viewPosition - fragIn.fragPosition);
+	vec3 reflectDirection = reflect(-lightDirection, normalize(fragIn.fragNormal));
 	vec3 specular = specularStrength * pow(max(dot(viewDirection, reflectDirection), 0.0), shine) * lightColor;
 	vec4 color;
 	if (texturePresent)
-		color = texture(textureMap, texCoord);
+		color = texture(textureMap, fragIn.texCoord);
 	else
 		color = objectColor;
+	if (color.a < 0.01)
+		discard;
 	if (doLighting)
 		FragColor = vec4(ambient + shadow * (diffuse + specular), 1.0) * color;
 	else

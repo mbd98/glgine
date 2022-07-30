@@ -58,86 +58,27 @@ public:
 	void render(GLuint shader) override;
 };
 
-class CharB : public ComplexRenderable
+class TimexChar : public ComplexRenderable
 {
 private:
-	ComplexRenderable *top;
-	ComplexRenderable *left;
-	ComplexRenderable *topRight;
-	ComplexRenderable *bottomRight;
 	ComplexRenderable *bottom;
-	ComplexRenderable *middle;
-public:
-	CharB();
-	~CharB();
-	void render(GLuint shader) override;
-};
-
-class CharO : public ComplexRenderable
-{
-private:
-	ComplexRenderable *top;
-	ComplexRenderable *left;
-	ComplexRenderable *right;
-	ComplexRenderable *bottom;
-public:
-	CharO();
-	~CharO();
-	void render(GLuint shader) override;
-};
-
-class CharU : public ComplexRenderable
-{
-private:
-	ComplexRenderable *left;
-	ComplexRenderable *right;
-	ComplexRenderable *bottom;
-public:
-	CharU();
-	~CharU();
-	void render(GLuint shader) override;
-};
-
-class CharD : public ComplexRenderable
-{
-private:
-	ComplexRenderable *top;
-	ComplexRenderable *left;
-	ComplexRenderable *right;
-	ComplexRenderable *bottom;
-public:
-	CharD();
-	~CharD();
-	void render(GLuint shader) override;
-};
-
-class CharR : public ComplexRenderable
-{
-private:
-	ComplexRenderable *top;
-	ComplexRenderable *left;
-	ComplexRenderable *topRight;
+	ComplexRenderable *bottomLeft;
 	ComplexRenderable *bottomRight;
 	ComplexRenderable *middle;
+	ComplexRenderable *topLeft;
+	ComplexRenderable *topRight;
+	ComplexRenderable *top;
 public:
-	CharR();
-	~CharR();
+	TimexChar(bool doBottom, bool doBottomLeft, bool doBottomRight, bool doMiddle, bool doTopLeft, bool doTopRight, bool doTop);
+	~TimexChar();
 	void render(GLuint shader) override;
 };
 
-class CharE : public ComplexRenderable
+class Multi : public ComplexRenderable
 {
 private:
-	ComplexRenderable *top;
-	ComplexRenderable *left;
-	ComplexRenderable *bottom;
-	ComplexRenderable *middle;
+	std::vector<ComplexRenderable*> renderables;
 public:
-	CharE();
-	~CharE();
+	explicit Multi(std::vector<ComplexRenderable*> renderables);
 	void render(GLuint shader) override;
 };
-
-// 1.2
-
-

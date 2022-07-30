@@ -22,7 +22,7 @@ static bool doShadows = true;
 static bool doLights = true;
 
 static ComplexRenderable *currentBoard = nullptr;
-static ComplexRenderable *boards[6];
+static ComplexRenderable *boards[1];
 
 static void key(GLFWwindow*, int key, int, int action, int mods)
 {
@@ -66,7 +66,7 @@ static void key(GLFWwindow*, int key, int, int action, int mods)
 	{
 		currentBoard = boards[0];
 	}
-	if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+	/*if (key == GLFW_KEY_2 && action == GLFW_PRESS)
 	{
 		currentBoard = boards[1];
 	}
@@ -85,7 +85,7 @@ static void key(GLFWwindow*, int key, int, int action, int mods)
 	if (key == GLFW_KEY_6 && action == GLFW_PRESS)
 	{
 		currentBoard = boards[5];
-	}
+	}*/
 	if (currentBoard != nullptr)
 	{
 		if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
@@ -203,6 +203,8 @@ int main(int argc, char *argv[])
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	camera.setAspectRatio((float)width / (float)height);
 	camera.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	key_handlers.push_back(key);
@@ -219,12 +221,13 @@ int main(int argc, char *argv[])
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
 	GLuint shadowShader = loadShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
 
-	boards[0] = new Skateboard(new CharB());
-	boards[1] = new Skateboard(new CharO());
+	boards[0] = new Skateboard(new TimexChar(true, true, true, true, true, true, true));
+	/*boards[1] = new Skateboard(new CharO());
 	boards[2] = new Skateboard(new CharU());
 	boards[3] = new Skateboard(new CharD());
 	boards[4] = new Skateboard(new CharR());
-	boards[5] = new Skateboard(new CharE());
+	boards[5] = new Skateboard(new CharE());*/
+	currentBoard = boards[0];
 
 	floor = new SimpleComplexRenderable(createSquare());
 	grid = new SimpleComplexRenderable(createGrid(100, 100, 1.0f, -50.0f, -50.0f));
@@ -235,13 +238,13 @@ int main(int argc, char *argv[])
 	skybox->setTexture(skyTexture);
 
 	// Need slight perturbation on x & z, otherwise the light won't show, not sure why...
-	glm::vec3 lightPosition(0.001f, 1.0f, 10.0f);
+	glm::vec3 lightPosition(0.001f, 5.0f, 0.001f);
 	glm::vec3 lightFocus(0.0f, 0.0f, 0.0f);
 	glm::vec3 lightDirection = glm::normalize(lightFocus - lightPosition);
 	float lightInner = glm::radians(20.0f);
-	float lightOuter = glm::radians(30.0f);
+	float lightOuter = glm::radians(50.0f);
 	float lightNear = 1.0f;
-	float lightFar = 180.0f;
+	float lightFar = 360.0f;
 
 	glGenFramebuffers(1, &depthMapFbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo);
@@ -278,8 +281,8 @@ int main(int argc, char *argv[])
 		if (doShadows)
 		{
 			floor->render(shadowShader);
-			for (auto &b: boards)
-				b->render(shadowShader);
+			/*for (auto &b: boards)
+				b->render(shadowShader);*/
 			boards[0]->render(shadowShader);
 		}
 
@@ -303,8 +306,9 @@ int main(int argc, char *argv[])
 		setUniformFloat(sceneShader, LIGHT_OUTER, glm::cos(lightOuter));
 
 		floor->render(sceneShader);
-		for (auto &b : boards)
-			b->render(sceneShader);
+		/*for (auto &b : boards)
+			b->render(sceneShader);*/
+		boards[0]->render(sceneShader);
 		setUniformVec4(sceneShader, OBJECT_COLOR, glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 		setUniformInt(sceneShader, DO_LIGHTING, 0);
 		grid->render(sceneShader);
