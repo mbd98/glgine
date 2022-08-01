@@ -10,6 +10,7 @@ extern const char * const TEXTURE_MAP;
 extern const char * const SHADOW_MAP;
 extern const char * const LIGHT_COLOR;
 extern const char * const LIGHT_POSITION;
+extern const char * const LIGHT_DIRECTION;
 extern const char * const AMBIENT_STRENGTH;
 extern const char * const DIFFUSE_STRENGTH;
 extern const char * const SPECULAR_STRENGTH;

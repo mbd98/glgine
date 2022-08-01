@@ -12,7 +12,7 @@
 const GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
 static GLFWwindow *window;
-static Camera camera;
+static Camera freeCamera, frontCamera, rearCamera, *currentCamera;
 
 static double cursorLastX;
 static double cursorLastY;
@@ -21,30 +21,29 @@ static double dt;
 static bool doShadows = true;
 static bool doLights = true;
 
-static ComplexRenderable *currentBoard = nullptr;
-static ComplexRenderable *boards[1];
+static ComplexRenderable *board = nullptr;
 
 static void key(GLFWwindow*, int key, int, int action, int mods)
 {
 	if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		camera.translateForward(dt);
+		freeCamera.translateForward(dt);
 	}
 	if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		camera.translateForward(-dt);
+		freeCamera.translateForward(-dt);
 	}
 	if (key == GLFW_KEY_A && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		camera.translateRight(-dt);
+		freeCamera.translateRight(-dt);
 	}
 	if (key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		camera.translateRight(dt);
+		freeCamera.translateRight(dt);
 	}
 	if (key == GLFW_KEY_SPACE && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		camera.translateUp((mods & GLFW_MOD_CONTROL ? -1.0f : 1.0f) * dt);
+		freeCamera.translateUp((mods & GLFW_MOD_CONTROL ? -1.0f : 1.0f) * dt);
 	}
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
@@ -56,66 +55,42 @@ static void key(GLFWwindow*, int key, int, int action, int mods)
 	}
 	if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS)
 	{
-		camera.setTranslateSpeed(5.0f);
+		freeCamera.setTranslateSpeed(5.0f);
 	}
 	if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_RELEASE)
 	{
-		camera.setTranslateSpeed(1.0f);
+		freeCamera.setTranslateSpeed(1.0f);
 	}
-	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
-	{
-		currentBoard = boards[0];
-	}
-	/*if (key == GLFW_KEY_2 && action == GLFW_PRESS)
-	{
-		currentBoard = boards[1];
-	}
-	if (key == GLFW_KEY_3 && action == GLFW_PRESS)
-	{
-		currentBoard = boards[2];
-	}
-	if (key == GLFW_KEY_4 && action == GLFW_PRESS)
-	{
-		currentBoard = boards[3];
-	}
-	if (key == GLFW_KEY_5 && action == GLFW_PRESS)
-	{
-		currentBoard = boards[4];
-	}
-	if (key == GLFW_KEY_6 && action == GLFW_PRESS)
-	{
-		currentBoard = boards[5];
-	}*/
-	if (currentBoard != nullptr)
+	if (board != nullptr)
 	{
 		if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		{
-			currentBoard->setPosition(currentBoard->getPosition() + glm::vec3(currentBoard->getRotation() * glm::vec4(0.0f, 0.0f, 5 * dt, 0.0f)));
+			board->setPosition(board->getPosition() + glm::vec3(board->getRotation() * glm::vec4(0.0f, 0.0f, 5 * dt, 0.0f)));
 		}
 		if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		{
-			currentBoard->setPosition(currentBoard->getPosition() - glm::vec3(currentBoard->getRotation() * glm::vec4(0.0f, 0.0f, 5 * dt, 0.0f)));
+			board->setPosition(board->getPosition() - glm::vec3(board->getRotation() * glm::vec4(0.0f, 0.0f, 5 * dt, 0.0f)));
 		}
 		if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		{
 			if (mods & GLFW_MOD_CONTROL)
 			{
-				currentBoard->setAngles(currentBoard->getAngles() - glm::vec3(0.0f, dt, 0.0f));
+				board->setAngles(board->getAngles() + glm::vec3(0.0f, dt, 0.0f));
 			}
 			else
 			{
-				currentBoard->setPosition(currentBoard->getPosition() - glm::vec3(currentBoard->getRotation() * glm::vec4(5 * dt, 0.0f, 0.0f, 0.0f)));
+				board->setPosition(board->getPosition() + glm::vec3(board->getRotation() * glm::vec4(5 * dt, 0.0f, 0.0f, 0.0f)));
 			}
 		}
 		if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		{
 			if (mods & GLFW_MOD_CONTROL)
 			{
-				currentBoard->setAngles(currentBoard->getAngles() + glm::vec3(0.0f, dt, 0.0f));
+				board->setAngles(board->getAngles() - glm::vec3(0.0f, dt, 0.0f));
 			}
 			else
 			{
-				currentBoard->setPosition(currentBoard->getPosition() + glm::vec3(currentBoard->getRotation() * glm::vec4(5 * dt, 0.0f, 0.0f, 0.0f)));
+				board->setPosition(board->getPosition() - glm::vec3(board->getRotation() * glm::vec4(5 * dt, 0.0f, 0.0f, 0.0f)));
 			}
 		}
 	}
@@ -127,11 +102,26 @@ static void key(GLFWwindow*, int key, int, int action, int mods)
 	{
 		doLights = !doLights;
 	}
+	if (key == GLFW_KEY_M && action == GLFW_PRESS)
+	{
+		currentCamera = &frontCamera;
+	}
+	if (key == GLFW_KEY_B && action == GLFW_PRESS)
+	{
+		currentCamera = &rearCamera;
+	}
+	if (key == GLFW_KEY_R && action == GLFW_PRESS)
+	{
+		freeCamera.setPosition(glm::vec3(0.0f));
+		freeCamera.setYaw(glm::radians(-90.0f));
+		freeCamera.setPitch(0.0f);
+		currentCamera = &freeCamera;
+	}
 }
 
 static void framebuf(GLFWwindow*, int width, int height)
 {
-	camera.setAspectRatio((float)width / (float)height);
+	freeCamera.setAspectRatio((float)width / (float)height);
 }
 
 static void mouseclick(GLFWwindow*, int button, int action, int mods)
@@ -148,9 +138,9 @@ static void cursor(GLFWwindow*, double x, double y)
 	cursorLastX = x;
 	cursorLastY = y;
 	if (dx != 0)
-		camera.rotateRight(dx * dt);
+		freeCamera.rotateRight(dx * dt);
 	if (dy != 0)
-		camera.rotateUp(dy * dt);
+		freeCamera.rotateUp(dy * dt);
 }
 
 int main(int argc, char *argv[])
@@ -205,8 +195,8 @@ int main(int argc, char *argv[])
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	camera.setAspectRatio((float)width / (float)height);
-	camera.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	freeCamera.setAspectRatio((float)width / (float)height);
+	freeCamera.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	key_handlers.push_back(key);
 	fb_size_handlers.push_back(framebuf);
 	mouse_button_handlers.push_back(mouseclick);
@@ -215,19 +205,26 @@ int main(int argc, char *argv[])
 
 	GLuint depthMap, depthMapFbo;
 
-	ComplexRenderable *floor, *grid, *skybox;
+	ComplexRenderable *floor, *grid, *skybox, *timex8, *timex6, *timex9, *timex7, *lightBox;
 	GLuint snowTexture = loadTexture("assets/textures/snow.png");
 	GLuint skyTexture = loadTexture("assets/textures/sky.jpg");
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
 	GLuint shadowShader = loadShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
 
-	boards[0] = new Skateboard(new TimexChar(true, true, true, true, true, true, true));
-	/*boards[1] = new Skateboard(new CharO());
-	boards[2] = new Skateboard(new CharU());
-	boards[3] = new Skateboard(new CharD());
-	boards[4] = new Skateboard(new CharR());
-	boards[5] = new Skateboard(new CharE());*/
-	currentBoard = boards[0];
+	glm::vec3 charOffset(1.2f, 0.0f, 0.0f);
+
+	timex8 = new TimexChar(true, true, true, true, true, true, true);
+	timex8->setPosition(glm::vec3(-2.6f, 0.0f, 0.0f));
+	timex6 = new TimexChar(true, true, true, true, true, false, true);
+	timex6->setPosition(timex8->getPosition() + charOffset);
+	timex9 = new TimexChar(true, false, true, true, true, true, true);
+	timex9->setPosition(timex6->getPosition() + charOffset);
+	timex7 = new TimexChar(false, false, true, false, false, true, true);
+	timex7->setPosition(timex9->getPosition() + charOffset);
+
+	std::vector<ComplexRenderable*> chars = {timex8, timex6, timex9, timex7};
+
+	board = new Skateboard(new Multi(chars));
 
 	floor = new SimpleComplexRenderable(createSquare());
 	grid = new SimpleComplexRenderable(createGrid(100, 100, 1.0f, -50.0f, -50.0f));
@@ -238,13 +235,15 @@ int main(int argc, char *argv[])
 	skybox->setTexture(skyTexture);
 
 	// Need slight perturbation on x & z, otherwise the light won't show, not sure why...
-	glm::vec3 lightPosition(0.001f, 5.0f, 0.001f);
+	glm::vec3 lightPosition(0.0f, 4.0f, 30.0f);
 	glm::vec3 lightFocus(0.0f, 0.0f, 0.0f);
 	glm::vec3 lightDirection = glm::normalize(lightFocus - lightPosition);
 	float lightInner = glm::radians(20.0f);
 	float lightOuter = glm::radians(50.0f);
 	float lightNear = 1.0f;
-	float lightFar = 360.0f;
+	float lightFar = 180.0f;
+
+	lightBox = new SimpleComplexRenderable(createCuboid(lightPosition - glm::vec3(0.1), glm::vec3(0.2)));
 
 	glGenFramebuffers(1, &depthMapFbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo);
@@ -261,6 +260,7 @@ int main(int argc, char *argv[])
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	lastTime = glfwGetTime();
+	currentCamera = &freeCamera;
 	while (!glfwWindowShouldClose(window))
 	{
 		int scrWidth, scrHeight;
@@ -281,9 +281,7 @@ int main(int argc, char *argv[])
 		if (doShadows)
 		{
 			floor->render(shadowShader);
-			/*for (auto &b: boards)
-				b->render(shadowShader);*/
-			boards[0]->render(shadowShader);
+			board->render(shadowShader);
 		}
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -294,29 +292,40 @@ int main(int argc, char *argv[])
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
 		setUniformInt(sceneShader, SHADOW_MAP, 1);
-		setUniformMat4(sceneShader, VIEW, camera.getView());
-		setUniformMat4(sceneShader, PROJECTION, camera.getProjection());
+		setUniformMat4(sceneShader, VIEW, currentCamera->getView());
+		setUniformMat4(sceneShader, PROJECTION, currentCamera->getProjection());
 		setUniformMat4(sceneShader, LIGHT, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
 		                                   * glm::lookAt(lightPosition, lightFocus, glm::vec3(0.0f, 1.0f, 0.0f)));
 		setUniformVec3(sceneShader, LIGHT_COLOR, glm::vec3(1.0f, 1.0f, 1.0f));
 		setUniformVec3(sceneShader, LIGHT_POSITION, lightPosition);
-		setUniformVec3(sceneShader, VIEW_POSITION, camera.getPosition());
+		setUniformVec3(sceneShader, LIGHT_DIRECTION, lightDirection);
+		setUniformVec3(sceneShader, VIEW_POSITION, currentCamera->getPosition());
 		setUniformInt(sceneShader, DO_LIGHTING, doLights);
 		setUniformFloat(sceneShader, LIGHT_INNER, glm::cos(lightInner));
 		setUniformFloat(sceneShader, LIGHT_OUTER, glm::cos(lightOuter));
+		setUniformFloat(sceneShader, AMBIENT_STRENGTH, 0.1f);
+		setUniformFloat(sceneShader, DIFFUSE_STRENGTH, 0.6f);
+		setUniformFloat(sceneShader, SPECULAR_STRENGTH, 0.3f);
 
 		floor->render(sceneShader);
-		/*for (auto &b : boards)
-			b->render(sceneShader);*/
-		boards[0]->render(sceneShader);
+		board->render(sceneShader);
 		setUniformVec4(sceneShader, OBJECT_COLOR, glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
-		setUniformInt(sceneShader, DO_LIGHTING, 0);
 		grid->render(sceneShader);
 		setUniformVec4(sceneShader, OBJECT_COLOR, glm::vec4(135.0f/255.0f, 206.0f/255.0f, 235.0f/255.0f, 1.0f));
 		skybox->render(sceneShader);
 
+		setUniformVec4(sceneShader, OBJECT_COLOR, glm::vec4(1.0f));
+		setUniformInt(sceneShader, DO_LIGHTING, 0);
+		setUniformFloat(sceneShader, AMBIENT_STRENGTH, 1.0f);
+		if (doLights)
+			lightBox->render(sceneShader);
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+		frontCamera.setPosition(board->getPosition() + glm::mat3(board->getRotation()) * glm::vec3(0.0f, 3.0f, 1.0f));
+		frontCamera.setYaw(board->getAngles().y - glm::radians(90.0f));
+		rearCamera.setPosition(board->getPosition() + glm::mat3(board->getRotation()) * glm::vec3(0.0f, 3.0f, -1.0f));
+		rearCamera.setYaw(board->getAngles().y + glm::radians(90.0f));
 	}
 	glfwTerminate();
 	return EXIT_SUCCESS;

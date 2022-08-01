@@ -12,6 +12,7 @@ const char * const TEXTURE_MAP = "textureMap";
 const char * const SHADOW_MAP = "shadowMap";
 const char * const LIGHT_COLOR = "lightColor";
 const char * const LIGHT_POSITION = "lightPosition";
+const char * const LIGHT_DIRECTION = "lightDirection";
 const char * const AMBIENT_STRENGTH = "ambientStrength";
 const char * const DIFFUSE_STRENGTH = "diffuseStrength";
 const char * const SPECULAR_STRENGTH = "specularStrength";

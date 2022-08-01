@@ -150,13 +150,14 @@ Skateboard::~Skateboard()
 void Skateboard::render(GLuint shader)
 {
 	setUniformVec4(shader, OBJECT_COLOR, glm::vec4(170.0f/255.0f, 169.0f/255.0f, 173.0f/255.0f, 1.0f));
-	setUniformFloat(shader, SHINE, 128.0f);
+	setUniformFloat(shader, SHINE, 256.0f);
 	plank->render(shader);
 	setUniformFloat(shader, SHINE, 64.0f);
 	setUniformVec4(shader, OBJECT_COLOR, glm::vec4(glm::vec3(0.0f),1.0f));
 	for (auto &wheel : wheels)
 		wheel->render(shader);
 	setUniformFloat(shader, SHINE, 16.0f);
+	setUniformVec4(shader, OBJECT_COLOR, glm::vec4(0.0f, 0.0f, 0.8f, 0.5f));
 	if (character != nullptr)
 		character->render(shader);
 	setUniformFloat(shader, SHINE, 32.0f);
@@ -246,13 +247,17 @@ void TimexChar::render(GLuint shader)
 }
 
 Multi::Multi(std::vector<ComplexRenderable *> renderables) : renderables(std::move(renderables))
-{}
+{
+	for (auto &r : Multi::renderables)
+	{
+		r->setParent(this);
+	}
+}
 
 void Multi::render(GLuint shader)
 {
 	for (auto &r : renderables)
 	{
-		r->setParent(this->getParent());
 		r->render(shader);
 	}
 }
