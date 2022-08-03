@@ -1,38 +1,6 @@
 #include <vector>
 #include <renderutils.hpp>
 
-/*
-void shade(const Renderable &r, const Camera &camera, GLuint depthMap)
-{
-	glUseProgram(r.shadowShader);
-	setUniformMat4(r.shadowShader, "model", r.model);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
-	setUniformInt(r.shadowShader, "shadowMap", 1);
-	glBindVertexArray(r.vao);
-	glDrawArrays(r.type, 0, r.size);
-	glBindVertexArray(0);
-}
-
-void render(const Renderable &r, const Camera &camera, GLuint depthMap)
-{
-	glUseProgram(r.sceneShader);
-	setUniformMat4(r.sceneShader, "model", r.model);
-	setUniformMat4(r.sceneShader, "view", camera.getView());
-	setUniformMat4(r.sceneShader, "projection", camera.getProjection());
-	setUniformVec3(r.sceneShader, "objColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, r.texture);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
-	setUniformInt(r.sceneShader, "textureMap", 0);
-	setUniformInt(r.sceneShader, "shadowMap", 1);
-	glBindVertexArray(r.vao);
-	glDrawArrays(r.type, 0, r.size);
-	glBindVertexArray(0);
-}
- */
-
 Renderable * createCuboid(const glm::vec3 &pos, const glm::vec3 &delta)
 {
 	const glm::vec3 vertices[] = {

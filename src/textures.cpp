@@ -13,7 +13,7 @@ GLuint loadTexture(const char *path)
 	GLenum type;
 
 	if ((data = stbi_load(path, &width, &height, &channels, 0)) == nullptr)
-		throw std::runtime_error(std::string("Failed to load texture data for ") + path);
+		throw std::runtime_error(std::string("Failed to load texture data for ") + std::string(path));
 
 	switch (channels)
 	{

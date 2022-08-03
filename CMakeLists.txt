@@ -4,6 +4,8 @@ project(glgine)
 
 include(ExternalProject)
 
+add_subdirectory(thirdparty/assimp-5.2.4)
+
 # Set install directory
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/dist CACHE PATH ${CMAKE_SOURCE_DIR}/dist FORCE)
 set(CMAKE_BUILD_TYPE "Debug")
@@ -32,7 +34,7 @@ add_executable(${EXEC} ${SRC})
 
 target_include_directories(${EXEC} PRIVATE include)
 
-target_link_libraries(${EXEC} OpenGL::GL glew_s glfw glm)
+target_link_libraries(${EXEC} OpenGL::GL glew_s glfw glm assimp)
 
 list(APPEND BIN ${EXEC})
 # end lab

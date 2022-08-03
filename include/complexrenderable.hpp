@@ -3,15 +3,19 @@
 #include "defaults.hpp"
 #include "renderable.hpp"
 
+// Represents a renderable object having position, direction, and scale properties.
 class ComplexRenderable
 {
 private:
 	glm::vec3 position;
 	glm::vec3 angles;
 	glm::vec3 scales;
+	// For hierarchical modelling: the parent object we attach to
 	ComplexRenderable *parent;
+	// The object texture
 	GLuint texture;
 	bool textured;
+	// Tail-recursive helper for computing the hierarchical model matrix
 	[[nodiscard]] glm::mat4 hwtHelper(const glm::mat4 &m) const;
 protected:
 	ComplexRenderable();
@@ -32,17 +36,18 @@ public:
 	[[nodiscard]] glm::mat4 getHierarchicalWorldTransform() const;
 	[[nodiscard]] GLuint getTexture() const;
 	void setTexture(GLuint texture);
-	bool isTextured() const;
+	[[nodiscard]] bool isTextured() const;
 	virtual void render(GLuint shader) = 0;
 };
 
+// Takes a single, simple renderable created from the functions in renderutils.{c,h}pp
 class SimpleComplexRenderable : public ComplexRenderable
 {
 private:
 	Renderable *renderable;
 public:
 	explicit SimpleComplexRenderable(Renderable *renderable);
-	~SimpleComplexRenderable();
+	~SimpleComplexRenderable() override;
 	void render(GLuint shader) override;
 };
 
@@ -54,7 +59,7 @@ private:
 	ComplexRenderable *character;
 public:
 	explicit Skateboard(ComplexRenderable *character);
-	~Skateboard();
+	~Skateboard() override;
 	void render(GLuint shader) override;
 };
 
@@ -70,7 +75,7 @@ private:
 	ComplexRenderable *top;
 public:
 	TimexChar(bool doBottom, bool doBottomLeft, bool doBottomRight, bool doMiddle, bool doTopLeft, bool doTopRight, bool doTop);
-	~TimexChar();
+	~TimexChar() override;
 	void render(GLuint shader) override;
 };
 
