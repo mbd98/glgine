@@ -1,12 +1,15 @@
 #pragma once
 
 #include <list>
+#include <map>
 #include <model.hpp>
 #include <shaders.hpp>
 #include <iostream>
 #include <string>
 #include <stdexcept>
 #include <utility>
+
+static std::map<std::string, Texture> loaded_textures;
 
 static glm::vec3 convertVector(const aiVector3D &v)
 {
@@ -19,17 +22,25 @@ static glm::vec2 convertVector(const aiVector2D &v)
 }
 
 // https://learnopengl.com/Model-Loading/Model
-static std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string name)
+static std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, const std::string &name)
 {
 	std::vector<Texture> textures(mat->GetTextureCount(type));
 	for (uint i = 0; i < mat->GetTextureCount(type); i++)
 	{
 		aiString str;
 		mat->GetTexture(type, i, &str);
-		Texture tex;
-		tex.texId = loadTexture((std::string("assets/textures/") + std::string(str.C_Str())).c_str());
-		tex.type = name;
-		textures.push_back(tex);
+		if (loaded_textures.count(std::string(str.C_Str())) > 0)
+		{
+			textures.push_back(loaded_textures[std::string(str.C_Str())]);
+		}
+		else
+		{
+			Texture tex;
+			tex.texId = loadTexture((std::string("assets/textures/") + std::string(str.C_Str())).c_str());
+			tex.type = name;
+			textures.push_back(tex);
+			loaded_textures[std::string(str.C_Str())] = tex;
+		}
 	}
 	return textures;
 }
@@ -69,9 +80,7 @@ static std::list<Mesh> processNode(aiNode *node, const aiScene *scene)
 {
 	std::list<Mesh> meshes;
 	for (uint i = 0; i < node->mNumMeshes; i++)
-	{
 		meshes.push_back(processMesh(scene->mMeshes[node->mMeshes[i]], scene));
-	}
 	for (uint i = 0; i < node->mNumChildren; i++)
 	{
 		std::list<Mesh> childMeshes = processNode(node->mChildren[i], scene);
@@ -116,6 +125,7 @@ void Mesh::render(GLuint shader)
 		glBindTexture(GL_TEXTURE_2D, textures[i].texId);
 	}
 	glActiveTexture(GL_TEXTURE0);
+	setUniformMat4(shader, MODEL, getHierarchicalWorldTransform());
 	internal.render();
 }
 
@@ -124,11 +134,11 @@ Model::Model(const char *path)
 	Assimp::Importer in;
 	const aiScene *scene = in.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals | aiProcess_OptimizeMeshes);
 	if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
-	{
 		throw std::runtime_error("Failed to import model: " + std::string(in.GetErrorString()));
-	}
 	std::list<Mesh> m = processNode(scene->mRootNode, scene);
 	meshes = std::vector(m.begin(), m.end());
+	for (auto &mesh : meshes)
+		mesh.setParent(this);
 }
 
 Model::~Model() = default;
