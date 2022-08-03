@@ -122,6 +122,8 @@ static void key(GLFWwindow*, int key, int, int action, int mods)
 static void framebuf(GLFWwindow*, int width, int height)
 {
 	freeCamera.setAspectRatio((float)width / (float)height);
+	frontCamera.setAspectRatio((float)width / (float)height);
+	rearCamera.setAspectRatio((float)width / (float)height);
 }
 
 static void mouseclick(GLFWwindow*, int button, int action, int mods)
