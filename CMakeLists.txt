@@ -4,6 +4,7 @@ project(glgine)
 
 include(ExternalProject)
 
+set(ASSIMP_NO_EXPORT ON)
 add_subdirectory(thirdparty/assimp-5.2.4)
 
 # Set install directory
