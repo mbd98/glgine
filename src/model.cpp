@@ -1,5 +1,3 @@
-#pragma once
-
 #include <list>
 #include <map>
 #include <model.hpp>
@@ -45,7 +43,7 @@ static std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType 
 	return textures;
 }
 
-static Mesh processMesh(aiMesh *mesh, const aiScene *scene)
+static Mesh * processMesh(aiMesh *mesh, const aiScene *scene)
 {
 	std::vector<Vertex> vertices;
 	std::vector<GLuint> indices;
@@ -73,17 +71,17 @@ static Mesh processMesh(aiMesh *mesh, const aiScene *scene)
 		std::vector<Texture> specular = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 		textures.insert(textures.end(), specular.begin(), specular.end());
 	}
-	return {vertices, indices, textures};
+	return new Mesh(vertices, indices, textures);
 }
 
-static std::list<Mesh> processNode(aiNode *node, const aiScene *scene)
+static std::list<Mesh*> processNode(aiNode *node, const aiScene *scene)
 {
-	std::list<Mesh> meshes;
+	std::list<Mesh*> meshes;
 	for (uint i = 0; i < node->mNumMeshes; i++)
 		meshes.push_back(processMesh(scene->mMeshes[node->mMeshes[i]], scene));
 	for (uint i = 0; i < node->mNumChildren; i++)
 	{
-		std::list<Mesh> childMeshes = processNode(node->mChildren[i], scene);
+		std::list<Mesh*> childMeshes = processNode(node->mChildren[i], scene);
 		meshes.insert(meshes.end(), childMeshes.begin(), childMeshes.end());
 	}
 	return meshes;
@@ -100,13 +98,17 @@ Material::Material(const Material &m) = default;
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Texture> textures)
 		: ComplexRenderable(),
-		  internal(vertices, indices, GL_TRIANGLES),
 		  vertices(std::move(vertices)),
 		  indices(std::move(indices)),
 		  textures(std::move(textures))
-{}
+{
+	internal = new IndexedRenderable(this->vertices, this->indices, GL_TRIANGLES);
+}
 
-Mesh::~Mesh() = default;
+Mesh::~Mesh()
+{
+	delete internal;
+}
 
 // https://learnopengl.com/Model-Loading/Mesh
 void Mesh::render(GLuint shader)
@@ -114,19 +116,19 @@ void Mesh::render(GLuint shader)
 	uint diffuseNum = 0, specularNum = 0;
 	for (uint i = 0; i < textures.size(); i++)
 	{
-		glActiveTexture(GL_TEXTURE0 + i);
+		glActiveTexture(GL_TEXTURE1 + i);
 		std::string name = textures[i].type;
 		std::string number;
 		if (name == "texture_diffuse")
 			number = std::to_string(diffuseNum++);
 		else if (name == "texture_specular")
 			number = std::to_string(specularNum++);
-		setUniformInt(shader, (name + number).c_str(), i);
+		setUniformInt(shader, (name + number).c_str(), i + 1);
 		glBindTexture(GL_TEXTURE_2D, textures[i].texId);
 	}
 	glActiveTexture(GL_TEXTURE0);
 	setUniformMat4(shader, MODEL, getHierarchicalWorldTransform());
-	internal.render();
+	internal->render();
 }
 
 Model::Model(const char *path)
@@ -135,16 +137,20 @@ Model::Model(const char *path)
 	const aiScene *scene = in.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals | aiProcess_OptimizeMeshes);
 	if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
 		throw std::runtime_error("Failed to import model: " + std::string(in.GetErrorString()));
-	std::list<Mesh> m = processNode(scene->mRootNode, scene);
+	std::list<Mesh*> m = processNode(scene->mRootNode, scene);
 	meshes = std::vector(m.begin(), m.end());
 	for (auto &mesh : meshes)
-		mesh.setParent(this);
+		mesh->setParent(this);
 }
 
-Model::~Model() = default;
+Model::~Model()
+{
+	for (auto &m : meshes)
+		delete m;
+}
 
 void Model::render(GLuint shader)
 {
 	for (auto &m : meshes)
-		m.render(shader);
+		m->render(shader);
 }

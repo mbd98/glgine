@@ -21,7 +21,7 @@ struct Material
 class Mesh : public ComplexRenderable
 {
 private:
-	IndexedRenderable internal;
+	IndexedRenderable *internal;
 	std::vector<Vertex> vertices;
 	std::vector<GLuint> indices;
 	std::vector<Texture> textures;
@@ -34,7 +34,7 @@ public:
 class Model : public ComplexRenderable
 {
 private:
-	std::vector<Mesh> meshes;
+	std::vector<Mesh*> meshes;
 public:
 	explicit Model(const char *path);
 	~Model() override;

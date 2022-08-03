@@ -8,6 +8,7 @@
 #include <complexrenderable.hpp>
 #include <shaders.hpp>
 #include <textures.hpp>
+#include <model.hpp>
 
 const GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
@@ -205,7 +206,7 @@ int main(int argc, char *argv[])
 
 	GLuint depthMap, depthMapFbo;
 
-	ComplexRenderable *floor, *grid, *skybox, *timex8, *timex6, *timex9, *timex7, *lightBox;
+	ComplexRenderable *floor, *grid, *skybox, *timex8, *timex6, *timex9, *timex7, *lightBox, *bp;
 	GLuint snowTexture = loadTexture("assets/textures/snow.png");
 	GLuint skyTexture = loadTexture("assets/textures/sky.jpg");
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
@@ -233,6 +234,8 @@ int main(int argc, char *argv[])
 	floor->setTexture(snowTexture);
 	skybox->setScales(glm::vec3(-1.0f));
 	skybox->setTexture(skyTexture);
+
+	bp = new Model("assets/models/backpack.obj");
 
 	// Need slight perturbation on x & z, otherwise the light won't show, not sure why...
 	glm::vec3 lightPosition(0.0f, 4.0f, 30.0f);
@@ -272,9 +275,9 @@ int main(int argc, char *argv[])
 		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glUseProgram(shadowShader);
-		glActiveTexture(GL_TEXTURE1);
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
-		setUniformInt(shadowShader, SHADOW_MAP, 1);
+		setUniformInt(shadowShader, SHADOW_MAP, 0);
 		setUniformMat4(shadowShader, LIGHT, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
 		                                    * glm::lookAt(lightPosition, lightFocus, glm::vec3(0.0f, 1.0f, 0.0f)));
 
@@ -282,6 +285,7 @@ int main(int argc, char *argv[])
 		{
 			floor->render(shadowShader);
 			board->render(shadowShader);
+			bp->render(shadowShader);
 		}
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -289,9 +293,9 @@ int main(int argc, char *argv[])
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glUseProgram(sceneShader);
-		glActiveTexture(GL_TEXTURE1);
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
-		setUniformInt(sceneShader, SHADOW_MAP, 1);
+		setUniformInt(sceneShader, SHADOW_MAP, 0);
 		setUniformMat4(sceneShader, VIEW, currentCamera->getView());
 		setUniformMat4(sceneShader, PROJECTION, currentCamera->getProjection());
 		setUniformMat4(sceneShader, LIGHT, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
@@ -306,6 +310,8 @@ int main(int argc, char *argv[])
 		setUniformFloat(sceneShader, AMBIENT_STRENGTH, 0.1f);
 		setUniformFloat(sceneShader, DIFFUSE_STRENGTH, 0.6f);
 		setUniformFloat(sceneShader, SPECULAR_STRENGTH, 0.3f);
+
+		bp->render(sceneShader);
 
 		floor->render(sceneShader);
 		board->render(sceneShader);

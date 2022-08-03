@@ -1,4 +1,5 @@
 #include <renderable.hpp>
+#include <iostream>
 
 Vertex::Vertex() : position(0.0f), normal(0.0f), texCoord(0.0f)
 {}

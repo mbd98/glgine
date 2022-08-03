@@ -112,9 +112,9 @@ SimpleComplexRenderable::~SimpleComplexRenderable()
 void SimpleComplexRenderable::render(GLuint shader)
 {
 	setUniformMat4(shader, MODEL, getHierarchicalWorldTransform());
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, getTexture());
-	setUniformInt(shader, TEXTURE_MAP, 0);
+	setUniformInt(shader, TEXTURE_MAP, 1);
 	setUniformInt(shader, TEXTURE_PRESENT, isTextured() ? 1 : 0);
 	renderable->render();
 }
