@@ -111,7 +111,7 @@ Mesh::~Mesh() = default;
 // https://learnopengl.com/Model-Loading/Mesh
 void Mesh::render(GLuint shader)
 {
-	uint diffuseNum = 1, specularNum = 1;
+	uint diffuseNum = 0, specularNum = 0;
 	for (uint i = 0; i < textures.size(); i++)
 	{
 		glActiveTexture(GL_TEXTURE0 + i);

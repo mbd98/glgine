@@ -45,4 +45,3 @@ public:
 	IndexedRenderable(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices, GLenum type);
 	~IndexedRenderable() override;
 };
-

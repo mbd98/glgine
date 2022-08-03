@@ -10,7 +10,7 @@ in VertexData
 	vec2 texCoord;
 } fragIn;
 
-uniform sampler2D textureMap;
+uniform sampler2D texture_diffuse0;
 uniform sampler2D shadowMap;
 uniform vec4 objectColor;
 uniform vec3 lightColor;
@@ -62,7 +62,7 @@ void main()
 	vec3 specular = attenuation * specularStrength * pow(max(dot(viewDirection, reflectDirection), 0.0), shine) * lightColor;
 	vec4 color;
 	if (texturePresent)
-		color = texture(textureMap, fragIn.texCoord);
+		color = texture(texture_diffuse0, fragIn.texCoord);
 	else
 		color = objectColor;
 	if (color.a < 0.01)
