@@ -36,7 +36,7 @@ class Model : public ComplexRenderable
 private:
 	std::vector<Mesh*> meshes;
 public:
-	explicit Model(const char *path);
+	explicit Model(const std::string &name);
 	~Model() override;
 	void render(GLuint shader) override;
 };

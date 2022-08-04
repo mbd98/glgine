@@ -235,7 +235,7 @@ int main(int argc, char *argv[])
 	skybox->setScales(glm::vec3(-1.0f));
 	skybox->setTexture(skyTexture);
 
-	bp = new Model("assets/models/backpack.obj");
+	bp = new Model("backpack");
 	bp->setPosition(glm::vec3(0.0f, 2.0f, 0.0f));
 
 	// Need slight perturbation on x & z, otherwise the light won't show, not sure why...

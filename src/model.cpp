@@ -20,7 +20,7 @@ static glm::vec2 convertVector(const aiVector2D &v)
 }
 
 // https://learnopengl.com/Model-Loading/Model
-static std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, const std::string &name)
+static std::vector<Texture> loadMaterialTextures(const std::string &modelName, aiMaterial *mat, aiTextureType type, const std::string &typeName)
 {
 	std::vector<Texture> textures(mat->GetTextureCount(type));
 	for (uint i = 0; i < mat->GetTextureCount(type); i++)
@@ -34,8 +34,8 @@ static std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType 
 		else
 		{
 			Texture tex;
-			tex.texId = loadTexture((std::string("assets/textures/") + std::string(str.C_Str())).c_str());
-			tex.type = name;
+			tex.texId = loadTexture(("assets/models/" + modelName + "/" + std::string(str.C_Str())).c_str());
+			tex.type = typeName;
 			textures.push_back(tex);
 			loaded_textures[std::string(str.C_Str())] = tex;
 		}
@@ -43,7 +43,7 @@ static std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType 
 	return textures;
 }
 
-static Mesh * processMesh(aiMesh *mesh, const aiScene *scene)
+static Mesh * processMesh(const std::string &modelName, aiMesh *mesh, const aiScene *scene)
 {
 	std::vector<Vertex> vertices;
 	std::vector<GLuint> indices;
@@ -66,22 +66,22 @@ static Mesh * processMesh(aiMesh *mesh, const aiScene *scene)
 	if (mesh->mMaterialIndex >= 0)
 	{
 		aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-		std::vector<Texture> diffuse = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+		std::vector<Texture> diffuse = loadMaterialTextures(modelName, material, aiTextureType_DIFFUSE, "texture_diffuse");
 		textures.insert(textures.end(), diffuse.begin(), diffuse.end());
-		std::vector<Texture> specular = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+		std::vector<Texture> specular = loadMaterialTextures(modelName, material, aiTextureType_SPECULAR, "texture_specular");
 		textures.insert(textures.end(), specular.begin(), specular.end());
 	}
 	return new Mesh(vertices, indices, textures);
 }
 
-static std::list<Mesh*> processNode(aiNode *node, const aiScene *scene)
+static std::list<Mesh*> processNode(const std::string &modelName, aiNode *node, const aiScene *scene)
 {
 	std::list<Mesh*> meshes;
 	for (uint i = 0; i < node->mNumMeshes; i++)
-		meshes.push_back(processMesh(scene->mMeshes[node->mMeshes[i]], scene));
+		meshes.push_back(processMesh(modelName, scene->mMeshes[node->mMeshes[i]], scene));
 	for (uint i = 0; i < node->mNumChildren; i++)
 	{
-		std::list<Mesh*> childMeshes = processNode(node->mChildren[i], scene);
+		std::list<Mesh*> childMeshes = processNode(modelName, node->mChildren[i], scene);
 		meshes.insert(meshes.end(), childMeshes.begin(), childMeshes.end());
 	}
 	return meshes;
@@ -132,13 +132,14 @@ void Mesh::render(GLuint shader)
 	internal->render();
 }
 
-Model::Model(const char *path)
+Model::Model(const std::string &name)
 {
 	Assimp::Importer in;
-	const aiScene *scene = in.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals | aiProcess_OptimizeMeshes);
+	const aiScene *scene = in.ReadFile("assets/models/" + name + "/" + name + ".obj",
+									   aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_OptimizeMeshes);
 	if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
-		throw std::runtime_error("Failed to import model: " + std::string(in.GetErrorString()));
-	std::list<Mesh*> m = processNode(scene->mRootNode, scene);
+		throw std::runtime_error("Failed to import model " + name + ": " + std::string(in.GetErrorString()));
+	std::list<Mesh*> m = processNode(name, scene->mRootNode, scene);
 	meshes = std::vector(m.begin(), m.end());
 	for (auto &mesh : meshes)
 		mesh->setParent(this);
