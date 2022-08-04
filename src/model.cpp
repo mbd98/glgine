@@ -128,6 +128,7 @@ void Mesh::render(GLuint shader)
 	}
 	glActiveTexture(GL_TEXTURE0);
 	setUniformMat4(shader, MODEL, getHierarchicalWorldTransform());
+	setUniformInt(shader, TEXTURE_PRESENT, 1);
 	internal->render();
 }
 
