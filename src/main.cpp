@@ -13,7 +13,7 @@
 const GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
 static GLFWwindow *window;
-static Camera freeCamera, frontCamera, rearCamera, *currentCamera;
+static Camera freeCamera, *currentCamera;
 
 static double cursorLastX;
 static double cursorLastY;
@@ -21,8 +21,6 @@ static double lastTime;
 static double dt;
 static bool doShadows = true;
 static bool doLights = true;
-
-static ComplexRenderable *board = nullptr;
 
 static void key(GLFWwindow*, int key, int, int action, int mods)
 {
@@ -62,39 +60,6 @@ static void key(GLFWwindow*, int key, int, int action, int mods)
 	{
 		freeCamera.setTranslateSpeed(1.0f);
 	}
-	if (board != nullptr)
-	{
-		if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		{
-			board->setPosition(board->getPosition() + glm::vec3(board->getRotation() * glm::vec4(0.0f, 0.0f, 5 * dt, 0.0f)));
-		}
-		if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		{
-			board->setPosition(board->getPosition() - glm::vec3(board->getRotation() * glm::vec4(0.0f, 0.0f, 5 * dt, 0.0f)));
-		}
-		if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		{
-			if (mods & GLFW_MOD_CONTROL)
-			{
-				board->setAngles(board->getAngles() + glm::vec3(0.0f, dt, 0.0f));
-			}
-			else
-			{
-				board->setPosition(board->getPosition() + glm::vec3(board->getRotation() * glm::vec4(5 * dt, 0.0f, 0.0f, 0.0f)));
-			}
-		}
-		if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		{
-			if (mods & GLFW_MOD_CONTROL)
-			{
-				board->setAngles(board->getAngles() - glm::vec3(0.0f, dt, 0.0f));
-			}
-			else
-			{
-				board->setPosition(board->getPosition() - glm::vec3(board->getRotation() * glm::vec4(5 * dt, 0.0f, 0.0f, 0.0f)));
-			}
-		}
-	}
 	if (key == GLFW_KEY_X && action == GLFW_PRESS)
 	{
 		doShadows = !doShadows;
@@ -102,14 +67,6 @@ static void key(GLFWwindow*, int key, int, int action, int mods)
 	if (key == GLFW_KEY_L && action == GLFW_PRESS)
 	{
 		doLights = !doLights;
-	}
-	if (key == GLFW_KEY_M && action == GLFW_PRESS)
-	{
-		currentCamera = &frontCamera;
-	}
-	if (key == GLFW_KEY_B && action == GLFW_PRESS)
-	{
-		currentCamera = &rearCamera;
 	}
 	if (key == GLFW_KEY_R && action == GLFW_PRESS)
 	{
@@ -206,39 +163,13 @@ int main(int argc, char *argv[])
 
 	GLuint depthMap, depthMapFbo;
 
-	ComplexRenderable *floor, *grid, *skybox, *timex8, *timex6, *timex9, *timex7, *lightBox, *bp;
-	GLuint snowTexture = loadTexture("assets/textures/snow.png");
-	GLuint skyTexture = loadTexture("assets/textures/sky.jpg");
+	ComplexRenderable *bp;
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
 	GLuint shadowShader = loadShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
-
-	glm::vec3 charOffset(1.2f, 0.0f, 0.0f);
-
-	timex8 = new TimexChar(true, true, true, true, true, true, true);
-	timex8->setPosition(glm::vec3(-2.6f, 0.0f, 0.0f));
-	timex6 = new TimexChar(true, true, true, true, true, false, true);
-	timex6->setPosition(timex8->getPosition() + charOffset);
-	timex9 = new TimexChar(true, false, true, true, true, true, true);
-	timex9->setPosition(timex6->getPosition() + charOffset);
-	timex7 = new TimexChar(false, false, true, false, false, true, true);
-	timex7->setPosition(timex9->getPosition() + charOffset);
-
-	std::vector<ComplexRenderable*> chars = {timex8, timex6, timex9, timex7};
-
-	board = new Skateboard(new Multi(chars));
-
-	floor = new SimpleComplexRenderable(createSquare());
-	grid = new SimpleComplexRenderable(createGrid(100, 100, 1.0f, -50.0f, -50.0f));
-	skybox = new SimpleComplexRenderable(createCuboid(glm::vec3(-50.0f), glm::vec3(100.0f)));
-	floor->setScales(glm::vec3(100.0f));
-	floor->setTexture(snowTexture);
-	skybox->setScales(glm::vec3(-1.0f));
-	skybox->setTexture(skyTexture);
 
 	bp = new Model("backpack");
 	bp->setPosition(glm::vec3(0.0f, 2.0f, 0.0f));
 
-	// Need slight perturbation on x & z, otherwise the light won't show, not sure why...
 	glm::vec3 lightPosition(0.0f, 4.0f, 30.0f);
 	glm::vec3 lightFocus(0.0f, 0.0f, 0.0f);
 	glm::vec3 lightDirection = glm::normalize(lightFocus - lightPosition);
@@ -246,8 +177,6 @@ int main(int argc, char *argv[])
 	float lightOuter = glm::radians(50.0f);
 	float lightNear = 1.0f;
 	float lightFar = 180.0f;
-
-	lightBox = new SimpleComplexRenderable(createCuboid(lightPosition - glm::vec3(0.1), glm::vec3(0.2)));
 
 	glGenFramebuffers(1, &depthMapFbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo);
@@ -284,8 +213,6 @@ int main(int argc, char *argv[])
 
 		if (doShadows)
 		{
-			floor->render(shadowShader);
-			board->render(shadowShader);
 			bp->render(shadowShader);
 		}
 
@@ -301,7 +228,7 @@ int main(int argc, char *argv[])
 		setUniformMat4(sceneShader, PROJECTION, currentCamera->getProjection());
 		setUniformMat4(sceneShader, LIGHT, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
 		                                   * glm::lookAt(lightPosition, lightFocus, glm::vec3(0.0f, 1.0f, 0.0f)));
-		setUniformVec3(sceneShader, LIGHT_COLOR, glm::vec3(1.0f, 1.0f, 1.0f));
+		setUniformVec3(sceneShader, LIGHT_COLOR, glm::vec3(1.0f));
 		setUniformVec3(sceneShader, LIGHT_POSITION, lightPosition);
 		setUniformVec3(sceneShader, LIGHT_DIRECTION, lightDirection);
 		setUniformVec3(sceneShader, VIEW_POSITION, currentCamera->getPosition());
@@ -314,26 +241,10 @@ int main(int argc, char *argv[])
 
 		bp->render(sceneShader);
 
-		floor->render(sceneShader);
-		board->render(sceneShader);
-		setUniformVec4(sceneShader, OBJECT_COLOR, glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
-		grid->render(sceneShader);
-		setUniformVec4(sceneShader, OBJECT_COLOR, glm::vec4(135.0f/255.0f, 206.0f/255.0f, 235.0f/255.0f, 1.0f));
-		skybox->render(sceneShader);
-
-		setUniformVec4(sceneShader, OBJECT_COLOR, glm::vec4(1.0f));
-		setUniformInt(sceneShader, DO_LIGHTING, 0);
-		setUniformFloat(sceneShader, AMBIENT_STRENGTH, 1.0f);
-		if (doLights)
-			lightBox->render(sceneShader);
-
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-		frontCamera.setPosition(board->getPosition() + glm::mat3(board->getRotation()) * glm::vec3(0.0f, 3.0f, 1.0f));
-		frontCamera.setYaw(board->getAngles().y - glm::radians(90.0f));
-		rearCamera.setPosition(board->getPosition() + glm::mat3(board->getRotation()) * glm::vec3(0.0f, 3.0f, -1.0f));
-		rearCamera.setYaw(board->getAngles().y + glm::radians(90.0f));
 	}
+	delete bp;
 	glfwTerminate();
 	return EXIT_SUCCESS;
 }

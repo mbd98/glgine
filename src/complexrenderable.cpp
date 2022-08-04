@@ -114,53 +114,8 @@ void SimpleComplexRenderable::render(GLuint shader)
 	setUniformMat4(shader, MODEL, getHierarchicalWorldTransform());
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, getTexture());
-	setUniformInt(shader, TEXTURE_MAP, 1);
-	setUniformInt(shader, TEXTURE_PRESENT, isTextured() ? 1 : 0);
+	setUniformInt(shader, TEXTURE_DIFFUSE0, 1);
 	renderable->render();
-}
-
-Skateboard::Skateboard(ComplexRenderable *character) : ComplexRenderable(), character(character)
-{
-	GLuint wheelTex = loadTexture("assets/textures/blackleather.jpg");
-	plank = new SimpleComplexRenderable(createCuboid(glm::vec3(-4.0f, 1.0f, -2.0f), glm::vec3(8.0f, 0.2f, 4.0f)));
-	plank->setParent(this);
-	plank->setTexture(loadTexture("assets/textures/metal.jpg"));
-	for (int i = 0; i < 4; i++)
-	{
-		wheels[i] = new SimpleComplexRenderable(createCuboid(glm::vec3(-0.5f), glm::vec3(1.0f)));
-		wheels[i]->setParent(plank);
-		wheels[i]->setTexture(wheelTex);
-	}
-	wheels[0]->setPosition(wheels[0]->getPosition() + glm::vec3(-1.5f, 0.5f, -1.5f));
-	wheels[1]->setPosition(wheels[1]->getPosition() + glm::vec3(-1.5f, 0.5f, 1.5f));
-	wheels[2]->setPosition(wheels[2]->getPosition() + glm::vec3(1.5f, 0.5f, -1.5f));
-	wheels[3]->setPosition(wheels[3]->getPosition() + glm::vec3(1.5f, 0.5f, 1.5f));
-	character->setParent(this);
-	character->setPosition(glm::vec3(0.0f, 1.2f, 0.0f));
-}
-
-Skateboard::~Skateboard()
-{
-	delete plank;
-	for (auto &wheel : wheels)
-		delete wheel;
-	delete character;
-}
-
-void Skateboard::render(GLuint shader)
-{
-	setUniformVec4(shader, OBJECT_COLOR, glm::vec4(170.0f/255.0f, 169.0f/255.0f, 173.0f/255.0f, 1.0f));
-	setUniformFloat(shader, SHINE, 256.0f);
-	plank->render(shader);
-	setUniformFloat(shader, SHINE, 64.0f);
-	setUniformVec4(shader, OBJECT_COLOR, glm::vec4(glm::vec3(0.0f),1.0f));
-	for (auto &wheel : wheels)
-		wheel->render(shader);
-	setUniformFloat(shader, SHINE, 16.0f);
-	setUniformVec4(shader, OBJECT_COLOR, glm::vec4(0.0f, 0.0f, 0.8f, 0.5f));
-	if (character != nullptr)
-		character->render(shader);
-	setUniformFloat(shader, SHINE, 32.0f);
 }
 
 TimexChar::TimexChar(bool doBottom,

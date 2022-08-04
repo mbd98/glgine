@@ -51,18 +51,6 @@ public:
 	void render(GLuint shader) override;
 };
 
-class Skateboard : public ComplexRenderable
-{
-private:
-	SimpleComplexRenderable *plank;
-	SimpleComplexRenderable *wheels[4];
-	ComplexRenderable *character;
-public:
-	explicit Skateboard(ComplexRenderable *character);
-	~Skateboard() override;
-	void render(GLuint shader) override;
-};
-
 class TimexChar : public ComplexRenderable
 {
 private:

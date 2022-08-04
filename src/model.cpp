@@ -128,12 +128,12 @@ void Mesh::render(GLuint shader)
 	}
 	glActiveTexture(GL_TEXTURE0);
 	setUniformMat4(shader, MODEL, getHierarchicalWorldTransform());
-	setUniformInt(shader, TEXTURE_PRESENT, 1);
 	internal->render();
 }
 
 Model::Model(const std::string &name)
 {
+	std::cerr << "Loading model " << name << std::endl;
 	Assimp::Importer in;
 	const aiScene *scene = in.ReadFile("assets/models/" + name + "/" + name + ".obj",
 									   aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_OptimizeMeshes);

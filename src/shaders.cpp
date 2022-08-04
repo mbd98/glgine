@@ -8,7 +8,8 @@ const char * const MODEL = "model";
 const char * const VIEW = "view";
 const char * const PROJECTION = "projection";
 const char * const LIGHT = "light";
-const char * const TEXTURE_MAP = "texture_diffuse0";
+const char * const TEXTURE_DIFFUSE0 = "texture_diffuse0";
+const char * const TEXTURE_SPECULAR0 = "texture_specular0";
 const char * const SHADOW_MAP = "shadowMap";
 const char * const LIGHT_COLOR = "lightColor";
 const char * const LIGHT_POSITION = "lightPosition";
@@ -17,8 +18,6 @@ const char * const AMBIENT_STRENGTH = "ambientStrength";
 const char * const DIFFUSE_STRENGTH = "diffuseStrength";
 const char * const SPECULAR_STRENGTH = "specularStrength";
 const char * const VIEW_POSITION = "viewPosition";
-const char * const TEXTURE_PRESENT = "texturePresent";
-const char * const OBJECT_COLOR = "objectColor";
 const char * const DO_LIGHTING = "doLighting";
 const char * const LIGHT_INNER = "light_cutoff_inner";
 const char * const LIGHT_OUTER = "light_cutoff_outer";
@@ -35,6 +34,9 @@ GLuint loadShader(const char *vertexPath, const char *fragmentPath)
 	std::ifstream vertexIn, fragmentIn;
 	vertexIn.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 	fragmentIn.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+
+	std::cerr << "Loading vertex shader " << vertexPath << std::endl;
+
 	try
 	{
 		vertexIn.open(vertexPath);
@@ -45,6 +47,9 @@ GLuint loadShader(const char *vertexPath, const char *fragmentPath)
 	{
 		std::cerr << "Failed to load " << vertexPath << ": " << ex.what() << std::endl;
 	}
+
+	std::cerr << "Loading fragment shader " << fragmentPath << std::endl;
+
 	try
 	{
 		fragmentIn.open(fragmentPath);

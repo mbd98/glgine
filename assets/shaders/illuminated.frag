@@ -11,8 +11,8 @@ in VertexData
 } fragIn;
 
 uniform sampler2D texture_diffuse0;
+uniform sampler2D texture_specular0;
 uniform sampler2D shadowMap;
-uniform vec4 objectColor;
 uniform vec3 lightColor;
 uniform vec3 lightPosition;
 uniform vec3 lightDirection;
@@ -20,7 +20,6 @@ uniform float ambientStrength = 0.1;
 uniform float diffuseStrength = 0.6;
 uniform float specularStrength = 0.3;
 uniform vec3 viewPosition;
-uniform bool texturePresent = true;
 uniform bool doLighting = true;
 uniform float light_cutoff_inner;
 uniform float light_cutoff_outer;
@@ -52,23 +51,14 @@ float calculateSpotlight(vec3 ld) {
 void main()
 {
 	vec3 lightDir = normalize(lightPosition - fragIn.fragPosition);
-	float distance = length(lightPosition - fragIn.fragPosition);
-	float attenuation = 1.0 /* / (1.0 + 0.09 * distance + 0.032 * distance * distance) */;
     float shadow = calculateSpotlight(lightDir) * calculateShadow(fragIn.fragLightPosition, 0.003);
-	vec3 ambient = attenuation * ambientStrength * lightColor;
-	vec3 diffuse = attenuation * diffuseStrength * max(dot(normalize(fragIn.fragNormal), lightDir), 0.0) * lightColor;
+	vec3 ambient = ambientStrength * vec3(texture(texture_diffuse0, fragIn.texCoord));
+	vec3 diffuse = diffuseStrength * max(dot(normalize(fragIn.fragNormal), lightDir), 0.0) * vec3(texture(texture_diffuse0, fragIn.texCoord));
 	vec3 viewDirection = normalize(viewPosition - fragIn.fragPosition);
 	vec3 reflectDirection = reflect(-lightDir, normalize(fragIn.fragNormal));
-	vec3 specular = attenuation * specularStrength * pow(max(dot(viewDirection, reflectDirection), 0.0), shine) * lightColor;
-	vec4 color;
-	if (texturePresent)
-		color = texture(texture_diffuse0, fragIn.texCoord);
-	else
-		color = objectColor;
-	if (color.a < 0.01)
-		discard;
+	vec3 specular = specularStrength * pow(max(dot(viewDirection, reflectDirection), 0.0), shine) * vec3(texture(texture_specular0, fragIn.texCoord));
 	if (doLighting)
-		FragColor = vec4(ambient + shadow * (diffuse + specular), 1.0) * color;
+		FragColor = vec4(ambient + shadow * (diffuse + specular), 1.0);
 	else
-		FragColor = vec4(ambient, 1.0) * color;
+		FragColor = vec4(ambient, 1.0);
 }
