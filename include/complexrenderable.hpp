@@ -87,6 +87,7 @@ public:
 	explicit Reusable(ComplexRenderable *base);
 	~Reusable();
 	void insertTransform(const glm::mat4 &m);
+	void setTransforms(const std::vector<glm::mat4> &tv);
 	void render(GLuint shader) override;
 	[[nodiscard]] glm::mat4 getWorldTransform() const override;
 };

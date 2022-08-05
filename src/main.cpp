@@ -161,25 +161,35 @@ int main(int argc, char *argv[])
 
 	GLuint depthMap, depthMapFbo;
 
-	Reusable *train, *track;
-	Model *preTrack;
+	Reusable *train, *track, *tile;
+	Model *preTrain, *preTrack, *preTile;
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
 	GLuint shadowShader = loadShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
 
-
-	train = new Reusable(new Model("train"));
-	glm::mat4 t0 = glm::translate(glm::rotate(glm::scale(glm::mat4(1.0f), glm::vec3(1.1f)), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f)), glm::vec3(0.0f, 2.1f, 0.0f));
-	train->insertTransform(t0);
-	train->insertTransform(glm::translate(t0, glm::vec3(25.0f, 0.0f, 0.0f)));
+	preTrain = new Model("train");
+	preTrain->setScales(glm::vec3(1.1f));
+	preTrain->setAngles(glm::vec3(0.0f, glm::radians(90.0f), 0.0f));
+	preTrain->setPosition(glm::vec3(0.0f, 2.1f, 0.0f));
+	train = new Reusable(preTrain);
+	//train->insertTransform(glm::mat4(1.0f));
+	//train->insertTransform(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -20.0f)));
 
 	preTrack = new Model("track");
 	preTrack->setAngles(glm::vec3(0.0f, glm::radians(90.0f), 0.0f));
 	preTrack->setScales(glm::vec3(0.25f));
 	track = new Reusable(preTrack);
-	for (int i = 0; i < 10; i++)
+	for (int i = -2; i < 5; i++)
 	{
 		track->insertTransform(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, i * -6.4f)));
 	}
+
+	preTile = new Model("wall");
+	preTile->setAngles(glm::vec3(glm::radians(90.0f), glm::radians(180.0f), 0.0f));
+	preTile->setScales(glm::vec3(3.0f));
+	preTile->setPosition(glm::vec3(0.0f, 2.0f, 0.0f));
+	tile = new Reusable(preTile);
+	tile->insertTransform(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 12.8f)));
+	tile->insertTransform(glm::translate(glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f)), glm::vec3(0.0f, 0.0f, 12.8f)));
 
 	glm::vec3 lightPosition(0.0f, 4.0f, 30.0f);
 	glm::vec3 lightFocus(0.0f, 0.0f, 0.0f);
@@ -206,6 +216,8 @@ int main(int argc, char *argv[])
 	lastTime = glfwGetTime();
 	currentCamera = &freeCamera;
 
+	uint trainSteps = 0;
+
 	std::cerr << "Done loading, begin render loop" << std::endl;
 	while (!glfwWindowShouldClose(window))
 	{
@@ -213,6 +225,11 @@ int main(int argc, char *argv[])
 		glfwGetWindowSize(window, &scrWidth, &scrHeight);
 		dt = glfwGetTime() - lastTime;
 		lastTime += dt;
+
+		std::vector<glm::mat4> trainTransforms = {glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, trainSteps * 0.1f)), glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -25.0f + trainSteps * 0.1f))};
+		train->setTransforms(trainTransforms);
+
+		trainSteps = (trainSteps + 1) % 250;
 
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo);
 		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
@@ -256,12 +273,14 @@ int main(int argc, char *argv[])
 
 		track->render(sceneShader);
 		train->render(sceneShader);
+		tile->render(sceneShader);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 	delete train;
 	delete track;
+	delete tile;
 	glfwTerminate();
 	return EXIT_SUCCESS;
 }

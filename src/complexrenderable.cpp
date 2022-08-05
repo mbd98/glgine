@@ -232,6 +232,11 @@ void Reusable::insertTransform(const glm::mat4 &m)
 	transforms.push_back(m);
 }
 
+void Reusable::setTransforms(const std::vector<glm::mat4> &tv)
+{
+	Reusable::transforms = tv;
+}
+
 void Reusable::render(GLuint shader)
 {
 	for (currentTransform = 0; currentTransform < transforms.size(); currentTransform++)
