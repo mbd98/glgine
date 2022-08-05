@@ -163,12 +163,14 @@ int main(int argc, char *argv[])
 
 	GLuint depthMap, depthMapFbo;
 
-	ComplexRenderable *bp;
+	ComplexRenderable *rail, *train;
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
 	GLuint shadowShader = loadShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
 
-	bp = new Model("backpack");
-	bp->setPosition(glm::vec3(0.0f, 2.0f, 0.0f));
+	rail = new Model("track_straight");
+	rail->setScales(glm::vec3(0.1f));
+
+	train = new Model("train");
 
 	glm::vec3 lightPosition(0.0f, 4.0f, 30.0f);
 	glm::vec3 lightFocus(0.0f, 0.0f, 0.0f);
@@ -194,6 +196,8 @@ int main(int argc, char *argv[])
 
 	lastTime = glfwGetTime();
 	currentCamera = &freeCamera;
+
+	std::cerr << "Done loading, begin render loop" << std::endl;
 	while (!glfwWindowShouldClose(window))
 	{
 		int scrWidth, scrHeight;
@@ -213,7 +217,8 @@ int main(int argc, char *argv[])
 
 		if (doShadows)
 		{
-			bp->render(shadowShader);
+			rail->render(shadowShader);
+			train->render(shadowShader);
 		}
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -235,16 +240,17 @@ int main(int argc, char *argv[])
 		setUniformInt(sceneShader, DO_LIGHTING, doLights);
 		setUniformFloat(sceneShader, LIGHT_INNER, glm::cos(lightInner));
 		setUniformFloat(sceneShader, LIGHT_OUTER, glm::cos(lightOuter));
-		setUniformFloat(sceneShader, AMBIENT_STRENGTH, 0.1f);
+		setUniformFloat(sceneShader, AMBIENT_STRENGTH, 1.0f);
 		setUniformFloat(sceneShader, DIFFUSE_STRENGTH, 0.6f);
 		setUniformFloat(sceneShader, SPECULAR_STRENGTH, 0.3f);
 
-		bp->render(sceneShader);
+		rail->render(sceneShader);
+		train->render(sceneShader);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-	delete bp;
+	delete rail;
 	glfwTerminate();
 	return EXIT_SUCCESS;
 }

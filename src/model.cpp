@@ -136,7 +136,7 @@ Model::Model(const std::string &name)
 	std::cerr << "Loading model " << name << std::endl;
 	Assimp::Importer in;
 	const aiScene *scene = in.ReadFile("assets/models/" + name + "/" + name + ".obj",
-									   aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_OptimizeMeshes);
+									   aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals | aiProcess_OptimizeMeshes);
 	if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
 		throw std::runtime_error("Failed to import model " + name + ": " + std::string(in.GetErrorString()));
 	std::list<Mesh*> m = processNode(name, scene->mRootNode, scene);
