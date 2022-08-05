@@ -39,6 +39,8 @@ void Application::initializeCore() {
 void Application::run() {
 
     begin = std::chrono::steady_clock::now();
+    initializeAudioSampler("../more_ichika.wav");
+    playMusic("../more_ichika.mp3");
     do {
 
         updateAudio();
@@ -68,7 +70,7 @@ void Application::updateAudio() {
         for (int i = 0; i < N; i++) {
             buf[i] = audioFile.samples[0][i + song_index];
         }
-        song_index += (int)(audioFile.getSampleRate()) / 17;
+        song_index += (int)(audioFile.getSampleRate()) / 17.5;
 
         AudioManager::setInputData(buf);
 
@@ -85,22 +87,28 @@ void Application::updateAudio() {
         }
         renderer->clearNotes();
         for (const auto &note: spectrum) {
-            auto *m = new MusicNote(note.first, note.second);
-            renderer->addNote(*m);;
+            if(note.first < FREQUENCY_CUTOFF) {
+                auto *m = new MusicNote(note.first, note.second);
+                renderer->addNote(*m);
+            }
         }
     }
 }
 
-void Application::initializeAudio() {
+void Application::initializeAudioSampler(const std::string& path) {
 
-    audioFile.load("../song.wav");
+    audioFile.load(path);
     audioFile.printSummary();
-
-    irrklang::ISoundEngine *SoundEngine = irrklang::createIrrKlangDevice();
-    SoundEngine->play2D("../ichika_good.mp3", true);
-
-    AudioManager::setBufferSize(N);
-    AudioManager::init(audioFile.getSampleRate());
-
+    AudioManager::init(audioFile.getSampleRate(),N);
     MusicNote::createLayout();
 }
+
+void Application::playMusic(const std::string& path) {
+
+    irrklang::ISoundEngine *SoundEngine = irrklang::createIrrKlangDevice();
+    SoundEngine->play2D( path.c_str(), true);
+
+}
+
+
+

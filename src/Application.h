@@ -18,13 +18,14 @@ class Application {
     Renderer* renderer;
     AudioFile<double> audioFile;
 
-    static inline int N = 512;
+    static inline int N = 1024;
     int song_index = 0;
 
     public:
 
     void initializeCore();
-    void initializeAudio();
+    void initializeAudioSampler(const std::string&);
+    void playMusic(const std::string&);
     void updateAudio();
     void run();
 

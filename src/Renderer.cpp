@@ -31,7 +31,8 @@ void Renderer::render() {
     glUseProgram(shader);
     for(auto& note : notes){
         note.setColor(random_color());
-        note.addTransform(glm::scale(glm::mat4(1.0),{(1.f/(float)notes.size()),1,1}));
+        note.setWidth(1/(float)notes.size());
+//        note.addTransform(glm::scale(glm::mat4(1.0),{(1.f/(float)notes.size()),1,1}));
         note.addTransform(glm::translate(glm::mat4(1.0),{0.0,-0.5,0.0}));
 
         note.setUniforms(shader);

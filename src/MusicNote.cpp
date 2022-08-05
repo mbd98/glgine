@@ -9,7 +9,7 @@ void MusicNote::draw() {
 }
 
 MusicNote::MusicNote(float freq, float ampl) : m_Frequency(freq), m_Amplitude(ampl){
-
+//    m_Color =
 }
 void MusicNote::createLayout(){
 
@@ -35,17 +35,37 @@ void MusicNote::createLayout(){
 void MusicNote::setColor(const glm::vec3 c) {
     m_Color = c;
 }
+float map(float a1, float a2, float b1, float b2, float val){
+    float x = (val - a1) / (a2 - a1);
 
+    float result = b1 + (b2 - b1) * x;
+    return result;
+}
 void MusicNote::setUniforms(GLuint shader) {
+
+    glm::mat4 model = glm::translate(glm::mat4(1.0f),{2*m_Frequency/ FREQUENCY_CUTOFF - 1,-1,0} );
+    model = glm::scale(model,{m_Width,m_Amplitude * 0.05,1});
+
+    if(m_Frequency < FREQUENCY_CUTOFF/3.f){
+        float comp = map(0,FREQUENCY_CUTOFF/3.f,0,1.0,m_Frequency);
+        m_Color = {0.0,comp,1.0 - comp};
+
+    }
+    else if( ((FREQUENCY_CUTOFF/3.f) < m_Frequency) && (m_Frequency < (2.f * FREQUENCY_CUTOFF/3.f))){
+        float comp = map(FREQUENCY_CUTOFF/3.f,2.f * FREQUENCY_CUTOFF/3.f,0,1.0,m_Frequency);
+        m_Color = {comp,1.0-comp,0.0};
+    }
+    else{
+        m_Color = {1.0,0.0,0.0};
+    }
     glUniform3f(glGetUniformLocation(shader, "u_Color"), m_Color.x, m_Color.y, m_Color.z);
 
-    glm::mat4 model = glm::translate(glm::mat4(1.0f),{m_Frequency/5500 - 1,0,0} );
-    model = glm::scale(model,{1,m_Amplitude * 0.05,1});
-    for(glm::mat4 transform : m_Transforms){
-        model *= transform ;
-    }
-    m_Transforms.clear();
-//    model = glm::translate(model,{m_Frequency,m_Amplitude,0} );
+//    model = glm::translate(model,{-4*m_Width,0,0});
+//    for(glm::mat4 transform : m_Transforms){
+//        model *= transform ;
+//    }
+//    m_Transforms.clear();
+//    model = glm::translate(model,{-m_Width,0,0} );
     glUniformMatrix4fv(glGetUniformLocation(shader, "u_Model"), 1, GL_FALSE, &model[0][0]);
 }
 

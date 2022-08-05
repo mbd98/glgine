@@ -15,18 +15,16 @@ class AudioManager {
 
     static inline fftw_complex *in, *out;
     static inline fftw_plan plan;
-    static inline int N = 4096;
+    static inline int N = 8192;
     static inline int sample_rate = 0;
 
 public:
 
-    static void setBufferSize(int size){
-        N = size;
-    }
     // initialize all data buffers
-    static void init(int sr)
+    static void init(int sr, int bs)
     {
         sample_rate = sr;
+        N = bs;
         in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
         out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
 
@@ -41,8 +39,24 @@ public:
             in[i][0] = data[i];
         }
     }
-    static void executeFFT(double* freqs,double* mags){
+    static void hanningWindow()//Hanning window function
+    {
+        for (int i = 0; i < N; i++)
+        {
+            double multiplier = 0.5 * (1 - cos(2*PI*i/(N-1)));
+            in[i][0]*=multiplier;
+        }
+
+    }
+    static void db(double* freqs, double* dbs){
+        for(int i = 0 ; i < N/2 ; i++){
+            dbs[i] = 20 * log10(freqs[i]);
+        }
+    }
+    static void executeFFT(double* freqs,double* dbs){
+        hanningWindow();
         fftw_execute(plan);
+        double mags[N/2];
         for(int i = 0 ; i < N/2 ; i++){
 
             double real = out[i][0];
@@ -54,6 +68,8 @@ public:
             freqs[i] = freq;
             mags[i] = mag;
         }
+//        memcpy(dbs,mags,N);
+        db(mags,dbs);
     }
 
 };
