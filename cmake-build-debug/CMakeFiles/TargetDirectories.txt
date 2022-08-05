@@ -1,0 +1,4 @@
+/home/nikolas/Programming/COMP371_Project/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/nikolas/Programming/COMP371_Project/cmake-build-debug/CMakeFiles/project.dir
+/home/nikolas/Programming/COMP371_Project/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/nikolas/Programming/COMP371_Project/cmake-build-debug/CMakeFiles/glad.dir
