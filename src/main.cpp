@@ -7,7 +7,6 @@
 #include <complexrenderable.hpp>
 #include <shaders.hpp>
 #include <model.hpp>
-#include <tracks.hpp>
 
 const GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
@@ -162,14 +161,25 @@ int main(int argc, char *argv[])
 
 	GLuint depthMap, depthMapFbo;
 
-	ComplexRenderable *rail, *train;
+	Reusable *train, *track;
+	Model *preTrack;
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
 	GLuint shadowShader = loadShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
 
-	rail = new Tracks();
-	rail->setScales(glm::vec3(0.1f));
 
-	train = new Model("train");
+	train = new Reusable(new Model("train"));
+	glm::mat4 t0 = glm::translate(glm::rotate(glm::scale(glm::mat4(1.0f), glm::vec3(1.1f)), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f)), glm::vec3(0.0f, 2.1f, 0.0f));
+	train->insertTransform(t0);
+	train->insertTransform(glm::translate(t0, glm::vec3(25.0f, 0.0f, 0.0f)));
+
+	preTrack = new Model("track");
+	preTrack->setAngles(glm::vec3(0.0f, glm::radians(90.0f), 0.0f));
+	preTrack->setScales(glm::vec3(0.25f));
+	track = new Reusable(preTrack);
+	for (int i = 0; i < 10; i++)
+	{
+		track->insertTransform(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, i * -6.4f)));
+	}
 
 	glm::vec3 lightPosition(0.0f, 4.0f, 30.0f);
 	glm::vec3 lightFocus(0.0f, 0.0f, 0.0f);
@@ -216,7 +226,7 @@ int main(int argc, char *argv[])
 
 		if (doShadows)
 		{
-			rail->render(shadowShader);
+			track->render(shadowShader);
 			train->render(shadowShader);
 		}
 
@@ -239,18 +249,19 @@ int main(int argc, char *argv[])
 		setUniformInt(sceneShader, DO_LIGHTING, doLights);
 		setUniformFloat(sceneShader, LIGHT_INNER, glm::cos(lightInner));
 		setUniformFloat(sceneShader, LIGHT_OUTER, glm::cos(lightOuter));
+		// TODO: Change this back to a reasonable value when testing complete
 		setUniformFloat(sceneShader, AMBIENT_STRENGTH, 1.0f);
 		setUniformFloat(sceneShader, DIFFUSE_STRENGTH, 0.6f);
 		setUniformFloat(sceneShader, SPECULAR_STRENGTH, 0.3f);
 
-		rail->render(sceneShader);
+		track->render(sceneShader);
 		train->render(sceneShader);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-	delete rail;
 	delete train;
+	delete track;
 	glfwTerminate();
 	return EXIT_SUCCESS;
 }
