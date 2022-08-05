@@ -2,6 +2,7 @@
 
 #include "defaults.hpp"
 #include "renderable.hpp"
+#include <list>
 
 // Represents a renderable object having position, direction, and scale properties.
 class ComplexRenderable
@@ -32,7 +33,7 @@ public:
 	void setScales(const glm::vec3 &scales);
 	[[nodiscard]] ComplexRenderable *getParent() const;
 	void setParent(ComplexRenderable *parent);
-	[[nodiscard]] glm::mat4 getWorldTransform() const;
+	[[nodiscard]] virtual glm::mat4 getWorldTransform() const;
 	[[nodiscard]] glm::mat4 getHierarchicalWorldTransform() const;
 	[[nodiscard]] GLuint getTexture() const;
 	void setTexture(GLuint texture);
@@ -74,4 +75,18 @@ private:
 public:
 	explicit Multi(std::vector<ComplexRenderable*> renderables);
 	void render(GLuint shader) override;
+};
+
+class Reusable : public ComplexRenderable
+{
+private:
+	ComplexRenderable *base;
+	std::vector<glm::mat4> transforms;
+	uint currentTransform;
+public:
+	explicit Reusable(ComplexRenderable *base);
+	~Reusable();
+	void insertTransform(const glm::mat4 &m);
+	void render(GLuint shader) override;
+	[[nodiscard]] glm::mat4 getWorldTransform() const override;
 };

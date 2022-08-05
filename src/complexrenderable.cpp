@@ -216,3 +216,31 @@ void Multi::render(GLuint shader)
 		r->render(shader);
 	}
 }
+
+Reusable::Reusable(ComplexRenderable *base) : base(base), currentTransform(0)
+{
+	base->setParent(this);
+}
+
+Reusable::~Reusable()
+{
+	delete base;
+}
+
+void Reusable::insertTransform(const glm::mat4 &m)
+{
+	transforms.push_back(m);
+}
+
+void Reusable::render(GLuint shader)
+{
+	for (currentTransform = 0; currentTransform < transforms.size(); currentTransform++)
+	{
+		base->render(shader);
+	}
+}
+
+glm::mat4 Reusable::getWorldTransform() const
+{
+	return transforms[currentTransform] * ComplexRenderable::getWorldTransform();
+}
