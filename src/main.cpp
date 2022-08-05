@@ -4,11 +4,10 @@
 #include <defaults.hpp>
 #include <callbacks.hpp>
 #include <camera.hpp>
-#include <renderutils.hpp>
 #include <complexrenderable.hpp>
 #include <shaders.hpp>
-#include <textures.hpp>
 #include <model.hpp>
+#include <tracks.hpp>
 
 const GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
@@ -167,7 +166,7 @@ int main(int argc, char *argv[])
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
 	GLuint shadowShader = loadShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
 
-	rail = new Model("track_straight");
+	rail = new Tracks();
 	rail->setScales(glm::vec3(0.1f));
 
 	train = new Model("train");
@@ -251,6 +250,7 @@ int main(int argc, char *argv[])
 		glfwPollEvents();
 	}
 	delete rail;
+	delete train;
 	glfwTerminate();
 	return EXIT_SUCCESS;
 }
