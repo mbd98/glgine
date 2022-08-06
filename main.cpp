@@ -1,24 +1,35 @@
 #include "MusicApplication.h"
+#include "colourroom_nomain.h"
 
-GLFWwindow* window = nullptr;
+GLFWwindow* main_window = nullptr;
 
 
 void initMainMenu(){
-    window = glfwCreateWindow(800, 1000, "emaj7b9#11", NULL, NULL);
-    glfwMakeContextCurrent(window);
+    main_window = glfwCreateWindow(800, 1000, "emaj7b9#11", NULL, NULL);
+    glfwMakeContextCurrent(main_window);
     glewInit();
 
-    MenuManager::initImGui(window);
+    MenuManager::initImGui(main_window);
 }
 // List of functions that start each room
 void startMusicApplication(){
 
-    glfwDestroyWindow(window);
+    glfwDestroyWindow(main_window);
     MenuManager::endImGui();
 
     MusicApplication app;
     app.initializeCore();
     app.run();
+
+    initMainMenu();
+}
+
+void startColorRoomApplication(){
+    glfwDestroyWindow(main_window);
+    MenuManager::endImGui();
+
+    colorRoom::createWindow();
+    colorRoom::colourroom();
 
     initMainMenu();
 }
@@ -33,25 +44,25 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(800, 1000, "emaj7b9#11", NULL, NULL);
+    main_window = glfwCreateWindow(800, 1000, "emaj7b9#11", NULL, NULL);
 
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(main_window);
     glewInit();
 
     // Init ImGUI using the created window
-    MenuManager::initImGui(window);
+    MenuManager::initImGui(main_window);
 
     do {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Render the main menu using ImGUI
-        MenuManager::RenderMainMenu(startMusicApplication);
+        MenuManager::RenderMainMenu(startMusicApplication,startColorRoomApplication);
 
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(main_window);
         glfwPollEvents();
     }
-    while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-           glfwWindowShouldClose(window) == 0);
+    while (glfwGetKey(main_window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
+           glfwWindowShouldClose(main_window) == 0);
 
 
     return 0;

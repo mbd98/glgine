@@ -107,73 +107,89 @@ build CMakeFiles/project.dir/main.cpp.o: CXX_COMPILER__project_Debug /home/nikol
   DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
   DEP_FILE = CMakeFiles/project.dir/main.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
   OBJECT_DIR = CMakeFiles/project.dir
   OBJECT_FILE_DIR = CMakeFiles/project.dir
 
-build CMakeFiles/project.dir/src/AudioFile.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/AudioFile.cpp || cmake_object_order_depends_target_project
+build CMakeFiles/project.dir/musicShow/src/AudioFile.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/musicShow/src/AudioFile.cpp || cmake_object_order_depends_target_project
   DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
-  DEP_FILE = CMakeFiles/project.dir/src/AudioFile.cpp.o.d
+  DEP_FILE = CMakeFiles/project.dir/musicShow/src/AudioFile.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
   OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/musicShow/src
 
-build CMakeFiles/project.dir/src/AudioManager.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/AudioManager.cpp || cmake_object_order_depends_target_project
+build CMakeFiles/project.dir/musicShow/src/AudioManager.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/musicShow/src/AudioManager.cpp || cmake_object_order_depends_target_project
   DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
-  DEP_FILE = CMakeFiles/project.dir/src/AudioManager.cpp.o.d
+  DEP_FILE = CMakeFiles/project.dir/musicShow/src/AudioManager.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
   OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/musicShow/src
 
-build CMakeFiles/project.dir/src/MenuManager.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/MenuManager.cpp || cmake_object_order_depends_target_project
+build CMakeFiles/project.dir/musicShow/src/MenuManager.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/musicShow/src/MenuManager.cpp || cmake_object_order_depends_target_project
   DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
-  DEP_FILE = CMakeFiles/project.dir/src/MenuManager.cpp.o.d
+  DEP_FILE = CMakeFiles/project.dir/musicShow/src/MenuManager.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
   OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/musicShow/src
 
-build CMakeFiles/project.dir/src/Mesh.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/Mesh.cpp || cmake_object_order_depends_target_project
+build CMakeFiles/project.dir/musicShow/src/Mesh.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/musicShow/src/Mesh.cpp || cmake_object_order_depends_target_project
   DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
-  DEP_FILE = CMakeFiles/project.dir/src/Mesh.cpp.o.d
+  DEP_FILE = CMakeFiles/project.dir/musicShow/src/Mesh.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
   OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/musicShow/src
 
-build CMakeFiles/project.dir/src/MusicApplication.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/MusicApplication.cpp || cmake_object_order_depends_target_project
+build CMakeFiles/project.dir/musicShow/src/MusicApplication.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/musicShow/src/MusicApplication.cpp || cmake_object_order_depends_target_project
   DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
-  DEP_FILE = CMakeFiles/project.dir/src/MusicApplication.cpp.o.d
+  DEP_FILE = CMakeFiles/project.dir/musicShow/src/MusicApplication.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
   OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/musicShow/src
 
-build CMakeFiles/project.dir/src/MusicNote.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/MusicNote.cpp || cmake_object_order_depends_target_project
+build CMakeFiles/project.dir/musicShow/src/MusicNote.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/musicShow/src/MusicNote.cpp || cmake_object_order_depends_target_project
   DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
-  DEP_FILE = CMakeFiles/project.dir/src/MusicNote.cpp.o.d
+  DEP_FILE = CMakeFiles/project.dir/musicShow/src/MusicNote.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
   OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/musicShow/src
 
-build CMakeFiles/project.dir/src/Renderer.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/Renderer.cpp || cmake_object_order_depends_target_project
+build CMakeFiles/project.dir/musicShow/src/Renderer.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/musicShow/src/Renderer.cpp || cmake_object_order_depends_target_project
   DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
-  DEP_FILE = CMakeFiles/project.dir/src/Renderer.cpp.o.d
+  DEP_FILE = CMakeFiles/project.dir/musicShow/src/Renderer.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
   OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/musicShow/src
 
-build CMakeFiles/project.dir/src/Shader.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/Shader.cpp || cmake_object_order_depends_target_project
+build CMakeFiles/project.dir/musicShow/src/Shader.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/musicShow/src/Shader.cpp || cmake_object_order_depends_target_project
   DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
-  DEP_FILE = CMakeFiles/project.dir/src/Shader.cpp.o.d
+  DEP_FILE = CMakeFiles/project.dir/musicShow/src/Shader.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
   OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/musicShow/src
+
+build CMakeFiles/project.dir/colourroom/src/colourroom_nomain.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/colourroom/src/colourroom_nomain.cpp || cmake_object_order_depends_target_project
+  DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
+  DEP_FILE = CMakeFiles/project.dir/colourroom/src/colourroom_nomain.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
+  OBJECT_DIR = CMakeFiles/project.dir
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/colourroom/src
+
+build CMakeFiles/project.dir/colourroom/src/shaderloader.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/colourroom/src/shaderloader.cpp || cmake_object_order_depends_target_project
+  DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
+  DEP_FILE = CMakeFiles/project.dir/colourroom/src/shaderloader.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
+  OBJECT_DIR = CMakeFiles/project.dir
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/colourroom/src
 
 
 # =============================================================================
@@ -183,7 +199,7 @@ build CMakeFiles/project.dir/src/Shader.cpp.o: CXX_COMPILER__project_Debug /home
 #############################################
 # Link the executable project
 
-build project: CXX_EXECUTABLE_LINKER__project_Debug CMakeFiles/project.dir/main.cpp.o CMakeFiles/project.dir/src/AudioFile.cpp.o CMakeFiles/project.dir/src/AudioManager.cpp.o CMakeFiles/project.dir/src/MenuManager.cpp.o CMakeFiles/project.dir/src/Mesh.cpp.o CMakeFiles/project.dir/src/MusicApplication.cpp.o CMakeFiles/project.dir/src/MusicNote.cpp.o CMakeFiles/project.dir/src/Renderer.cpp.o CMakeFiles/project.dir/src/Shader.cpp.o | libImGuiLib.a lib/libGLEWd.a _deps/thirdparty-glfw-build/src/libglfw3.a /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so /usr/lib/x86_64-linux-gnu/librt.so /usr/lib/x86_64-linux-gnu/libm.so /usr/lib/x86_64-linux-gnu/libX11.so || _deps/thirdparty-glfw-build/src/libglfw3.a lib/libGLEWd.a libImGuiLib.a
+build project: CXX_EXECUTABLE_LINKER__project_Debug CMakeFiles/project.dir/main.cpp.o CMakeFiles/project.dir/musicShow/src/AudioFile.cpp.o CMakeFiles/project.dir/musicShow/src/AudioManager.cpp.o CMakeFiles/project.dir/musicShow/src/MenuManager.cpp.o CMakeFiles/project.dir/musicShow/src/Mesh.cpp.o CMakeFiles/project.dir/musicShow/src/MusicApplication.cpp.o CMakeFiles/project.dir/musicShow/src/MusicNote.cpp.o CMakeFiles/project.dir/musicShow/src/Renderer.cpp.o CMakeFiles/project.dir/musicShow/src/Shader.cpp.o CMakeFiles/project.dir/colourroom/src/colourroom_nomain.cpp.o CMakeFiles/project.dir/colourroom/src/shaderloader.cpp.o | libImGuiLib.a lib/libGLEWd.a _deps/thirdparty-glfw-build/src/libglfw3.a /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so /usr/lib/x86_64-linux-gnu/librt.so /usr/lib/x86_64-linux-gnu/libm.so /usr/lib/x86_64-linux-gnu/libX11.so || _deps/thirdparty-glfw-build/src/libglfw3.a lib/libGLEWd.a libImGuiLib.a
   FLAGS = -g
   LINK_LIBRARIES = -Wl,-rpath,/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/bin/linux-gcc-64  libImGuiLib.a  lib/libGLEWd.a  _deps/thirdparty-glfw-build/src/libglfw3.a  -lfftw3  -lIrrKlang  -ldl  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libOpenGL.so  /usr/lib/x86_64-linux-gnu/libOpenGL.so  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libGLU.so  /usr/lib/x86_64-linux-gnu/librt.so  -lm  /usr/lib/x86_64-linux-gnu/libX11.so  -lpthread  -ldl
   LINK_PATH = -L/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/bin/linux-gcc-64
@@ -206,7 +222,7 @@ build CMakeFiles/ImGuiLib.dir/thirdparty/imgui/imgui.cpp.o: CXX_COMPILER__ImGuiL
   DEFINES = -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
   DEP_FILE = CMakeFiles/ImGuiLib.dir/thirdparty/imgui/imgui.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src
   OBJECT_DIR = CMakeFiles/ImGuiLib.dir
   OBJECT_FILE_DIR = CMakeFiles/ImGuiLib.dir/thirdparty/imgui
 
@@ -214,7 +230,7 @@ build CMakeFiles/ImGuiLib.dir/thirdparty/imgui/imgui_demo.cpp.o: CXX_COMPILER__I
   DEFINES = -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
   DEP_FILE = CMakeFiles/ImGuiLib.dir/thirdparty/imgui/imgui_demo.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src
   OBJECT_DIR = CMakeFiles/ImGuiLib.dir
   OBJECT_FILE_DIR = CMakeFiles/ImGuiLib.dir/thirdparty/imgui
 
@@ -222,7 +238,7 @@ build CMakeFiles/ImGuiLib.dir/thirdparty/imgui/imgui_draw.cpp.o: CXX_COMPILER__I
   DEFINES = -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
   DEP_FILE = CMakeFiles/ImGuiLib.dir/thirdparty/imgui/imgui_draw.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src
   OBJECT_DIR = CMakeFiles/ImGuiLib.dir
   OBJECT_FILE_DIR = CMakeFiles/ImGuiLib.dir/thirdparty/imgui
 
@@ -230,7 +246,7 @@ build CMakeFiles/ImGuiLib.dir/thirdparty/imgui/imgui_impl_glfw.cpp.o: CXX_COMPIL
   DEFINES = -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
   DEP_FILE = CMakeFiles/ImGuiLib.dir/thirdparty/imgui/imgui_impl_glfw.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src
   OBJECT_DIR = CMakeFiles/ImGuiLib.dir
   OBJECT_FILE_DIR = CMakeFiles/ImGuiLib.dir/thirdparty/imgui
 
@@ -238,7 +254,7 @@ build CMakeFiles/ImGuiLib.dir/thirdparty/imgui/imgui_impl_opengl3.cpp.o: CXX_COM
   DEFINES = -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
   DEP_FILE = CMakeFiles/ImGuiLib.dir/thirdparty/imgui/imgui_impl_opengl3.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src
   OBJECT_DIR = CMakeFiles/ImGuiLib.dir
   OBJECT_FILE_DIR = CMakeFiles/ImGuiLib.dir/thirdparty/imgui
 
@@ -246,7 +262,7 @@ build CMakeFiles/ImGuiLib.dir/thirdparty/imgui/imgui_tables.cpp.o: CXX_COMPILER_
   DEFINES = -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
   DEP_FILE = CMakeFiles/ImGuiLib.dir/thirdparty/imgui/imgui_tables.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src
   OBJECT_DIR = CMakeFiles/ImGuiLib.dir
   OBJECT_FILE_DIR = CMakeFiles/ImGuiLib.dir/thirdparty/imgui
 
@@ -254,7 +270,7 @@ build CMakeFiles/ImGuiLib.dir/thirdparty/imgui/imgui_widgets.cpp.o: CXX_COMPILER
   DEFINES = -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
   DEP_FILE = CMakeFiles/ImGuiLib.dir/thirdparty/imgui/imgui_widgets.cpp.o.d
   FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/musicShow/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/colourroom/src
   OBJECT_DIR = CMakeFiles/ImGuiLib.dir
   OBJECT_FILE_DIR = CMakeFiles/ImGuiLib.dir/thirdparty/imgui
 
