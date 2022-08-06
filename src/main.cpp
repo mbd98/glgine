@@ -237,9 +237,11 @@ int main(int argc, char *argv[])
 	trainCamMarker->setTexture(loadTexture("assets/models/wall/floortile1_baseColor.png"));
 
 	// lights
-	glm::vec3 lightPosition(0.0f, 4.0f, 30.0f);
-	glm::vec3 lightFocus(0.0f, 0.0f, 0.0f);
-	glm::vec3 lightDirection = glm::normalize(lightFocus - lightPosition);
+	glm::vec3 lightDirection = glm::vec3(0.0f, 0.0f, 1.0f);
+	glm::vec3 light0Position;
+	glm::vec3 light0Focus;
+	glm::vec3 light1Position;
+	glm::vec3 light1Focus;
 	float lightInner = glm::radians(20.0f);
 	float lightOuter = glm::radians(50.0f);
 	float lightNear = 1.0f;
@@ -326,10 +328,19 @@ int main(int argc, char *argv[])
 			train0pos = glm::vec3(0.0f, 0.0f, trainSteps * 0.1f);
 			train1pos = glm::vec3(0.0f, 0.0f, -17.0f + trainSteps * 0.1f);
 			if (train0pos.z >= portal1->getPosition().z)
+			{
 				trainCamera.setPosition(train1pos + glm::vec3(-0.6372f, 3.28f, 0.0f));
+			}
 			else
+			{
 				trainCamera.setPosition(train0pos + glm::vec3(-0.6372f, 3.28f, 0.0f));
+			}
+			light0Position = train0pos + glm::vec3(0.0f, 3.36f, 3.3f);
+			light1Position = train1pos + glm::vec3(0.0f, 3.36f, 3.3f);
+			light0Focus = light0Position + lightDirection;
+			light1Focus = light1Position + lightDirection;
 			trainCamMarker->setPosition(trainCamera.getPosition());
+
 
 			std::vector<glm::mat4> trainTransforms = {
 					glm::translate(glm::mat4(1.0f), train0pos),
@@ -346,8 +357,10 @@ int main(int argc, char *argv[])
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
 		setUniformInt(shadowShader, SHADOW_MAP, 0);
-		setUniformMat4(shadowShader, LIGHT, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
-		                                    * glm::lookAt(lightPosition, lightFocus, glm::vec3(0.0f, 1.0f, 0.0f)));
+		setUniformMat4(shadowShader, LIGHT0, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
+		                                     * glm::lookAt(light0Position, light0Focus, glm::vec3(0.0f, 1.0f, 0.0f)));
+		setUniformMat4(shadowShader, LIGHT1, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
+		                                    * glm::lookAt(light1Position, light1Focus, glm::vec3(0.0f, 1.0f, 0.0f)));
 
 		if (doShadows)
 		{
@@ -400,20 +413,28 @@ int main(int argc, char *argv[])
 		setUniformInt(sceneShader, SHADOW_MAP, 0);
 		setUniformMat4(sceneShader, VIEW, currentCamera->getView());
 		setUniformMat4(sceneShader, PROJECTION, currentCamera->getProjection());
-		setUniformMat4(sceneShader, LIGHT, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
-		                                   * glm::lookAt(lightPosition, lightFocus, glm::vec3(0.0f, 1.0f, 0.0f)));
-		setUniformVec3(sceneShader, LIGHT_COLOR, glm::vec3(1.0f));
-		setUniformVec3(sceneShader, LIGHT_POSITION, lightPosition);
-		setUniformVec3(sceneShader, LIGHT_DIRECTION, lightDirection);
+		setUniformMat4(sceneShader, LIGHT0, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
+		                                    * glm::lookAt(light0Position, light0Focus, glm::vec3(0.0f, 1.0f, 0.0f)));
+		setUniformMat4(sceneShader, LIGHT1, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
+		                                    * glm::lookAt(light1Position, light1Focus, glm::vec3(0.0f, 1.0f, 0.0f)));
+		setUniformVec3(sceneShader, LIGHT0_AMBIENT, glm::vec3(0.1f));
+		setUniformVec3(sceneShader, LIGHT1_AMBIENT, glm::vec3(0.1f));
+		setUniformVec3(sceneShader, LIGHT0_SPECULAR, glm::vec3(0.3f));
+		setUniformVec3(sceneShader, LIGHT1_SPECULAR, glm::vec3(0.3f));
+		setUniformVec3(sceneShader, LIGHT0_DIFFUSE, glm::vec3(0.8f));
+		setUniformVec3(sceneShader, LIGHT1_DIFFUSE, glm::vec3(0.8f));
+		setUniformVec3(sceneShader, LIGHT0_POSITION, light0Position);
+		setUniformVec3(sceneShader, LIGHT0_DIRECTION, lightDirection);
+		setUniformVec3(sceneShader, LIGHT1_POSITION, light1Position);
+		setUniformVec3(sceneShader, LIGHT1_DIRECTION, lightDirection);
 		setUniformVec3(sceneShader, VIEW_POSITION, currentCamera->getPosition());
 		setUniformInt(sceneShader, DO_LIGHTING, doLights);
 		setUniformFloat(sceneShader, LIGHT_INNER, glm::cos(lightInner));
 		setUniformFloat(sceneShader, LIGHT_OUTER, glm::cos(lightOuter));
 		// TODO: Change this back to a reasonable value when testing complete
-		setUniformFloat(sceneShader, AMBIENT_STRENGTH, 1.0f);
+		setUniformFloat(sceneShader, AMBIENT_STRENGTH, 0.1f);
 		setUniformFloat(sceneShader, DIFFUSE_STRENGTH, 0.6f);
 		setUniformFloat(sceneShader, SPECULAR_STRENGTH, 0.3f);
-
 
 		track->render(sceneShader);
 		train->render(sceneShader);
