@@ -1,0 +1,19 @@
+# ninja log v5
+0	8	1659759533701203661	thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-mkdir	7128bd98a5cd8cc7
+0	8	1659759533701203661	/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-mkdir	7128bd98a5cd8cc7
+0	56	1659760021093158441	thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-download	d5c228dfb1a04173
+0	56	1659760021093158441	/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-download	d5c228dfb1a04173
+56	58	1659760021093158441	thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-patch	78a5b05f156e9c3e
+56	58	1659760021093158441	/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-patch	78a5b05f156e9c3e
+58	61	1659760021097158441	thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-configure	cea8d0546106fec3
+58	61	1659760021097158441	/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-configure	cea8d0546106fec3
+61	63	1659760021101158441	thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-build	8d3736f474c86972
+61	63	1659760021101158441	/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-build	8d3736f474c86972
+63	66	1659760021101158441	thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-install	e8511b0bb3af1dae
+63	66	1659760021101158441	/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-install	e8511b0bb3af1dae
+66	68	1659760021105158441	thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-test	568e763698c2845b
+66	68	1659760021105158441	/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-test	568e763698c2845b
+68	72	1659760021109158441	CMakeFiles/thirdparty-glew-populate-complete	a8f61499d48266fa
+68	72	1659760021109158441	thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-done	a8f61499d48266fa
+68	72	1659760021109158441	/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/CMakeFiles/thirdparty-glew-populate-complete	a8f61499d48266fa
+68	72	1659760021109158441	/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-done	a8f61499d48266fa

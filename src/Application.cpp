@@ -41,35 +41,36 @@ void Application::initializeCore() {
 
     ImGui::StyleColorsDark();
 
-    ImGui::GetIO().FontGlobalScale *= 2;
-    ImGui::GetStyle().ScaleAllSizes(5);
+    //ImGui::GetIO().FontGlobalScale *= 2;
+    //ImGui::GetStyle().ScaleAllSizes(5);
 
-renderer = new Renderer();
+    renderer = new Renderer();
 
 }
 
 void Application::run() {
-    ImGui::FileBrowser fileDialog;
-    fileDialog.SetTitle("title");
-    fileDialog.SetTypeFilters({ ".mp3", ".wav" });
-
-    begin = std::chrono::steady_clock::now();
-    initializeAudioSampler("../audio/more_ichika.wav");
-    playMusic("../audio/more_ichika.mp3");
+//    ImGui::FileBrowser fileDialog;
+//    fileDialog.SetTitle("title");
+//    fileDialog.SetTypeFilters({ ".mp3", ".wav" });
+//
+//    begin = std::chrono::steady_clock::now();
+//    initializeAudioSampler("../audio/more_ichika.wav");
+//    playMusic("../audio/more_ichika.mp3");
     do {
 
-//        ImGui_ImplOpenGL3_NewFrame();
-//        ImGui_ImplGlfw_NewFrame();
-//        ImGui::NewFrame();
-//
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
 //        ImGui::SetNextWindowPos({0,0});
-//        if(ImGui::Begin("dummy window"))
-//        {
+        if(ImGui::Begin("Window"))
+        {
+            ImGui::Text("Hello can you see me");
 //            // open file dialog when user clicks this button
 //            if(ImGui::Button("open file dialog"))
 //                fileDialog.Open();
-//        }
-//        ImGui::End();//
+        }
+        ImGui::End();//
 //        fileDialog.Display();
 //        if(fileDialog.HasSelected())
 //        {
@@ -78,13 +79,13 @@ void Application::run() {
 //            fileDialog.ClearSelected();
 //            fileDialog.Close();
 //        }
-//
-//        ImGui::Render();
-//        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        updateAudio();
-        glClear(GL_COLOR_BUFFER_BIT);
-        renderer->render();
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+//        updateAudio();
+//        glClear(GL_COLOR_BUFFER_BIT);
+//        renderer->render();
         // Swap buffers
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -97,60 +98,60 @@ void Application::run() {
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 }
-
-void Application::updateAudio() {
-    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
-
-    auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(now - begin).count();
-
-
-    if (delta >= 50) {
-
-        begin = std::chrono::steady_clock::now();
-
-        double buf[N];
-        for (int i = 0; i < N; i++) {
-            buf[i] = audioFile.samples[0][i + song_index];
-        }
-        song_index += (int)(audioFile.getSampleRate()) / 17.5;
-
-        AudioManager::setInputData(buf);
-
-        double freqs[N];
-        double mags[N];
-
-        AudioManager::executeFFT(freqs, mags);
-
-        std::vector<std::pair<float, float>> spectrum;
-        spectrum.reserve(N / 2);
-
-        for (int i = 0; i < N / 2; i++) {
-            spectrum.emplace_back(std::make_pair(freqs[i], mags[i]));
-        }
-        renderer->clearNotes();
-        for (const auto &note: spectrum) {
-            if(note.first < FREQUENCY_CUTOFF) {
-                auto *m = new MusicNote(note.first, note.second);
-                renderer->addNote(*m);
-            }
-        }
-    }
-}
-
-void Application::initializeAudioSampler(const std::string& path) {
-
-    audioFile.load(path);
-    audioFile.printSummary();
-    AudioManager::init(audioFile.getSampleRate(),N);
-    MusicNote::createLayout();
-}
-
-void Application::playMusic(const std::string& path) {
-
-    irrklang::ISoundEngine *SoundEngine = irrklang::createIrrKlangDevice();
-    SoundEngine->play2D( path.c_str(), true);
-
-}
-
+//
+//void Application::updateAudio() {
+//    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+//
+//    auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(now - begin).count();
+//
+//
+//    if (delta >= 50) {
+//
+//        begin = std::chrono::steady_clock::now();
+//
+//        double buf[N];
+//        for (int i = 0; i < N; i++) {
+//            buf[i] = audioFile.samples[0][i + song_index];
+//        }
+//        song_index += (int)(audioFile.getSampleRate()) / 17.5;
+//
+//        AudioManager::setInputData(buf);
+//
+//        double freqs[N];
+//        double mags[N];
+//
+//        AudioManager::executeFFT(freqs, mags);
+//
+//        std::vector<std::pair<float, float>> spectrum;
+//        spectrum.reserve(N / 2);
+//
+//        for (int i = 0; i < N / 2; i++) {
+//            spectrum.emplace_back(std::make_pair(freqs[i], mags[i]));
+//        }
+//        renderer->clearNotes();
+//        for (const auto &note: spectrum) {
+//            if(note.first < FREQUENCY_CUTOFF) {
+//                auto *m = new MusicNote(note.first, note.second);
+//                renderer->addNote(*m);
+//            }
+//        }
+//    }
+//}
+//
+//void Application::initializeAudioSampler(const std::string& path) {
+//
+//    audioFile.load(path);
+//    audioFile.printSummary();
+//    AudioManager::init(audioFile.getSampleRate(),N);
+//    MusicNote::createLayout();
+//}
+//
+//void Application::playMusic(const std::string& path) {
+//
+//    irrklang::ISoundEngine *SoundEngine = irrklang::createIrrKlangDevice();
+//    SoundEngine->play2D( path.c_str(), true);
+//
+//}
+//
 
 

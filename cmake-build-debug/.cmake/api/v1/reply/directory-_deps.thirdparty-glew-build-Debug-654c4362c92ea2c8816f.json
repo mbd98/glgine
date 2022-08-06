@@ -1,0 +1,181 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"cmake-build-debug/_deps/thirdparty-glew-src/build/cmake/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 156,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 185,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 205,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 217,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 224,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 226,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "lib",
+			"paths" : 
+			[
+				"lib/libGLEWd.so.2.1.0",
+				"lib/libGLEWd.so.2.1"
+			],
+			"targetId" : "glew::@e2d5e83be5a4815c6057",
+			"targetIndex" : 1,
+			"targetInstallNamelink" : "skip",
+			"type" : "target"
+		},
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "lib",
+			"paths" : 
+			[
+				"lib/libGLEWd.so"
+			],
+			"targetId" : "glew::@e2d5e83be5a4815c6057",
+			"targetIndex" : 1,
+			"targetInstallNamelink" : "only",
+			"type" : "target"
+		},
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "lib",
+			"paths" : 
+			[
+				"lib/libGLEWd.a"
+			],
+			"targetId" : "glew_s::@e2d5e83be5a4815c6057",
+			"targetIndex" : 2,
+			"type" : "target"
+		},
+		{
+			"backtrace" : 2,
+			"component" : "Unspecified",
+			"destination" : "bin",
+			"paths" : 
+			[
+				"bin/glewinfo"
+			],
+			"targetId" : "glewinfo::@e2d5e83be5a4815c6057",
+			"targetIndex" : 3,
+			"type" : "target"
+		},
+		{
+			"backtrace" : 2,
+			"component" : "Unspecified",
+			"destination" : "bin",
+			"paths" : 
+			[
+				"bin/visualinfo"
+			],
+			"targetId" : "visualinfo::@e2d5e83be5a4815c6057",
+			"targetIndex" : 7,
+			"type" : "target"
+		},
+		{
+			"backtrace" : 3,
+			"component" : "Unspecified",
+			"destination" : "lib/pkgconfig",
+			"paths" : 
+			[
+				"cmake-build-debug/_deps/thirdparty-glew-src/build/cmake/../../glew.pc"
+			],
+			"type" : "file"
+		},
+		{
+			"backtrace" : 4,
+			"component" : "Unspecified",
+			"destination" : "include/GL",
+			"paths" : 
+			[
+				"cmake-build-debug/_deps/thirdparty-glew-src/build/cmake/../../include/GL/wglew.h",
+				"cmake-build-debug/_deps/thirdparty-glew-src/build/cmake/../../include/GL/glew.h",
+				"cmake-build-debug/_deps/thirdparty-glew-src/build/cmake/../../include/GL/glxew.h"
+			],
+			"type" : "file"
+		},
+		{
+			"backtrace" : 5,
+			"component" : "Unspecified",
+			"destination" : "lib/cmake/glew",
+			"exportName" : "glew-targets",
+			"exportTargets" : 
+			[
+				{
+					"id" : "glew::@e2d5e83be5a4815c6057",
+					"index" : 1
+				},
+				{
+					"id" : "glew_s::@e2d5e83be5a4815c6057",
+					"index" : 2
+				}
+			],
+			"paths" : 
+			[
+				"_deps/thirdparty-glew-build/CMakeFiles/Export/lib/cmake/glew/glew-targets.cmake"
+			],
+			"type" : "export"
+		},
+		{
+			"backtrace" : 6,
+			"component" : "Unspecified",
+			"destination" : "lib/cmake/glew",
+			"paths" : 
+			[
+				"cmake-build-debug/_deps/thirdparty-glew-src/build/cmake/glew-config.cmake",
+				"cmake-build-debug/_deps/thirdparty-glew-src/build/cmake/CopyImportedTargetProperties.cmake"
+			],
+			"type" : "file"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "_deps/thirdparty-glew-build",
+		"source" : "cmake-build-debug/_deps/thirdparty-glew-src/build/cmake"
+	}
+}

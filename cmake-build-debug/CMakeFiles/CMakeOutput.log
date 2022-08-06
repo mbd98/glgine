@@ -417,3 +417,67 @@ Parsed CXX implicit link information from above output:
   implicit fwks: []
 
 
+Determining if the function XOpenDisplay exists in the /usr/lib/x86_64-linux-gnu/libX11.so;/usr/lib/x86_64-linux-gnu/libXext.so passed with the following output:
+Change Dir: /home/nikolas/Programming/COMP371_Project/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/nikolas/Desktop/clion-2021.3.3/bin/ninja/linux/ninja cmTC_aa8ae && [1/2] Building C object CMakeFiles/cmTC_aa8ae.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_aa8ae
+
+
+
+Determining if the function gethostbyname exists passed with the following output:
+Change Dir: /home/nikolas/Programming/COMP371_Project/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/nikolas/Desktop/clion-2021.3.3/bin/ninja/linux/ninja cmTC_f3d58 && [1/2] Building C object CMakeFiles/cmTC_f3d58.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_f3d58
+
+
+
+Determining if the function connect exists passed with the following output:
+Change Dir: /home/nikolas/Programming/COMP371_Project/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/nikolas/Desktop/clion-2021.3.3/bin/ninja/linux/ninja cmTC_1918c && [1/2] Building C object CMakeFiles/cmTC_1918c.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_1918c
+
+
+
+Determining if the function remove exists passed with the following output:
+Change Dir: /home/nikolas/Programming/COMP371_Project/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/nikolas/Desktop/clion-2021.3.3/bin/ninja/linux/ninja cmTC_24fc9 && [1/2] Building C object CMakeFiles/cmTC_24fc9.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_24fc9
+
+
+
+Determining if the function shmat exists passed with the following output:
+Change Dir: /home/nikolas/Programming/COMP371_Project/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/nikolas/Desktop/clion-2021.3.3/bin/ninja/linux/ninja cmTC_7ef5e && [1/2] Building C object CMakeFiles/cmTC_7ef5e.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_7ef5e
+
+
+
+Determining if the function IceConnectionNumber exists in the ICE passed with the following output:
+Change Dir: /home/nikolas/Programming/COMP371_Project/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/nikolas/Desktop/clion-2021.3.3/bin/ninja/linux/ninja cmTC_2abe6 && [1/2] Building C object CMakeFiles/cmTC_2abe6.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_2abe6
+
+
+
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/nikolas/Programming/COMP371_Project/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/nikolas/Desktop/clion-2021.3.3/bin/ninja/linux/ninja cmTC_ba74e && [1/2] Building C object CMakeFiles/cmTC_ba74e.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_ba74e
+
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/nikolas/Programming/COMP371_Project/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/nikolas/Desktop/clion-2021.3.3/bin/ninja/linux/ninja cmTC_b6fb7 && [1/2] Building C object CMakeFiles/cmTC_b6fb7.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_b6fb7
+
+
+

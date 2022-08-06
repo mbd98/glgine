@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/CMakeFiles/thirdparty-glew-populate"
+		},
+		{
+			"file" : "/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/CMakeFiles/thirdparty-glew-populate.rule"
+		},
+		{
+			"file" : "/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/CMakeFiles/thirdparty-glew-populate-complete.rule"
+		},
+		{
+			"file" : "/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-build.rule"
+		},
+		{
+			"file" : "/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-configure.rule"
+		},
+		{
+			"file" : "/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-download.rule"
+		},
+		{
+			"file" : "/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-install.rule"
+		},
+		{
+			"file" : "/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-mkdir.rule"
+		},
+		{
+			"file" : "/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-patch.rule"
+		},
+		{
+			"file" : "/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/thirdparty-glew-populate-test.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"thirdparty-glew-populate"
+		],
+		"name" : "thirdparty-glew-populate"
+	}
+}

@@ -1,0 +1,3 @@
+repository='external project URL'
+module='/home/nikolas/Programming/COMP371_Project/thirdparty/glew-2.1.0.zip'
+tag=''
