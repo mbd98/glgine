@@ -5,10 +5,10 @@
 #include "MusicApplication.h"
 
 void MusicApplication::initializeCore() {
+    window = glfwCreateWindow(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, "emaj7b9#11", NULL, NULL);
+    glfwMakeContextCurrent(window);
 
-    glfwSetWindowSize(window,VIEWPORT_WIDTH,VIEWPORT_HEIGHT);
-    glViewport(0,0,VIEWPORT_WIDTH,VIEWPORT_HEIGHT);
-
+    MenuManager::initImGui(window);
     MenuManager::createFileBrowser();
     renderer = new Renderer();
 }
@@ -23,6 +23,8 @@ void MusicApplication::run() {
 
         if(songInfo.has_started){
             begin = std::chrono::steady_clock::now();
+            start = std::chrono::steady_clock::now();
+
             initializeAudioSampler(songInfo.name);
             playMusic(songInfo.name);
 
@@ -50,6 +52,8 @@ void MusicApplication::run() {
 void MusicApplication::updateAudio() {
 
     std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+
+    songInfo.current_time = std::chrono::duration_cast<std::chrono::seconds>(now - start).count();
 
     auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(now - begin).count();
 
@@ -102,9 +106,9 @@ void MusicApplication::playMusic(const std::string& path) {
 
 }
 
-MusicApplication::MusicApplication(GLFWwindow* w) : window(w){
+MusicApplication::MusicApplication() {
 
 }
-//
+
 
 

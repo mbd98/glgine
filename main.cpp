@@ -4,7 +4,11 @@ GLFWwindow* window = nullptr;
 
 // List of functions that start each room
 void startMusicApplication(){
-    MusicApplication app(window);
+    glfwDestroyWindow(window);
+
+    MenuManager::endImGui();
+
+    MusicApplication app;
     app.initializeCore();
     app.run();
 }

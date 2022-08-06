@@ -56,8 +56,6 @@ public:
                 musicApplicationCallback();
             }
         }
-
-
         // Call at the end
         ImGui::End();
         ImGui::Render();
@@ -89,11 +87,13 @@ public:
         ImGui::End();//
 
         ImGui::SetNextWindowPos({600,0});
+        ImGui::SetNextWindowSize({1400,150});
         std::string infoTitle = "Now playing : " + songInfo.name;
         if(ImGui::Begin(infoTitle.c_str()))
         {
             if(songInfo.currently_playing) {
-                 ImGui::Text("%i Hz", songInfo.sample_rate);
+                 ImGui::Text("Sampling Rate : %i Hz - %i/%i (s)", songInfo.sample_rate,
+                             songInfo.current_time,songInfo.duration);
             }
         }
         ImGui::End();

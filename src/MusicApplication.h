@@ -13,7 +13,7 @@
 
 class MusicApplication {
 
-    std::chrono::steady_clock::time_point begin ;
+    std::chrono::steady_clock::time_point begin,start ;
 
     std::vector<float> frequencies;
     GLFWwindow* window;
@@ -28,7 +28,7 @@ class MusicApplication {
 
     public:
 
-    MusicApplication(GLFWwindow* window);
+    MusicApplication();
     void initializeCore();
     void initializeAudioSampler(const std::string&);
     void playMusic(const std::string&);
