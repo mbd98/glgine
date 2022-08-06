@@ -149,6 +149,7 @@ void teleportingTrain()
 	{
 		std::cerr << "Failed to initialize window" << std::endl;
 	}
+	glfwHideWindow(oldWindow);
 	glfwMakeContextCurrent(window);
 
 	/*
@@ -545,4 +546,5 @@ void teleportingTrain()
 	//return EXIT_SUCCESS;
 	glfwDestroyWindow(window);
 	glfwMakeContextCurrent(oldWindow);
+	glfwShowWindow(oldWindow);
 }
