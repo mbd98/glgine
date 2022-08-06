@@ -18,13 +18,12 @@ set(CMAKE_CXX_STANDARD 20)
 add_compile_definitions(GLEW_STATIC=1 GLM_FORCE_RADIANS=1)
 
 find_package(GLEW REQUIRED)
-include_directories(src irrKlang-64bit-1.6.0/include imgui)
+include_directories(src thirdparty/irrKlang/include thirdparty/imgui)
 
-aux_source_directory(imgui IMGUI)
-add_library(ImGuiLib ${IMGUI})
+aux_source_directory(thirdparty/imgui imgui)
+add_library(ImGuiLib ${imgui})
 
 aux_source_directory(src SOURCE)
-link_directories(irrKlang-64bit-1.6.0/bin/linux-gcc-64)
+link_directories(thirdparty/irrKlang/bin/linux-gcc-64)
 add_executable(project main.cpp ${SOURCE})
-#target_link_libraries(project ImGuiLib glfw OpenGL::GL GLEW::GLEW fftw3 libIrrKlang.so ${CMAKE_DL_LIBS})
-target_link_libraries(project ImGuiLib glfw OpenGL::GL glew_s glfw glm ${CMAKE_DL_LIBS})
+target_link_libraries(project ImGuiLib OpenGL::GL glew_s glfw glm fftw3 libIrrKlang.so ${CMAKE_DL_LIBS})

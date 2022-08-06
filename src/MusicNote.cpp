@@ -9,7 +9,6 @@ void MusicNote::draw() {
 }
 
 MusicNote::MusicNote(float freq, float ampl) : m_Frequency(freq), m_Amplitude(ampl){
-//    m_Color =
 }
 void MusicNote::createLayout(){
 
@@ -56,7 +55,8 @@ void MusicNote::setUniforms(GLuint shader) {
         m_Color = {comp,1.0-comp,0.0};
     }
     else{
-        m_Color = {1.0,0.0,0.0};
+        float comp = map(2.f * FREQUENCY_CUTOFF/3.f,FREQUENCY_CUTOFF,0,1.0,m_Frequency);
+        m_Color = {1.0,0,comp};
     }
     glUniform3f(glGetUniformLocation(shader, "u_Color"), m_Color.x, m_Color.y, m_Color.z);
 
