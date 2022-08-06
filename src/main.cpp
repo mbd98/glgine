@@ -7,6 +7,7 @@
 #include <complexrenderable.hpp>
 #include <shaders.hpp>
 #include <model.hpp>
+#include <renderutils.hpp>
 
 const GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
@@ -19,6 +20,7 @@ static double lastTime;
 static double dt;
 static bool doShadows = true;
 static bool doLights = true;
+static bool doTrainLoop = true;
 
 static void key(GLFWwindow*, int key, int, int action, int mods)
 {
@@ -73,6 +75,10 @@ static void key(GLFWwindow*, int key, int, int action, int mods)
 		freeCamera.setPitch(0.0f);
 		currentCamera = &freeCamera;
 	}
+	if (key == GLFW_KEY_P && action == GLFW_PRESS)
+	{
+		doTrainLoop = !doTrainLoop;
+	}
 }
 
 static void framebuf(GLFWwindow*, int width, int height)
@@ -101,6 +107,7 @@ static void cursor(GLFWwindow*, double x, double y)
 
 int main(int argc, char *argv[])
 {
+	// init
 	int width = 1024, height = 768;
 	if (const char *ws = std::getenv("WINDOW_WIDTH"))
 		width = std::stoi(ws);
@@ -141,9 +148,16 @@ int main(int argc, char *argv[])
 	glfwSetScrollCallback(window, handleGlfwScroll);
 	glfwSetFramebufferSizeCallback(window, handleGlfwFramebufferSize);
 
+	key_handlers.push_back(key);
+	fb_size_handlers.push_back(framebuf);
+	mouse_button_handlers.push_back(mouseclick);
+	glfwGetCursorPos(window, &cursorLastX, &cursorLastY);
+	cursor_pos_handlers.push_back(cursor);
+
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	if (glfwRawMouseMotionSupported())
 		glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+
 
 	glfwSwapInterval(1);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -151,28 +165,24 @@ int main(int argc, char *argv[])
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	// camera
 	freeCamera.setAspectRatio((float)width / (float)height);
 	freeCamera.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
-	key_handlers.push_back(key);
-	fb_size_handlers.push_back(framebuf);
-	mouse_button_handlers.push_back(mouseclick);
-	glfwGetCursorPos(window, &cursorLastX, &cursorLastY);
-	cursor_pos_handlers.push_back(cursor);
 
-	GLuint depthMap, depthMapFbo;
-
-	Reusable *train, *track, *tile;
-	Model *preTrain, *preTrack, *preTile;
+	// renderable objects
+	Reusable *train, *track;
+	Model *preTrain, *preTrack;
+	ComplexRenderable *wall0, *wall1;
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
 	GLuint shadowShader = loadShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
 
 	preTrain = new Model("train");
 	preTrain->setScales(glm::vec3(1.1f));
 	preTrain->setAngles(glm::vec3(0.0f, glm::radians(90.0f), 0.0f));
-	preTrain->setPosition(glm::vec3(0.0f, 2.1f, 0.0f));
+	preTrain->setPosition(glm::vec3(0.0f, 2.3f, 0.0f));
 	train = new Reusable(preTrain);
-	//train->insertTransform(glm::mat4(1.0f));
-	//train->insertTransform(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -20.0f)));
+	uint trainSteps = 0;
 
 	preTrack = new Model("track");
 	preTrack->setAngles(glm::vec3(0.0f, glm::radians(90.0f), 0.0f));
@@ -183,14 +193,27 @@ int main(int argc, char *argv[])
 		track->insertTransform(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, i * -6.4f)));
 	}
 
-	preTile = new Model("wall");
-	preTile->setAngles(glm::vec3(glm::radians(90.0f), glm::radians(180.0f), 0.0f));
-	preTile->setScales(glm::vec3(3.0f));
-	preTile->setPosition(glm::vec3(0.0f, 2.0f, 0.0f));
-	tile = new Reusable(preTile);
-	tile->insertTransform(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 12.8f)));
-	tile->insertTransform(glm::translate(glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f)), glm::vec3(0.0f, 0.0f, 12.8f)));
+	/*wall0 = new Model("wall");
+	wall0->setAngles(glm::vec3(glm::radians(90.0f), 0.0f, 0.0f));
+	wall0->setScales(glm::vec3(3.0f));
+	wall0->setPosition(glm::vec3(0.0f, 2.0f, 12.8f));
+	wall1 = new Model("wall");
+	wall1->setAngles(glm::vec3(glm::radians(90.0f), glm::radians(180.0f), 0.0f));
+	wall1->setScales(glm::vec3(3.0f));
+	wall0->setPosition(glm::vec3(0.0f, 2.0f, -12.8f));
+	 */
+	//wall0 = new SimpleComplexRenderable(createCuboid(glm::vec3(-3.0f, -1.0f, -5.0f), glm::vec3(6.0f, 6.0f, 0.01f)));
+	//wall1 = new SimpleComplexRenderable(createCuboid(glm::vec3(-3.0f, -1.0f, 5.0f), glm::vec3(6.0f, 6.0f, 0.01f)));
+	wall0 = new SimpleComplexRenderable(createCuboid(glm::vec3(-0.5f), glm::vec3(1.0f)));
+	wall0->setScales(glm::vec3(6.0f, 6.0f, 0.01f));
+	wall0->setPosition(glm::vec3(0.0f, 2.0f, -8.0f));
+	wall1 = new SimpleComplexRenderable(createCuboid(glm::vec3(-0.5f), glm::vec3(1.0f)));
+	wall1->setScales(glm::vec3(6.0f, 6.0f, 0.01f));
+	wall1->setPosition(glm::vec3(0.0f, 2.0f, 8.0f));
+	wall1->setAngles(glm::vec3(0.0f, glm::radians(180.0f), 0.0f));
+	//wall1->setAngles(glm::vec3(0.0f, 0.0f, glm::radians(90.0f)));
 
+	// lights
 	glm::vec3 lightPosition(0.0f, 4.0f, 30.0f);
 	glm::vec3 lightFocus(0.0f, 0.0f, 0.0f);
 	glm::vec3 lightDirection = glm::normalize(lightFocus - lightPosition);
@@ -199,6 +222,8 @@ int main(int argc, char *argv[])
 	float lightNear = 1.0f;
 	float lightFar = 180.0f;
 
+	// shadow framebuffer
+	GLuint depthMap, depthMapFbo;
 	glGenFramebuffers(1, &depthMapFbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo);
 	glGenTextures(1, &depthMap);
@@ -213,12 +238,58 @@ int main(int argc, char *argv[])
 	glReadBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	// portal framebuffers
+	GLuint portal0fbo, portal0tex, portal0depth, portal1fbo, portal1tex, portal1depth;
+	glGenFramebuffers(1, &portal0fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, portal0fbo);
+	glGenTextures(1, &portal0tex);
+	glBindTexture(GL_TEXTURE_2D, portal0tex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1024, 1024, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glGenRenderbuffers(1, &portal0depth);
+	glBindRenderbuffer(GL_RENDERBUFFER, portal0depth);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 1024);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, portal0depth);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, portal0tex, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	glGenFramebuffers(1, &portal1fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, portal1fbo);
+	glGenTextures(1, &portal1tex);
+	glBindTexture(GL_TEXTURE_2D, portal1tex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1024, 1024, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glGenRenderbuffers(1, &portal1depth);
+	glBindRenderbuffer(GL_RENDERBUFFER, portal1depth);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 1024);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, portal1depth);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, portal1tex, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	// portal cameras
+	Camera portal0cam;
+	portal0cam.setPosition(wall0->getPosition());
+	portal0cam.setFar(10.0f);
+	portal0cam.setAspectRatio(1.0f);
+	portal0cam.setFov(glm::radians(45.0f));
+
+	Camera portal1cam;
+	portal1cam.setPosition(wall1->getPosition());
+	portal1cam.setFar(10.0f);
+	portal1cam.setAspectRatio(1.0f);
+	portal1cam.setFov(glm::radians(45.0f));
+	portal1cam.setYaw(glm::radians(90.0f));
+
+	// time
 	lastTime = glfwGetTime();
 	currentCamera = &freeCamera;
 
-	uint trainSteps = 0;
-
 	std::cerr << "Done loading, begin render loop" << std::endl;
+	// loop
 	while (!glfwWindowShouldClose(window))
 	{
 		int scrWidth, scrHeight;
@@ -226,11 +297,17 @@ int main(int argc, char *argv[])
 		dt = glfwGetTime() - lastTime;
 		lastTime += dt;
 
-		std::vector<glm::mat4> trainTransforms = {glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, trainSteps * 0.1f)), glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -25.0f + trainSteps * 0.1f))};
-		train->setTransforms(trainTransforms);
+		// train loop
+		if (doTrainLoop)
+		{
+			std::vector<glm::mat4> trainTransforms = {
+					glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, trainSteps * 0.1f)),
+					glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -17.0f + trainSteps * 0.1f))};
+			train->setTransforms(trainTransforms);
+			trainSteps = (trainSteps + 1) % 170;
+		}
 
-		trainSteps = (trainSteps + 1) % 250;
-
+		// draw depth buffer
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo);
 		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 		glClear(GL_DEPTH_BUFFER_BIT);
@@ -247,11 +324,37 @@ int main(int argc, char *argv[])
 			train->render(shadowShader);
 		}
 
+		// draw portal projection
+		glUseProgram(sceneShader);
+		setUniformMat4(sceneShader, PROJECTION, portal0cam.getProjection());
+		setUniformMat4(sceneShader, VIEW, portal0cam.getView());
+		setUniformVec3(sceneShader, VIEW_POSITION, wall0->getPosition());
+		glBindFramebuffer(GL_FRAMEBUFFER, portal0fbo);
+		//glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
+		track->render(sceneShader);
+		train->render(sceneShader);
+		wall0->render(sceneShader);
+		wall0->setTexture(portal1tex);
+
+		setUniformMat4(sceneShader, PROJECTION, portal1cam.getProjection());
+		setUniformMat4(sceneShader, VIEW, portal1cam.getView());
+		setUniformVec3(sceneShader, VIEW_POSITION, wall1->getPosition());
+		glBindFramebuffer(GL_FRAMEBUFFER, portal1fbo);
+		//glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
+		track->render(sceneShader);
+		train->render(sceneShader);
+		wall1->render(sceneShader);
+		wall1->setTexture(portal0tex);
+
+		// draw scene
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glViewport(0, 0, scrWidth, scrHeight);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glUseProgram(sceneShader);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
 		setUniformInt(sceneShader, SHADOW_MAP, 0);
@@ -271,16 +374,20 @@ int main(int argc, char *argv[])
 		setUniformFloat(sceneShader, DIFFUSE_STRENGTH, 0.6f);
 		setUniformFloat(sceneShader, SPECULAR_STRENGTH, 0.3f);
 
+
 		track->render(sceneShader);
 		train->render(sceneShader);
-		tile->render(sceneShader);
+		wall0->render(sceneShader);
+		wall1->render(sceneShader);
 
+		// push pixels
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 	delete train;
 	delete track;
-	delete tile;
+	delete wall0;
+	delete wall1;
 	glfwTerminate();
 	return EXIT_SUCCESS;
 }
