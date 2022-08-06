@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
 
 	// renderable objects
 	Reusable *train, *track;
-	Model *preTrain, *preTrack, *floor;
+	Model *preTrain, *preTrack, *floor, *backWall;
 	ComplexRenderable *portal0, *portal1, *trainCamMarker;
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
 	GLuint shadowShader = loadShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
@@ -213,6 +213,11 @@ int main(int argc, char *argv[])
 
 	floor = new Model("wall");
 	floor->setScales(glm::vec3(3.0f, 1.0f, 10.0f));
+
+	backWall = new Model("wall");
+	backWall->setScales(glm::vec3(3.0f, 1.0f, 10.0f));
+	backWall->setAngles(glm::vec3(0.0f, 0.0f, glm::radians(90.0f)));
+	backWall->setPosition(glm::vec3(3.0f, 0.0f, 0.0f));
 
 	portal0 = new SimpleComplexRenderable(createCuboid(glm::vec3(-0.5f), glm::vec3(1.0f)));
 	portal0->setScales(glm::vec3(6.0f, 6.0f, 0.01f));
@@ -344,6 +349,7 @@ int main(int argc, char *argv[])
 			track->render(shadowShader);
 			train->render(shadowShader);
 			floor->render(shadowShader);
+			backWall->render(shadowShader);
 		}
 
 		// draw portal projection
@@ -360,6 +366,7 @@ int main(int argc, char *argv[])
 		portal0->render(sceneShader);
 		portal0->setTexture(portal1tex);
 		floor->render(sceneShader);
+		backWall->render(sceneShader);
 
 		setUniformMat4(sceneShader, PROJECTION, portal1cam.getProjection());
 		setUniformMat4(sceneShader, VIEW, portal1cam.getView());
@@ -373,6 +380,7 @@ int main(int argc, char *argv[])
 		portal1->render(sceneShader);
 		portal1->setTexture(portal0tex);
 		floor->render(sceneShader);
+		backWall->render(sceneShader);
 
 		// draw scene
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -405,6 +413,7 @@ int main(int argc, char *argv[])
 		portal1->render(sceneShader);
 		trainCamMarker->render(sceneShader);
 		floor->render(sceneShader);
+		backWall->render(sceneShader);
 
 		// push pixels
 		glfwSwapBuffers(window);
