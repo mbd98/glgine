@@ -111,14 +111,6 @@ build CMakeFiles/project.dir/main.cpp.o: CXX_COMPILER__project_Debug /home/nikol
   OBJECT_DIR = CMakeFiles/project.dir
   OBJECT_FILE_DIR = CMakeFiles/project.dir
 
-build CMakeFiles/project.dir/src/Application.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/Application.cpp || cmake_object_order_depends_target_project
-  DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
-  DEP_FILE = CMakeFiles/project.dir/src/Application.cpp.o.d
-  FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
-  OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
-
 build CMakeFiles/project.dir/src/AudioFile.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/AudioFile.cpp || cmake_object_order_depends_target_project
   DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
   DEP_FILE = CMakeFiles/project.dir/src/AudioFile.cpp.o.d
@@ -146,6 +138,14 @@ build CMakeFiles/project.dir/src/MenuManager.cpp.o: CXX_COMPILER__project_Debug 
 build CMakeFiles/project.dir/src/Mesh.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/Mesh.cpp || cmake_object_order_depends_target_project
   DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
   DEP_FILE = CMakeFiles/project.dir/src/Mesh.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
+  OBJECT_DIR = CMakeFiles/project.dir
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+
+build CMakeFiles/project.dir/src/MusicApplication.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/MusicApplication.cpp || cmake_object_order_depends_target_project
+  DEFINES = -DGLEW_STATIC -DGLEW_STATIC=1 -DGLM_FORCE_RADIANS=1
+  DEP_FILE = CMakeFiles/project.dir/src/MusicApplication.cpp.o.d
   FLAGS = -g -std=gnu++2a
   INCLUDES = -I/home/nikolas/Programming/COMP371_Project/src -I/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/include -I/home/nikolas/Programming/COMP371_Project/thirdparty/imgui -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glew-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glfw-src/include -I/home/nikolas/Programming/COMP371_Project/cmake-build-debug/_deps/thirdparty-glm-src/glm/..
   OBJECT_DIR = CMakeFiles/project.dir
@@ -183,7 +183,7 @@ build CMakeFiles/project.dir/src/Shader.cpp.o: CXX_COMPILER__project_Debug /home
 #############################################
 # Link the executable project
 
-build project: CXX_EXECUTABLE_LINKER__project_Debug CMakeFiles/project.dir/main.cpp.o CMakeFiles/project.dir/src/Application.cpp.o CMakeFiles/project.dir/src/AudioFile.cpp.o CMakeFiles/project.dir/src/AudioManager.cpp.o CMakeFiles/project.dir/src/MenuManager.cpp.o CMakeFiles/project.dir/src/Mesh.cpp.o CMakeFiles/project.dir/src/MusicNote.cpp.o CMakeFiles/project.dir/src/Renderer.cpp.o CMakeFiles/project.dir/src/Shader.cpp.o | libImGuiLib.a lib/libGLEWd.a _deps/thirdparty-glfw-build/src/libglfw3.a /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so /usr/lib/x86_64-linux-gnu/librt.so /usr/lib/x86_64-linux-gnu/libm.so /usr/lib/x86_64-linux-gnu/libX11.so || _deps/thirdparty-glfw-build/src/libglfw3.a lib/libGLEWd.a libImGuiLib.a
+build project: CXX_EXECUTABLE_LINKER__project_Debug CMakeFiles/project.dir/main.cpp.o CMakeFiles/project.dir/src/AudioFile.cpp.o CMakeFiles/project.dir/src/AudioManager.cpp.o CMakeFiles/project.dir/src/MenuManager.cpp.o CMakeFiles/project.dir/src/Mesh.cpp.o CMakeFiles/project.dir/src/MusicApplication.cpp.o CMakeFiles/project.dir/src/MusicNote.cpp.o CMakeFiles/project.dir/src/Renderer.cpp.o CMakeFiles/project.dir/src/Shader.cpp.o | libImGuiLib.a lib/libGLEWd.a _deps/thirdparty-glfw-build/src/libglfw3.a /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so /usr/lib/x86_64-linux-gnu/librt.so /usr/lib/x86_64-linux-gnu/libm.so /usr/lib/x86_64-linux-gnu/libX11.so || _deps/thirdparty-glfw-build/src/libglfw3.a lib/libGLEWd.a libImGuiLib.a
   FLAGS = -g
   LINK_LIBRARIES = -Wl,-rpath,/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/bin/linux-gcc-64  libImGuiLib.a  lib/libGLEWd.a  _deps/thirdparty-glfw-build/src/libglfw3.a  -lfftw3  -lIrrKlang  -ldl  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libOpenGL.so  /usr/lib/x86_64-linux-gnu/libOpenGL.so  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libGLU.so  /usr/lib/x86_64-linux-gnu/librt.so  -lm  /usr/lib/x86_64-linux-gnu/libX11.so  -lpthread  -ldl
   LINK_PATH = -L/home/nikolas/Programming/COMP371_Project/thirdparty/irrKlang/bin/linux-gcc-64
