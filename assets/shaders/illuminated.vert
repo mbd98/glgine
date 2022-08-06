@@ -9,12 +9,13 @@ uniform mat4 view;
 uniform mat4 projection;
 uniform mat4 light0;
 uniform mat4 light1;
+uniform mat4 light2;
 
 out VertexData
 {
 	vec3 fragNormal;
 	vec3 fragPosition;
-	vec4 fragLightPositions[2];
+	vec4 fragLightPositions[3];
 	vec2 texCoord;
 } vertexOut;
 
@@ -25,5 +26,6 @@ void main()
 	vertexOut.fragPosition = vec3(model * vec4(position, 1.0));
 	vertexOut.fragLightPositions[0] = light0 * vec4(vertexOut.fragPosition, 1.0);
 	vertexOut.fragLightPositions[1] = light1 * vec4(vertexOut.fragPosition, 1.0);
+	vertexOut.fragLightPositions[2] = light2 * vec4(vertexOut.fragPosition, 1.0);
 	vertexOut.texCoord = textureCoord;
 }

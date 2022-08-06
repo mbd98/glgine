@@ -16,15 +16,15 @@ in VertexData
 {
 	vec3 fragNormal;
 	vec3 fragPosition;
-	vec4 fragLightPositions[2];
+	vec4 fragLightPositions[3];
 	vec2 texCoord;
 } fragIn;
 
 uniform sampler2D texture_diffuse0;
 uniform sampler2D texture_specular0;
-uniform sampler2D shadowMap;
+uniform sampler2D shadowMap[3];
 uniform vec3 lightColor;
-uniform PointLight lights[2];
+uniform PointLight lights[3];
 uniform float ambientStrength = 0.1;
 uniform float diffuseStrength = 0.6;
 uniform float specularStrength = 0.3;
@@ -40,7 +40,7 @@ float calculateShadow(vec4 fragLightPos, float bias)
 {
 	vec3 proj = fragLightPos.xyz / fragLightPos.w;
 	proj = proj * 0.5 + 0.5;
-	float closestDepth = texture(shadowMap, proj.xy).r;
+	float closestDepth = min(min(texture(shadowMap[0], proj.xy).r, texture(shadowMap[1], proj.xy).r), texture(shadowMap[2], proj.xy).r);
 	float currentDepth = proj.z;
 	return ((currentDepth - bias) < closestDepth) ? 1.0 : 0.0;
 }
@@ -94,7 +94,10 @@ void main()
 	vec3 norm = normalize(fragIn.fragNormal);
 	vec3 viewDir = normalize(viewPosition - fragIn.fragPosition);
 	vec3 result;
-	for (int i = 0; i < 2; i++)
-		result += calcPointLight(lights[i], norm, fragIn.fragPosition, fragIn.fragLightPositions[i], viewDir);
+	if (doLighting)
+		for (int i = 0; i < 3; i++)
+			result += calcPointLight(lights[i], norm, fragIn.fragPosition, fragIn.fragLightPositions[i], viewDir);
+	else
+		result = vec3(texture(texture_diffuse0, fragIn.texCoord));
 	FragColor = vec4(result, 1.0);
 }

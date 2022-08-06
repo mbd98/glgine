@@ -91,9 +91,9 @@ static void key(GLFWwindow*, int key, int, int action, int mods)
 	if (key == GLFW_KEY_Q && action == GLFW_PRESS)
 	{
 		std::cerr << "Current camera at (" <<
-		currentCamera->getPosition().x << "," <<
-		currentCamera->getPosition().y << "," <<
-		currentCamera->getPosition().z << ")" << std::endl;
+		          currentCamera->getPosition().x << "," <<
+		          currentCamera->getPosition().y << "," <<
+		          currentCamera->getPosition().z << ")" << std::endl;
 	}
 }
 
@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
 
 	// renderable objects
 	Reusable *train, *track;
-	Model *preTrain, *preTrack, *floor, *backWall, *ceiling;
+	Model *preTrain, *preTrack, *floor, *backWall, *ceiling, *frontWall;
 	ComplexRenderable *portal0, *portal1, *trainCamMarker;
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
 	GLuint shadowShader = loadShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
@@ -200,6 +200,7 @@ int main(int argc, char *argv[])
 	train = new Reusable(preTrain);
 	glm::vec3 train0pos;
 	glm::vec3 train1pos;
+	glm::vec3 train2pos;
 	uint trainSteps = 0;
 
 	preTrack = new Model("track");
@@ -224,6 +225,11 @@ int main(int argc, char *argv[])
 	backWall->setAngles(glm::vec3(0.0f, 0.0f, glm::radians(90.0f)));
 	backWall->setPosition(glm::vec3(3.0f, 0.0f, 0.0f));
 
+	frontWall = new Model("wall");
+	frontWall->setScales(glm::vec3(3.0f, 1.0f, 10.0f));
+	frontWall->setAngles(glm::vec3(0.0f, 0.0f, glm::radians(-90.0f)));
+	frontWall->setPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
+
 	portal0 = new SimpleComplexRenderable(createCuboid(glm::vec3(-0.5f), glm::vec3(1.0f)));
 	portal0->setScales(glm::vec3(6.0f, 6.0f, 0.01f));
 	portal0->setPosition(glm::vec3(0.0f, 2.0f, -8.0f));
@@ -242,23 +248,50 @@ int main(int argc, char *argv[])
 	glm::vec3 light0Focus;
 	glm::vec3 light1Position;
 	glm::vec3 light1Focus;
-	float lightInner = glm::radians(20.0f);
-	float lightOuter = glm::radians(50.0f);
+	glm::vec3 light2Position;
+	glm::vec3 light2Focus;
+	float lightInner = glm::radians(30.0f);
+	float lightOuter = glm::radians(45.0f);
 	float lightNear = 1.0f;
 	float lightFar = 180.0f;
 
 	// shadow framebuffer
-	GLuint depthMap, depthMapFbo;
-	glGenFramebuffers(1, &depthMapFbo);
-	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo);
-	glGenTextures(1, &depthMap);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
+	GLuint depthMap[3], depthMapFbo[3];
+	glGenFramebuffers(3, depthMapFbo);
+	glGenTextures(3, depthMap);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo[0]);
+	glBindTexture(GL_TEXTURE_2D, depthMap[0]);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap[0], 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo[1]);
+	glBindTexture(GL_TEXTURE_2D, depthMap[1]);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap[1], 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo[2]);
+	glBindTexture(GL_TEXTURE_2D, depthMap[2]);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap[2], 0);
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -325,8 +358,9 @@ int main(int argc, char *argv[])
 		// train loop
 		if (doTrainLoop)
 		{
-			train0pos = glm::vec3(0.0f, 0.0f, trainSteps * 0.1f);
+			train0pos = glm::vec3(0.0f, 0.0f, 0.0f + trainSteps * 0.1f);
 			train1pos = glm::vec3(0.0f, 0.0f, -17.0f + trainSteps * 0.1f);
+			train2pos = glm::vec3(0.0f, 0.0f, -34.0f + trainSteps * 0.1f);
 			if (train0pos.z >= portal1->getPosition().z)
 			{
 				trainCamera.setPosition(train1pos + glm::vec3(-0.6372f, 3.28f, 0.0f));
@@ -335,41 +369,71 @@ int main(int argc, char *argv[])
 			{
 				trainCamera.setPosition(train0pos + glm::vec3(-0.6372f, 3.28f, 0.0f));
 			}
-			light0Position = train0pos + glm::vec3(0.0f, 3.36f, 3.3f);
-			light1Position = train1pos + glm::vec3(0.0f, 3.36f, 3.3f);
+			light0Position = train0pos + glm::vec3(0.0f, 3.36f, 3.4f);
+			light1Position = train1pos + glm::vec3(0.0f, 3.36f, 3.4f);
+			light2Position = train2pos + glm::vec3(0.0f, 3.36f, 3.4f);
 			light0Focus = light0Position + lightDirection;
 			light1Focus = light1Position + lightDirection;
+			light2Focus = light2Position + lightDirection;
 			trainCamMarker->setPosition(trainCamera.getPosition());
 
 
 			std::vector<glm::mat4> trainTransforms = {
 					glm::translate(glm::mat4(1.0f), train0pos),
-					glm::translate(glm::mat4(1.0f), train1pos)};
+					glm::translate(glm::mat4(1.0f), train1pos),
+					glm::translate(glm::mat4(1.0f), train2pos),};
 			train->setTransforms(trainTransforms);
 			trainSteps = (trainSteps + 1) % 170;
 		}
 
 		// draw depth buffer
-		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo);
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo[0]);
 		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glUseProgram(shadowShader);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, depthMap);
+		glBindTexture(GL_TEXTURE_2D, depthMap[0]);
 		setUniformInt(shadowShader, SHADOW_MAP, 0);
-		setUniformMat4(shadowShader, LIGHT0, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
-		                                     * glm::lookAt(light0Position, light0Focus, glm::vec3(0.0f, 1.0f, 0.0f)));
-		setUniformMat4(shadowShader, LIGHT1, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
-		                                    * glm::lookAt(light1Position, light1Focus, glm::vec3(0.0f, 1.0f, 0.0f)));
+		setUniformMat4(shadowShader, "light", glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
+		                                      * glm::lookAt(light0Position, light0Focus, glm::vec3(0.0f, 1.0f, 0.0f)));
+		track->render(shadowShader);
+		train->render(shadowShader);
+		floor->render(shadowShader);
+		ceiling->render(shadowShader);
+		backWall->render(shadowShader);
+		frontWall->render(shadowShader);
 
-		if (doShadows)
-		{
-			track->render(shadowShader);
-			train->render(shadowShader);
-			floor->render(shadowShader);
-			ceiling->render(shadowShader);
-			backWall->render(shadowShader);
-		}
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo[1]);
+		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glUseProgram(shadowShader);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, depthMap[1]);
+		setUniformInt(shadowShader, SHADOW_MAP, 1);
+		setUniformMat4(shadowShader, "light", glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
+		                                      * glm::lookAt(light1Position, light1Focus, glm::vec3(0.0f, 1.0f, 0.0f)));
+		track->render(shadowShader);
+		train->render(shadowShader);
+		floor->render(shadowShader);
+		ceiling->render(shadowShader);
+		backWall->render(shadowShader);
+		frontWall->render(shadowShader);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFbo[2]);
+		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glUseProgram(shadowShader);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, depthMap[2]);
+		setUniformInt(shadowShader, SHADOW_MAP, 2);
+		setUniformMat4(shadowShader, "light", glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
+		                                      * glm::lookAt(light2Position, light2Focus, glm::vec3(0.0f, 1.0f, 0.0f)));
+		track->render(shadowShader);
+		train->render(shadowShader);
+		floor->render(shadowShader);
+		ceiling->render(shadowShader);
+		backWall->render(shadowShader);
+		frontWall->render(shadowShader);
 
 		// draw portal projection
 		glUseProgram(sceneShader);
@@ -387,6 +451,7 @@ int main(int argc, char *argv[])
 		floor->render(sceneShader);
 		ceiling->render(sceneShader);
 		backWall->render(sceneShader);
+		frontWall->render(sceneShader);
 
 		setUniformMat4(sceneShader, PROJECTION, portal1cam.getProjection());
 		setUniformMat4(sceneShader, VIEW, portal1cam.getView());
@@ -402,6 +467,7 @@ int main(int argc, char *argv[])
 		floor->render(sceneShader);
 		ceiling->render(sceneShader);
 		backWall->render(sceneShader);
+		frontWall->render(sceneShader);
 
 		// draw scene
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -409,24 +475,37 @@ int main(int argc, char *argv[])
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, depthMap);
-		setUniformInt(sceneShader, SHADOW_MAP, 0);
+		glBindTexture(GL_TEXTURE_2D, depthMap[0]);
+		setUniformInt(sceneShader, (SHADOW_MAP + std::string("[0]")).c_str(), 0);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, depthMap[1]);
+		setUniformInt(sceneShader, (SHADOW_MAP + std::string("[1]")).c_str(), 1);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, depthMap[2]);
+		setUniformInt(sceneShader, (SHADOW_MAP + std::string("[2]")).c_str(), 2);
 		setUniformMat4(sceneShader, VIEW, currentCamera->getView());
 		setUniformMat4(sceneShader, PROJECTION, currentCamera->getProjection());
 		setUniformMat4(sceneShader, LIGHT0, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
 		                                    * glm::lookAt(light0Position, light0Focus, glm::vec3(0.0f, 1.0f, 0.0f)));
 		setUniformMat4(sceneShader, LIGHT1, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
 		                                    * glm::lookAt(light1Position, light1Focus, glm::vec3(0.0f, 1.0f, 0.0f)));
-		setUniformVec3(sceneShader, LIGHT0_AMBIENT, glm::vec3(0.1f));
-		setUniformVec3(sceneShader, LIGHT1_AMBIENT, glm::vec3(0.1f));
+		setUniformMat4(sceneShader, LIGHT2, glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNear, lightFar)
+		                                    * glm::lookAt(light2Position, light2Focus, glm::vec3(0.0f, 1.0f, 0.0f)));
+		setUniformVec3(sceneShader, LIGHT0_AMBIENT, glm::vec3(0.033f));
+		setUniformVec3(sceneShader, LIGHT1_AMBIENT, glm::vec3(0.033f));
+		setUniformVec3(sceneShader, LIGHT2_AMBIENT, glm::vec3(0.033f));
 		setUniformVec3(sceneShader, LIGHT0_SPECULAR, glm::vec3(0.3f));
 		setUniformVec3(sceneShader, LIGHT1_SPECULAR, glm::vec3(0.3f));
-		setUniformVec3(sceneShader, LIGHT0_DIFFUSE, glm::vec3(0.8f));
-		setUniformVec3(sceneShader, LIGHT1_DIFFUSE, glm::vec3(0.8f));
+		setUniformVec3(sceneShader, LIGHT2_SPECULAR, glm::vec3(0.3f));
+		setUniformVec3(sceneShader, LIGHT0_DIFFUSE, glm::vec3(1.0f));
+		setUniformVec3(sceneShader, LIGHT1_DIFFUSE, glm::vec3(1.0f));
+		setUniformVec3(sceneShader, LIGHT2_DIFFUSE, glm::vec3(1.0f));
 		setUniformVec3(sceneShader, LIGHT0_POSITION, light0Position);
 		setUniformVec3(sceneShader, LIGHT0_DIRECTION, lightDirection);
 		setUniformVec3(sceneShader, LIGHT1_POSITION, light1Position);
 		setUniformVec3(sceneShader, LIGHT1_DIRECTION, lightDirection);
+		setUniformVec3(sceneShader, LIGHT2_POSITION, light2Position);
+		setUniformVec3(sceneShader, LIGHT2_DIRECTION, lightDirection);
 		setUniformVec3(sceneShader, VIEW_POSITION, currentCamera->getPosition());
 		setUniformInt(sceneShader, DO_LIGHTING, doLights);
 		setUniformFloat(sceneShader, LIGHT_INNER, glm::cos(lightInner));
@@ -444,6 +523,7 @@ int main(int argc, char *argv[])
 		floor->render(sceneShader);
 		ceiling->render(sceneShader);
 		backWall->render(sceneShader);
+		frontWall->render(sceneShader);
 
 		// push pixels
 		glfwSwapBuffers(window);
@@ -453,6 +533,9 @@ int main(int argc, char *argv[])
 	delete track;
 	delete portal0;
 	delete portal1;
+	delete backWall;
+	delete ceiling;
+	delete frontWall;
 	glfwTerminate();
 	return EXIT_SUCCESS;
 }

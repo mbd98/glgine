@@ -116,14 +116,14 @@ void Mesh::render(GLuint shader)
 	uint diffuseNum = 0, specularNum = 0;
 	for (uint i = 0; i < textures.size(); i++)
 	{
-		glActiveTexture(GL_TEXTURE1 + i);
+		glActiveTexture(GL_TEXTURE0 + i + 3);
 		std::string name = textures[i].type;
 		std::string number;
 		if (name == "texture_diffuse")
 			number = std::to_string(diffuseNum++);
 		else if (name == "texture_specular")
 			number = std::to_string(specularNum++);
-		setUniformInt(shader, (name + number).c_str(), i + 1);
+		setUniformInt(shader, (name + number).c_str(), i + 3);
 		glBindTexture(GL_TEXTURE_2D, textures[i].texId);
 	}
 	glActiveTexture(GL_TEXTURE0);
