@@ -121,8 +121,10 @@ static void cursor(GLFWwindow*, double x, double y)
 		currentCamera->rotateUp(dy * dt);
 }
 
-int main(int argc, char *argv[])
+//int main(int argc, char *argv[])
+void teleportingTrain()
 {
+	GLFWwindow *oldWindow =	glfwGetCurrentContext();
 	// init
 	int width = 1024, height = 768;
 	if (const char *ws = std::getenv("WINDOW_WIDTH"))
@@ -130,6 +132,7 @@ int main(int argc, char *argv[])
 	if (const char *hs = std::getenv("WINDOW_HEIGHT"))
 		height = std::stoi(hs);
 
+	/*
 	if (glfwInit() == GLFW_FALSE)
 	{
 		std::cerr << "Failed to initialize GLFW" << std::endl;
@@ -140,15 +143,15 @@ int main(int argc, char *argv[])
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	window = glfwCreateWindow(width, height, "Mark Boudreau (40078697)", nullptr, nullptr);
+	 */
+	window = glfwCreateWindow(width, height, "Teleporting train", nullptr, nullptr);
 	if (window == nullptr)
 	{
-		glfwTerminate();
 		std::cerr << "Failed to initialize window" << std::endl;
-		return EXIT_FAILURE;
 	}
 	glfwMakeContextCurrent(window);
 
+	/*
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 	{
@@ -156,7 +159,9 @@ int main(int argc, char *argv[])
 		std::cerr << "Failed to initialize GLEW" << std::endl;
 		return EXIT_FAILURE;
 	}
+	 */
 
+	// event handlers here
 	glfwSetKeyCallback(window, handleGlfwKey);
 	glfwSetCursorPosCallback(window, handleGlfwCursorPos);
 	glfwSetCursorEnterCallback(window, handleGlfwCursorEnter);
@@ -536,6 +541,8 @@ int main(int argc, char *argv[])
 	delete backWall;
 	delete ceiling;
 	delete frontWall;
-	glfwTerminate();
-	return EXIT_SUCCESS;
+	//glfwTerminate();
+	//return EXIT_SUCCESS;
+	glfwDestroyWindow(window);
+	glfwMakeContextCurrent(oldWindow);
 }
