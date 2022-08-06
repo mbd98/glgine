@@ -12,7 +12,7 @@
 const GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
 static GLFWwindow *window;
-static Camera freeCamera, *currentCamera;
+static Camera freeCamera, trainCamera, *currentCamera;
 
 static double cursorLastX;
 static double cursorLastY;
@@ -21,6 +21,7 @@ static double dt;
 static bool doShadows = true;
 static bool doLights = true;
 static bool doTrainLoop = true;
+static bool isTrainCamera = false;
 
 static void key(GLFWwindow*, int key, int, int action, int mods)
 {
@@ -79,6 +80,21 @@ static void key(GLFWwindow*, int key, int, int action, int mods)
 	{
 		doTrainLoop = !doTrainLoop;
 	}
+	if (key == GLFW_KEY_E && action == GLFW_PRESS)
+	{
+		isTrainCamera = !isTrainCamera;
+		if (isTrainCamera)
+			currentCamera = &trainCamera;
+		else
+			currentCamera = &freeCamera;
+	}
+	if (key == GLFW_KEY_Q && action == GLFW_PRESS)
+	{
+		std::cerr << "Current camera at (" <<
+		currentCamera->getPosition().x << "," <<
+		currentCamera->getPosition().y << "," <<
+		currentCamera->getPosition().z << ")" << std::endl;
+	}
 }
 
 static void framebuf(GLFWwindow*, int width, int height)
@@ -100,9 +116,9 @@ static void cursor(GLFWwindow*, double x, double y)
 	cursorLastX = x;
 	cursorLastY = y;
 	if (dx != 0)
-		freeCamera.rotateRight(dx * dt);
+		currentCamera->rotateRight(dx * dt);
 	if (dy != 0)
-		freeCamera.rotateUp(dy * dt);
+		currentCamera->rotateUp(dy * dt);
 }
 
 int main(int argc, char *argv[])
@@ -173,7 +189,7 @@ int main(int argc, char *argv[])
 	// renderable objects
 	Reusable *train, *track;
 	Model *preTrain, *preTrack;
-	ComplexRenderable *wall0, *wall1;
+	ComplexRenderable *wall0, *wall1, *trainCamMarker;
 	GLuint sceneShader = loadShader("assets/shaders/illuminated.vert", "assets/shaders/illuminated.frag");
 	GLuint shadowShader = loadShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
 
@@ -182,6 +198,8 @@ int main(int argc, char *argv[])
 	preTrain->setAngles(glm::vec3(0.0f, glm::radians(90.0f), 0.0f));
 	preTrain->setPosition(glm::vec3(0.0f, 2.3f, 0.0f));
 	train = new Reusable(preTrain);
+	glm::vec3 train0pos;
+	glm::vec3 train1pos;
 	uint trainSteps = 0;
 
 	preTrack = new Model("track");
@@ -212,6 +230,9 @@ int main(int argc, char *argv[])
 	wall1->setPosition(glm::vec3(0.0f, 2.0f, 8.0f));
 	wall1->setAngles(glm::vec3(0.0f, glm::radians(180.0f), 0.0f));
 	//wall1->setAngles(glm::vec3(0.0f, 0.0f, glm::radians(90.0f)));
+
+	trainCamMarker = new SimpleComplexRenderable(createCuboid(glm::vec3(-0.1f), glm::vec3(0.2f)));
+	trainCamMarker->setTexture(loadTexture("assets/models/wall/floortile1_baseColor.png"));
 
 	// lights
 	glm::vec3 lightPosition(0.0f, 4.0f, 30.0f);
@@ -300,9 +321,17 @@ int main(int argc, char *argv[])
 		// train loop
 		if (doTrainLoop)
 		{
+			train0pos = glm::vec3(0.0f, 0.0f, trainSteps * 0.1f);
+			train1pos = glm::vec3(0.0f, 0.0f, -17.0f + trainSteps * 0.1f);
+			if (train0pos.z >= wall1->getPosition().z)
+				trainCamera.setPosition(train1pos + glm::vec3(-0.6372f, 3.28f, 0.0f));
+			else
+				trainCamera.setPosition(train0pos + glm::vec3(-0.6372f, 3.28f, 0.0f));
+			trainCamMarker->setPosition(trainCamera.getPosition());
+
 			std::vector<glm::mat4> trainTransforms = {
-					glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, trainSteps * 0.1f)),
-					glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -17.0f + trainSteps * 0.1f))};
+					glm::translate(glm::mat4(1.0f), train0pos),
+					glm::translate(glm::mat4(1.0f), train1pos)};
 			train->setTransforms(trainTransforms);
 			trainSteps = (trainSteps + 1) % 170;
 		}
@@ -379,6 +408,7 @@ int main(int argc, char *argv[])
 		train->render(sceneShader);
 		wall0->render(sceneShader);
 		wall1->render(sceneShader);
+		trainCamMarker->render(sceneShader);
 
 		// push pixels
 		glfwSwapBuffers(window);
