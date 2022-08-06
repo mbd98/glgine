@@ -1,5 +1,7 @@
+#define STB_IMAGE_IMPLEMENTATION
 #include "MusicApplication.h"
 #include "colourroom_nomain.h"
+#include "upsideDownRoom.h"
 
 GLFWwindow* main_window = nullptr;
 
@@ -23,7 +25,15 @@ void startMusicApplication(){
 
     initMainMenu();
 }
+void startUpsideDownRoomApplication(){
+    glfwDestroyWindow(main_window);
+    MenuManager::endImGui();
 
+    upsideDownRoom::createWindow();
+    upsideDownRoom::upsideDownRoomMain();
+
+    initMainMenu();
+}
 void startColorRoomApplication(){
     glfwDestroyWindow(main_window);
     MenuManager::endImGui();
@@ -56,7 +66,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Render the main menu using ImGUI
-        MenuManager::RenderMainMenu(startMusicApplication,startColorRoomApplication);
+        MenuManager::RenderMainMenu(startMusicApplication,startColorRoomApplication,startUpsideDownRoomApplication);
 
         glfwSwapBuffers(main_window);
         glfwPollEvents();

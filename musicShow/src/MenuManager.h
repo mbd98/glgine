@@ -42,7 +42,8 @@ public:
 
     }
 
-    static void RenderMainMenu(void (*musicApplicationCallback)(),void (*colorRoomCallback)()){
+    static void RenderMainMenu(void (*musicApplicationCallback)(),void (*colorRoomCallback)(),
+                               void (*upsideDownRoomCallback)()){
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
@@ -64,6 +65,14 @@ public:
                 colorRoomCallback();
                 return;
             }
+            if (ImGui::Button("Click me to start the upside down room")) {
+
+                ImGui::End();
+                ImGui::Render();
+                upsideDownRoomCallback();
+                return;
+            }
+
         }
 
         ImGui::End();

@@ -45,6 +45,7 @@ void MusicApplication::run() {
     }
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS);
 
+    SoundEngine->stopAllSounds();
     MenuManager::endImGui();
     glfwDestroyWindow(window);
 }
@@ -54,7 +55,10 @@ void MusicApplication::updateAudio() {
     std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
 
     songInfo.current_time = std::chrono::duration_cast<std::chrono::seconds>(now - start).count();
-
+    if(songInfo.current_time >= songInfo.duration){
+        songInfo.currently_playing = false;
+        return;
+    }
     auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(now - begin).count();
 
     if (delta >= 50) {
@@ -100,10 +104,7 @@ void MusicApplication::initializeAudioSampler(const std::string& path) {
 }
 
 void MusicApplication::playMusic(const std::string& path) {
-
-    irrklang::ISoundEngine *SoundEngine = irrklang::createIrrKlangDevice();
     SoundEngine->play2D( path.c_str(), false);
-
 }
 
 MusicApplication::MusicApplication() {

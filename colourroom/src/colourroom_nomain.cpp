@@ -17,9 +17,6 @@
 //Ryan Rokni (40133051)
 #include "colourroom_nomain.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "../include/stb_image.h"
-
 GLFWwindow* window = nullptr;
 
 namespace colorRoom {

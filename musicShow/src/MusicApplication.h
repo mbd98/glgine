@@ -22,6 +22,7 @@ class MusicApplication {
 
     SongInformation songInfo;
 
+    irrklang::ISoundEngine *SoundEngine = irrklang::createIrrKlangDevice();
 
     static inline int fft_size = 1024;
     int song_index = 0;
