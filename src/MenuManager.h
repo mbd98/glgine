@@ -47,6 +47,7 @@ public:
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        ImGui::SetNextWindowPos({50,50});
         if(ImGui::Begin("Music player")) {
             if (ImGui::Button("Click me to start playing music")) {
 
@@ -55,8 +56,10 @@ public:
                 musicApplicationCallback();
             }
         }
-        ImGui::End();
 
+
+        // Call at the end
+        ImGui::End();
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

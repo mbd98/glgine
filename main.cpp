@@ -2,6 +2,7 @@
 
 GLFWwindow* window = nullptr;
 
+// List of functions that start each room
 void startMusicApplication(){
     MusicApplication app(window);
     app.initializeCore();
@@ -28,10 +29,13 @@ int main() {
         fprintf(stderr, "Failed to initialize GLEW\n");
     }
 
+    // Init ImGUI using the created window
     MenuManager::initImGui(window);
 
     do {
         glClear(GL_COLOR_BUFFER_BIT);
+
+        // Render the main menu using ImGUI
         MenuManager::RenderMainMenu(startMusicApplication);
 
         glfwSwapBuffers(window);
