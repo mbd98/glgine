@@ -42,100 +42,6 @@ include CMakeFiles/rules.ninja
 cmake_ninja_workdir = /home/nikolas/Programming/COMP371_Project/cmake-build-debug/
 
 #############################################
-# Utility command for edit_cache
-
-build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/nikolas/Programming/COMP371_Project/cmake-build-debug && /home/nikolas/Desktop/clion-2021.3.3/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-  DESC = No interactive CMake dialog available...
-  restat = 1
-
-build edit_cache: phony CMakeFiles/edit_cache.util
-
-# =============================================================================
-# Object build statements for EXECUTABLE target project
-
-
-#############################################
-# Order-only phony target for project
-
-build cmake_object_order_depends_target_project: phony || CMakeFiles/project.dir
-
-build CMakeFiles/project.dir/main.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/main.cpp || cmake_object_order_depends_target_project
-  DEP_FILE = CMakeFiles/project.dir/main.cpp.o.d
-  FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/src
-  OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir
-
-build CMakeFiles/project.dir/src/Application.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/Application.cpp || cmake_object_order_depends_target_project
-  DEP_FILE = CMakeFiles/project.dir/src/Application.cpp.o.d
-  FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/src
-  OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
-
-build CMakeFiles/project.dir/src/AudioFile.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/AudioFile.cpp || cmake_object_order_depends_target_project
-  DEP_FILE = CMakeFiles/project.dir/src/AudioFile.cpp.o.d
-  FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/src
-  OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
-
-build CMakeFiles/project.dir/src/AudioManager.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/AudioManager.cpp || cmake_object_order_depends_target_project
-  DEP_FILE = CMakeFiles/project.dir/src/AudioManager.cpp.o.d
-  FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/src
-  OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
-
-build CMakeFiles/project.dir/src/Mesh.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/Mesh.cpp || cmake_object_order_depends_target_project
-  DEP_FILE = CMakeFiles/project.dir/src/Mesh.cpp.o.d
-  FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/src
-  OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
-
-build CMakeFiles/project.dir/src/MusicNote.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/MusicNote.cpp || cmake_object_order_depends_target_project
-  DEP_FILE = CMakeFiles/project.dir/src/MusicNote.cpp.o.d
-  FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/src
-  OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
-
-build CMakeFiles/project.dir/src/Renderer.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/Renderer.cpp || cmake_object_order_depends_target_project
-  DEP_FILE = CMakeFiles/project.dir/src/Renderer.cpp.o.d
-  FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/src
-  OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
-
-build CMakeFiles/project.dir/src/Shader.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/Shader.cpp || cmake_object_order_depends_target_project
-  DEP_FILE = CMakeFiles/project.dir/src/Shader.cpp.o.d
-  FLAGS = -g -std=gnu++2a
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/src
-  OBJECT_DIR = CMakeFiles/project.dir
-  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
-
-
-# =============================================================================
-# Link build statements for EXECUTABLE target project
-
-
-#############################################
-# Link the executable project
-
-build project: CXX_EXECUTABLE_LINKER__project_Debug CMakeFiles/project.dir/main.cpp.o CMakeFiles/project.dir/src/Application.cpp.o CMakeFiles/project.dir/src/AudioFile.cpp.o CMakeFiles/project.dir/src/AudioManager.cpp.o CMakeFiles/project.dir/src/Mesh.cpp.o CMakeFiles/project.dir/src/MusicNote.cpp.o CMakeFiles/project.dir/src/Renderer.cpp.o CMakeFiles/project.dir/src/Shader.cpp.o | /usr/lib/x86_64-linux-gnu/libGLEW.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so
-  FLAGS = -g
-  LINK_LIBRARIES = -Wl,-rpath,/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/bin/linux-gcc-64  -lglfw  /usr/lib/x86_64-linux-gnu/libGLEW.so  -lfftw3  -lIrrKlang  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libOpenGL.so
-  LINK_PATH = -L/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/bin/linux-gcc-64
-  OBJECT_DIR = CMakeFiles/project.dir
-  POST_BUILD = :
-  PRE_LINK = :
-  TARGET_FILE = project
-  TARGET_PDB = project.dbg
-
-
-#############################################
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
@@ -158,7 +64,7 @@ build cmake_object_order_depends_target_glad: phony || CMakeFiles/glad.dir
 build CMakeFiles/glad.dir/glad.c.o: C_COMPILER__glad_Debug /home/nikolas/Programming/COMP371_Project/glad.c || cmake_object_order_depends_target_glad
   DEP_FILE = CMakeFiles/glad.dir/glad.c.o.d
   FLAGS = -g
-  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/src
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
   OBJECT_DIR = CMakeFiles/glad.dir
   OBJECT_FILE_DIR = CMakeFiles/glad.dir
 
@@ -179,7 +85,177 @@ build libglad.a: C_STATIC_LIBRARY_LINKER__glad_Debug CMakeFiles/glad.dir/glad.c.
   TARGET_PDB = glad.a.dbg
 
 # =============================================================================
+# Object build statements for EXECUTABLE target project
+
+
+#############################################
+# Order-only phony target for project
+
+build cmake_object_order_depends_target_project: phony || cmake_object_order_depends_target_ImGuiLib
+
+build CMakeFiles/project.dir/main.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/main.cpp || cmake_object_order_depends_target_project
+  DEP_FILE = CMakeFiles/project.dir/main.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/project.dir
+  OBJECT_FILE_DIR = CMakeFiles/project.dir
+
+build CMakeFiles/project.dir/src/Application.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/Application.cpp || cmake_object_order_depends_target_project
+  DEP_FILE = CMakeFiles/project.dir/src/Application.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/project.dir
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+
+build CMakeFiles/project.dir/src/AudioFile.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/AudioFile.cpp || cmake_object_order_depends_target_project
+  DEP_FILE = CMakeFiles/project.dir/src/AudioFile.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/project.dir
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+
+build CMakeFiles/project.dir/src/AudioManager.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/AudioManager.cpp || cmake_object_order_depends_target_project
+  DEP_FILE = CMakeFiles/project.dir/src/AudioManager.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/project.dir
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+
+build CMakeFiles/project.dir/src/Mesh.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/Mesh.cpp || cmake_object_order_depends_target_project
+  DEP_FILE = CMakeFiles/project.dir/src/Mesh.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/project.dir
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+
+build CMakeFiles/project.dir/src/MusicNote.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/MusicNote.cpp || cmake_object_order_depends_target_project
+  DEP_FILE = CMakeFiles/project.dir/src/MusicNote.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/project.dir
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+
+build CMakeFiles/project.dir/src/Renderer.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/Renderer.cpp || cmake_object_order_depends_target_project
+  DEP_FILE = CMakeFiles/project.dir/src/Renderer.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/project.dir
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+
+build CMakeFiles/project.dir/src/Shader.cpp.o: CXX_COMPILER__project_Debug /home/nikolas/Programming/COMP371_Project/src/Shader.cpp || cmake_object_order_depends_target_project
+  DEP_FILE = CMakeFiles/project.dir/src/Shader.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/project.dir
+  OBJECT_FILE_DIR = CMakeFiles/project.dir/src
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target project
+
+
+#############################################
+# Link the executable project
+
+build project: CXX_EXECUTABLE_LINKER__project_Debug CMakeFiles/project.dir/main.cpp.o CMakeFiles/project.dir/src/Application.cpp.o CMakeFiles/project.dir/src/AudioFile.cpp.o CMakeFiles/project.dir/src/AudioManager.cpp.o CMakeFiles/project.dir/src/Mesh.cpp.o CMakeFiles/project.dir/src/MusicNote.cpp.o CMakeFiles/project.dir/src/Renderer.cpp.o CMakeFiles/project.dir/src/Shader.cpp.o | libImGuiLib.a /usr/lib/x86_64-linux-gnu/libGLEW.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so || libImGuiLib.a
+  FLAGS = -g
+  LINK_LIBRARIES = -Wl,-rpath,/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/bin/linux-gcc-64  libImGuiLib.a  -lglfw  /usr/lib/x86_64-linux-gnu/libGLEW.so  -lfftw3  -lIrrKlang  -ldl  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libOpenGL.so
+  LINK_PATH = -L/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/bin/linux-gcc-64
+  OBJECT_DIR = CMakeFiles/project.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = project
+  TARGET_PDB = project.dbg
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target ImGuiLib
+
+
+#############################################
+# Order-only phony target for ImGuiLib
+
+build cmake_object_order_depends_target_ImGuiLib: phony || CMakeFiles/ImGuiLib.dir
+
+build CMakeFiles/ImGuiLib.dir/imgui/imgui.cpp.o: CXX_COMPILER__ImGuiLib_Debug /home/nikolas/Programming/COMP371_Project/imgui/imgui.cpp || cmake_object_order_depends_target_ImGuiLib
+  DEP_FILE = CMakeFiles/ImGuiLib.dir/imgui/imgui.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/ImGuiLib.dir
+  OBJECT_FILE_DIR = CMakeFiles/ImGuiLib.dir/imgui
+
+build CMakeFiles/ImGuiLib.dir/imgui/imgui_demo.cpp.o: CXX_COMPILER__ImGuiLib_Debug /home/nikolas/Programming/COMP371_Project/imgui/imgui_demo.cpp || cmake_object_order_depends_target_ImGuiLib
+  DEP_FILE = CMakeFiles/ImGuiLib.dir/imgui/imgui_demo.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/ImGuiLib.dir
+  OBJECT_FILE_DIR = CMakeFiles/ImGuiLib.dir/imgui
+
+build CMakeFiles/ImGuiLib.dir/imgui/imgui_draw.cpp.o: CXX_COMPILER__ImGuiLib_Debug /home/nikolas/Programming/COMP371_Project/imgui/imgui_draw.cpp || cmake_object_order_depends_target_ImGuiLib
+  DEP_FILE = CMakeFiles/ImGuiLib.dir/imgui/imgui_draw.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/ImGuiLib.dir
+  OBJECT_FILE_DIR = CMakeFiles/ImGuiLib.dir/imgui
+
+build CMakeFiles/ImGuiLib.dir/imgui/imgui_impl_glfw.cpp.o: CXX_COMPILER__ImGuiLib_Debug /home/nikolas/Programming/COMP371_Project/imgui/imgui_impl_glfw.cpp || cmake_object_order_depends_target_ImGuiLib
+  DEP_FILE = CMakeFiles/ImGuiLib.dir/imgui/imgui_impl_glfw.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/ImGuiLib.dir
+  OBJECT_FILE_DIR = CMakeFiles/ImGuiLib.dir/imgui
+
+build CMakeFiles/ImGuiLib.dir/imgui/imgui_impl_opengl3.cpp.o: CXX_COMPILER__ImGuiLib_Debug /home/nikolas/Programming/COMP371_Project/imgui/imgui_impl_opengl3.cpp || cmake_object_order_depends_target_ImGuiLib
+  DEP_FILE = CMakeFiles/ImGuiLib.dir/imgui/imgui_impl_opengl3.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/ImGuiLib.dir
+  OBJECT_FILE_DIR = CMakeFiles/ImGuiLib.dir/imgui
+
+build CMakeFiles/ImGuiLib.dir/imgui/imgui_tables.cpp.o: CXX_COMPILER__ImGuiLib_Debug /home/nikolas/Programming/COMP371_Project/imgui/imgui_tables.cpp || cmake_object_order_depends_target_ImGuiLib
+  DEP_FILE = CMakeFiles/ImGuiLib.dir/imgui/imgui_tables.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/ImGuiLib.dir
+  OBJECT_FILE_DIR = CMakeFiles/ImGuiLib.dir/imgui
+
+build CMakeFiles/ImGuiLib.dir/imgui/imgui_widgets.cpp.o: CXX_COMPILER__ImGuiLib_Debug /home/nikolas/Programming/COMP371_Project/imgui/imgui_widgets.cpp || cmake_object_order_depends_target_ImGuiLib
+  DEP_FILE = CMakeFiles/ImGuiLib.dir/imgui/imgui_widgets.cpp.o.d
+  FLAGS = -g -std=gnu++2a
+  INCLUDES = -I/home/nikolas/Programming/COMP371_Project/include -I/home/nikolas/Programming/COMP371_Project/irrKlang-64bit-1.6.0/include -I/home/nikolas/Programming/COMP371_Project/imgui -I/home/nikolas/Programming/COMP371_Project/src
+  OBJECT_DIR = CMakeFiles/ImGuiLib.dir
+  OBJECT_FILE_DIR = CMakeFiles/ImGuiLib.dir/imgui
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target ImGuiLib
+
+
+#############################################
+# Link the static library libImGuiLib.a
+
+build libImGuiLib.a: CXX_STATIC_LIBRARY_LINKER__ImGuiLib_Debug CMakeFiles/ImGuiLib.dir/imgui/imgui.cpp.o CMakeFiles/ImGuiLib.dir/imgui/imgui_demo.cpp.o CMakeFiles/ImGuiLib.dir/imgui/imgui_draw.cpp.o CMakeFiles/ImGuiLib.dir/imgui/imgui_impl_glfw.cpp.o CMakeFiles/ImGuiLib.dir/imgui/imgui_impl_opengl3.cpp.o CMakeFiles/ImGuiLib.dir/imgui/imgui_tables.cpp.o CMakeFiles/ImGuiLib.dir/imgui/imgui_widgets.cpp.o
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = CMakeFiles/ImGuiLib.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = libImGuiLib.a
+  TARGET_PDB = ImGuiLib.a.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/nikolas/Programming/COMP371_Project/cmake-build-debug && /home/nikolas/Desktop/clion-2021.3.3/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build edit_cache: phony CMakeFiles/edit_cache.util
+
+# =============================================================================
 # Target aliases.
+
+build ImGuiLib: phony libImGuiLib.a
 
 build glad: phony libglad.a
 
@@ -191,7 +267,7 @@ build glad: phony libglad.a
 #############################################
 # Folder: /home/nikolas/Programming/COMP371_Project/cmake-build-debug
 
-build all: phony project libglad.a
+build all: phony libglad.a project libImGuiLib.a
 
 # =============================================================================
 # Built-in targets

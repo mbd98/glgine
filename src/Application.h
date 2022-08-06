@@ -5,6 +5,10 @@
 #ifndef COMP371_PROJECT_APPLICATION_H
 #define COMP371_PROJECT_APPLICATION_H
 #include "AudioManager.h"
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "imfilebrowser.h"
 #include "Renderer.h"
 #include "AudioFile.h"
 #include <ctime>

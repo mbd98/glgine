@@ -32,16 +32,55 @@ void Application::initializeCore() {
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-    renderer = new Renderer();
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+
+    ImGui_ImplGlfw_InitForOpenGL(window,true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
+    ImGui::StyleColorsDark();
+
+    ImGui::GetIO().FontGlobalScale *= 2;
+    ImGui::GetStyle().ScaleAllSizes(5);
+
+renderer = new Renderer();
 
 }
 
 void Application::run() {
+    ImGui::FileBrowser fileDialog;
+    fileDialog.SetTitle("title");
+    fileDialog.SetTypeFilters({ ".mp3", ".wav" });
 
     begin = std::chrono::steady_clock::now();
-    initializeAudioSampler("../more_ichika.wav");
-    playMusic("../more_ichika.mp3");
+    initializeAudioSampler("../audio/more_ichika.wav");
+    playMusic("../audio/more_ichika.mp3");
     do {
+
+//        ImGui_ImplOpenGL3_NewFrame();
+//        ImGui_ImplGlfw_NewFrame();
+//        ImGui::NewFrame();
+//
+//        ImGui::SetNextWindowPos({0,0});
+//        if(ImGui::Begin("dummy window"))
+//        {
+//            // open file dialog when user clicks this button
+//            if(ImGui::Button("open file dialog"))
+//                fileDialog.Open();
+//        }
+//        ImGui::End();//
+//        fileDialog.Display();
+//        if(fileDialog.HasSelected())
+//        {
+//            std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
+//            fflush(stdout);
+//            fileDialog.ClearSelected();
+//            fileDialog.Close();
+//        }
+//
+//        ImGui::Render();
+//        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         updateAudio();
         glClear(GL_COLOR_BUFFER_BIT);
@@ -54,6 +93,9 @@ void Application::run() {
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
            glfwWindowShouldClose(window) == 0);
 
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 }
 
 void Application::updateAudio() {
