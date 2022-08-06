@@ -43,10 +43,11 @@ void MusicApplication::run() {
         glfwPollEvents();
 
     }
-    while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-           glfwWindowShouldClose(window) == 0);
+    while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS);
 
     MenuManager::endImGui();
+    glfwDestroyWindow(window);
+    return;
 }
 
 void MusicApplication::updateAudio() {

@@ -2,17 +2,26 @@
 
 GLFWwindow* window = nullptr;
 
+
+void initMainMenu(){
+    window = glfwCreateWindow(800, 1000, "emaj7b9#11", NULL, NULL);
+    glfwMakeContextCurrent(window);
+    glewInit();
+
+    MenuManager::initImGui(window);
+}
 // List of functions that start each room
 void startMusicApplication(){
-    glfwDestroyWindow(window);
 
+    glfwDestroyWindow(window);
     MenuManager::endImGui();
 
     MusicApplication app;
     app.initializeCore();
     app.run();
-}
 
+    initMainMenu();
+}
 
 int main() {
 
@@ -24,14 +33,10 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-     window = glfwCreateWindow(800, 1000, "emaj7b9#11", NULL, NULL);
+    window = glfwCreateWindow(800, 1000, "emaj7b9#11", NULL, NULL);
 
     glfwMakeContextCurrent(window);
-
-
-    if (glewInit() != GLEW_OK) {
-        fprintf(stderr, "Failed to initialize GLEW\n");
-    }
+    glewInit();
 
     // Init ImGUI using the created window
     MenuManager::initImGui(window);

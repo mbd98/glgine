@@ -54,9 +54,11 @@ public:
                 ImGui::End();
                 ImGui::Render();
                 musicApplicationCallback();
+                return;
             }
         }
-        // Call at the end
+
+
         ImGui::End();
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -89,13 +91,14 @@ public:
         ImGui::SetNextWindowPos({600,0});
         ImGui::SetNextWindowSize({1400,150});
         std::string infoTitle = "Now playing : " + songInfo.name;
-        if(ImGui::Begin(infoTitle.c_str()))
-        {
-            if(songInfo.currently_playing) {
-                 ImGui::Text("Sampling Rate : %i Hz - %i/%i (s)", songInfo.sample_rate,
-                             songInfo.current_time,songInfo.duration);
-            }
-        }
+        ImGui::Begin(infoTitle.c_str());
+//        if(ImGui::Begin(infoTitle.c_str()))
+//        {
+//            if(songInfo.currently_playing) {
+//                 ImGui::Text("Sampling Rate : %i Hz - %i/%i (s)", songInfo.sample_rate,
+//                             songInfo.current_time,songInfo.duration);
+//            }
+//        }
         ImGui::End();
 
         fileDialog->Display();

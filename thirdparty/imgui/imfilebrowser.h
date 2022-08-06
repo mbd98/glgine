@@ -194,7 +194,9 @@ inline ImGui::FileBrowser::FileBrowser(ImGuiFileBrowserFlags flags)
     inputNameBuf_->front() = '\0';
     inputNameBuf_->back() = '\0';
     SetTitle("file browser");
-    SetPwd(std::filesystem::current_path());
+
+    auto current_path = std::filesystem::current_path();
+    SetPwd(current_path.parent_path().append("audio"));
 
     typeFilters_.clear();
     typeFilterIndex_ = 0;
