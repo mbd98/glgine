@@ -1673,33 +1673,24 @@ int main(int argc, char*argv[])
 	
 	//Load shaders
 	std::string shaderPathPrefix = "../assets/shaders/";
-	//GLuint sceneShader = loadSHADER(shaderPathPrefix + "scenevertex.glsl", shaderPathPrefix + "scenefragment.glsl");
 	GLuint textureShader = loadSHADER(shaderPathPrefix + "texturevertex.glsl", shaderPathPrefix + "texturefragment.glsl");
 	GLuint shadowShader = loadSHADER(shaderPathPrefix + "shadow_vertex.glsl", shaderPathPrefix + "shadow_fragment.glsl");
 	
 	
-		// Vectors used for view matrix by default
+	// Vectors used for view matrix by default
 	glm::vec3 eye(0.0f,1.0f,0.0f);
     glm::vec3 center(-1.0f, 1.0f, 0.0f);
 	glm::vec3 up(0.0f, 1.0f, 0.0f);
 	
-		glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
+	glm::mat4 viewMatrix = glm::lookAt(eye, center, up);	
 		
-/*
-        GLuint viewMatrixLocation = glGetUniformLocation(sceneShader, "viewMatrix");
-        glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
-*/		
-			
-		
-		glm::mat4 projectionMatrix = glm::perspective(glm::radians( 85.0f ),  // field of view in degrees 
-                                                          1024.0f / 768.0f,      // aspect ratio
-                                                          0.01f, 100.0f);
+	glm::mat4 projectionMatrix = glm::perspective(glm::radians( 85.0f ),  // field of view in degrees 
+                                                  1024.0f / 768.0f,      // aspect ratio
+                                                  0.01f, 100.0f);
 														  
 														  
-		//setViewMatrix(sceneShader, viewMatrix);
 		setViewMatrix(textureShader, viewMatrix);
 
-		//setProjectionMatrix(sceneShader, projectionMatrix);
 		setProjectionMatrix(textureShader, projectionMatrix);
 	
     
@@ -1773,12 +1764,12 @@ int main(int argc, char*argv[])
 		
 		
 		
-				// Each frame, reset color of each pixel to glClearColor and reset depth bits
+		// Each frame, reset color of each pixel to glClearColor and reset depth bits
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		        // Dark grey background like in example screenshots
+		// Dark grey background
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		
-				//set up textures
+		//set up textures
 		
 		glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, carpetTextureID);
@@ -1812,7 +1803,6 @@ int main(int argc, char*argv[])
 		glUniform1i(textureLocation4, 3);
 		glUniform1i(textureLocation5, 4);
 		
-		//glBindTexture(GL_TEXTURE_2D, 0);
 		
 		
 		
@@ -1831,7 +1821,7 @@ int main(int argc, char*argv[])
 		float lightNearPlane = 2.0f;
 		float lightFarPlane = 180.0f;
 		
-		
+		//determines light colour as per toggles
 		if(enableR) { rcomp = 1.0; }
 		if(!enableR) { rcomp = 0.0; }
 		
@@ -1847,7 +1837,7 @@ int main(int argc, char*argv[])
 
 	
 		//set up matrices from the light's perspective
-		glm::mat4 lightProjectionMatrix = glm::perspective(85.0f, (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT, lightNearPlane, lightFarPlane); //glm::frustum(-100.0f, 100.0f, -100.0f, 100.0f, lightNearPlane, lightFarPlane); //
+		glm::mat4 lightProjectionMatrix = glm::perspective(85.0f, (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT, lightNearPlane, lightFarPlane);
 		glm::mat4 lightViewMatrix = glm::lookAt(lightPosition, lightFocus, glm::vec3(0.0, 1.0, 0.0));
 		glm::mat4 lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
 		
@@ -1959,7 +1949,7 @@ int main(int argc, char*argv[])
 		
 		
 		
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		
 		
 		
@@ -1977,9 +1967,7 @@ int main(int argc, char*argv[])
 		glViewport(0, 0, 1024.0f, 768.0f);	//hardcoded values to avoid stretching
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-				// Each frame, reset color of each pixel to glClearColor and reset depth bits
-		
-		        // Dark grey background like in example screenshots
+		// Each frame, reset color of each pixel to glClearColor and reset depth bits
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		
 		
@@ -2003,7 +1991,7 @@ int main(int argc, char*argv[])
 		
 		
 		glBindVertexArray(cubeAO);
-		//:::::::::::::::::::::SET UP WORLD CUBE
+		//:::::::::::::::::::::SET UP WOODEN ROOM
 		
 		//Set color mode to sky texture
 		glUniform1ui(colormodeLocationT, 1);
@@ -2018,7 +2006,7 @@ int main(int argc, char*argv[])
 	
 		
 		
-		
+		//set up sphere
 		glBindVertexArray(sphereAO);
 		glUniform1ui(colormodeLocationT, 2);
 		sphereWorldMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, vertmov, horizmov)) * glm::translate(glm::mat4(1.0f), glm::vec3(-20.0f*unit, unit*10.0f, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
@@ -2026,7 +2014,7 @@ int main(int argc, char*argv[])
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 1261);
 		
 		
-		
+		//set up cubes
 		glBindVertexArray(cubeAO);
 		glUniform1ui(colormodeLocationT, 3);
 		cubeWorldMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.7*vertmov, 0.7*horizmov)) * glm::translate(glm::mat4(1.0f), glm::vec3(-22.0f*unit, 10.0f*unit, -6.0f*unit)) * glm::scale(glm::mat4(1.0f), glm::vec3(2.5f, 2.5f, 2.5f)) * glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(1.0f, 0.0f, 1.0f));
@@ -2048,7 +2036,7 @@ int main(int argc, char*argv[])
 		
 		
 		
-		
+		//set up lenses
 		glBindVertexArray(cubeAO);
 		
 		
@@ -2124,7 +2112,7 @@ int main(int argc, char*argv[])
 		
 		
 		
-		//::::::::::::::::::MOVEMENT OPTIONS (debug)
+		//::::::::::::::::::MOVEMENT OPTIONS
 		
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) { vertmov += 0.001; }
 		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) { vertmov -= 0.001; }
@@ -2174,7 +2162,7 @@ int main(int argc, char*argv[])
 		lastCstate = glfwGetKey(window, GLFW_KEY_C);
 		
 		
-		//:::::::::::::::::::::::LENSES
+		//:::::::::::::::::::::::LENS TOGGLES
 		if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS && lastVstate == GLFW_RELEASE)
 		{
 			if(redlens)
@@ -2262,22 +2250,9 @@ int main(int argc, char*argv[])
 		
 		
 		viewMatrix = glm::lookAt(eye, center, up);	
-
-/*
-
-        GLuint viewMatrixLocation = glGetUniformLocation(sceneShader, "viewMatrix");
-        glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
-*/		
-			
-		
-		//projectionMatrix = glm::perspective(glm::radians( fov ),  // field of view in degrees //change FoV for zoom
-        //                                                  1024.0f / 768.0f,      // aspect ratio
-        //                                                  0.01f, 100.0f);
-														  
 		
 		SetUniformVec3(textureShader, "viewposition", eye);
-		
-		//setViewMatrix(sceneShader, viewMatrix);
+	
 		setViewMatrix(textureShader, viewMatrix);
 		
 		glm::mat4 projectionMatrix = glm::perspective(glm::radians( 85.0f ),  // field of view in degrees 
@@ -2285,14 +2260,7 @@ int main(int argc, char*argv[])
                                                           0.01f, 100.0f);
 		
 		setProjectionMatrix(textureShader, projectionMatrix);
-		//setProjectionMatrix(sceneShader, projectionMatrix);
-		
-		//setProjectionMatrix(sceneShader, projectionMatrix);
-		//setProjectionMatrix(textureShader, projectionMatrix);
-/*														  
-		GLuint projectionMatrixLocation = glGetUniformLocation(sceneShader, "projectionMatrix");
-        glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
-*/		
+	
 		
     }
     
