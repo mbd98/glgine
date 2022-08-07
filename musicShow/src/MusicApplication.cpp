@@ -4,16 +4,17 @@
 
 #include "MusicApplication.h"
 
-void MusicApplication::initializeCore() {
-    window = glfwCreateWindow(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, "emaj7b9#11", NULL, NULL);
+void MusicApplication::run() {
+
+    GLFWwindow *oldWindow = glfwGetCurrentContext();
+    glfwHideWindow(oldWindow);
+
+    GLFWwindow* window = glfwCreateWindow(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, "Music player", NULL, NULL);
     glfwMakeContextCurrent(window);
 
     MenuManager::initImGui(window);
     MenuManager::createFileBrowser();
     renderer = new Renderer();
-}
-
-void MusicApplication::run() {
 
     do {
 
@@ -48,6 +49,8 @@ void MusicApplication::run() {
     SoundEngine->stopAllSounds();
     MenuManager::endImGui();
     glfwDestroyWindow(window);
+    glfwMakeContextCurrent(oldWindow);
+    glfwShowWindow(oldWindow);
 }
 
 void MusicApplication::updateAudio() {

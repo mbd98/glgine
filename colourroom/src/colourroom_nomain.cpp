@@ -20,10 +20,10 @@
 GLFWwindow* window = nullptr;
 
 namespace colorRoom {
-    void createWindow() {
-        window = glfwCreateWindow(1024, 768, "emaj7b9#11", NULL, NULL);
-        glfwMakeContextCurrent(window);
-    }
+//    void createWindow() {
+//        window = glfwCreateWindow(1024, 768, "emaj7b9#11", NULL, NULL);
+//        glfwMakeContextCurrent(window);
+//    }
 }
 
 float unit = 0.1;
@@ -1608,6 +1608,13 @@ GLuint loadtext(char* filename)
 
 namespace colorRoom{
 void colourroom() {
+
+    GLFWwindow *oldWindow = glfwGetCurrentContext();
+    glfwHideWindow(oldWindow);
+
+    GLFWwindow* window = glfwCreateWindow(1024, 768, "Color room", NULL, NULL);
+    glfwMakeContextCurrent(window);
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -2189,14 +2196,11 @@ void colourroom() {
 
     }
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS);
-    glfwDestroyWindow(window);
 
+    glfwDestroyWindow(window);
+    glfwMakeContextCurrent(oldWindow);
+    glfwShowWindow(oldWindow);
 
     }
-	/*
-    // Shutdown GLFW
-    glfwTerminate();
-    
-	return 0;
-	*/
+
 }

@@ -2,6 +2,7 @@
 #include "MusicApplication.h"
 #include "colourroom_nomain.h"
 #include "upsideDownRoom.h"
+#include "train.hpp"
 
 GLFWwindow* main_window = nullptr;
 
@@ -16,34 +17,20 @@ void initMainMenu(){
 // List of functions that start each room
 void startMusicApplication(){
 
-    glfwDestroyWindow(main_window);
-    MenuManager::endImGui();
-
     MusicApplication app;
-    app.initializeCore();
+    MenuManager::endImGui();
     app.run();
-
-    initMainMenu();
+    MenuManager::initImGui(main_window);
 }
 void startUpsideDownRoomApplication(){
-    glfwDestroyWindow(main_window);
-    MenuManager::endImGui();
-
-    upsideDownRoom::createWindow();
     upsideDownRoom::upsideDownRoomMain();
-
-    initMainMenu();
 }
 void startColorRoomApplication(){
-    glfwDestroyWindow(main_window);
-    MenuManager::endImGui();
-
-    colorRoom::createWindow();
     colorRoom::colourroom();
-
-    initMainMenu();
 }
-
+void startTrainRoomApplication(){
+    Train::teleportingTrain();
+}
 int main() {
 
     // Create basic GLFW window for menu rendering
@@ -66,7 +53,10 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Render the main menu using ImGUI
-        MenuManager::RenderMainMenu(startMusicApplication,startColorRoomApplication,startUpsideDownRoomApplication);
+        MenuManager::RenderMainMenu(startMusicApplication,
+                                    startColorRoomApplication,
+                                    startUpsideDownRoomApplication,
+                                    startTrainRoomApplication);
 
         glfwSwapBuffers(main_window);
         glfwPollEvents();

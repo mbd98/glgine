@@ -1,20 +1,12 @@
 #include <iostream>
 #include <list>
-//#include "audio/irrKlang.h"
 #include "upsideDownRoom.h"
 
 using namespace glm;
 using namespace std;
-//using namespace irrklang;
 
-GLFWwindow* upsideDownRoomWindow = nullptr;
+irrklang::ISoundEngine *UpsideDownSoundEngine = irrklang::createIrrKlangDevice();
 
-namespace upsideDownRoom {
-    void createWindow() {
-        upsideDownRoomWindow = glfwCreateWindow(1024, 768, "Upside down room", NULL, NULL);
-        glfwMakeContextCurrent(upsideDownRoomWindow);
-    }
-}
 
 
     const char* getVertexShaderSource()
@@ -447,12 +439,17 @@ namespace upsideDownRoom {
 
     namespace upsideDownRoom {
         void upsideDownRoomMain() {
-//    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-//    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-//
+
+            GLFWwindow *oldWindow = glfwGetCurrentContext();
+            glfwHideWindow(oldWindow);
+
+            GLFWwindow* window = glfwCreateWindow(1024, 768, "Lights room", NULL, NULL);
+            glfwMakeContextCurrent(window);
+
+            UpsideDownSoundEngine->play2D("../upsideDownRoom/assets/audio/breakout.wav");
 
             //Disable mouse cursor
-            glfwSetInputMode(upsideDownRoomWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
             //Textures
             GLuint cubeTexture = loadTexture("../upsideDownRoom/assets/textures/cube.jpg");
@@ -503,7 +500,7 @@ namespace upsideDownRoom {
             //frame time
             float lastFrameTime = glfwGetTime();
             double lastMousePosX, lastMousePosY;
-            glfwGetCursorPos(upsideDownRoomWindow, &lastMousePosX, &lastMousePosY);
+            glfwGetCursorPos(window, &lastMousePosX, &lastMousePosY);
 
             float dt = 0.0f, dx, dy, theta, phi, angle = 0.0f, speed = 0.0f;
             bool game = false, g = false, b = false, r = false, y = false, m = false, o = false, win = false;
@@ -727,7 +724,7 @@ namespace upsideDownRoom {
                 }
 
                 //green cube disappear
-                if ((glfwGetKey(upsideDownRoomWindow, GLFW_KEY_G) == GLFW_PRESS) && g == true) {
+                if ((glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) && g == true) {
                     g = false;
                     b = true;
                     score++;
@@ -735,7 +732,7 @@ namespace upsideDownRoom {
                 }
 
                 //blue cube disappear
-                if (glfwGetKey(upsideDownRoomWindow, GLFW_KEY_B) == GLFW_PRESS && b == true) {
+                if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS && b == true) {
                     b = false;
                     r = true;
                     score++;
@@ -743,7 +740,7 @@ namespace upsideDownRoom {
                 }
 
                 //red cube disappear
-                if (glfwGetKey(upsideDownRoomWindow, GLFW_KEY_R) == GLFW_PRESS && r == true) {
+                if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS && r == true) {
                     r = false;
                     y = true;
                     score++;
@@ -751,7 +748,7 @@ namespace upsideDownRoom {
                 }
 
                 //yellow cube disappear
-                if (glfwGetKey(upsideDownRoomWindow, GLFW_KEY_Y) == GLFW_PRESS && y == true) {
+                if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS && y == true) {
                     y = false;
                     m = true;
                     score++;
@@ -759,7 +756,7 @@ namespace upsideDownRoom {
                 }
 
                 //magenta cube disappear
-                if (glfwGetKey(upsideDownRoomWindow, GLFW_KEY_M) == GLFW_PRESS && m == true) {
+                if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS && m == true) {
                     m = false;
                     o = true;
                     score++;
@@ -767,7 +764,7 @@ namespace upsideDownRoom {
                 }
 
                 //orange cube disappear
-                if (glfwGetKey(upsideDownRoomWindow, GLFW_KEY_O) == GLFW_PRESS && o == true) {
+                if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS && o == true) {
                     o = false;
                     g = true;
                     score++;
@@ -775,7 +772,7 @@ namespace upsideDownRoom {
                 }
 
                 //start game
-                if (glfwGetKey(upsideDownRoomWindow, GLFW_KEY_P) == GLFW_PRESS && game != true) {
+                if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && game != true) {
                     game = true;
                     win = false;
                     score = 0;
@@ -783,13 +780,13 @@ namespace upsideDownRoom {
                     speed = 0.0f;
                 }
 
-                //close upsideDownRoomWindow
-                if (glfwGetKey(upsideDownRoomWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-                    glfwSetWindowShouldClose(upsideDownRoomWindow, true);
+                //close window
+                if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+                    glfwSetWindowShouldClose(window, true);
 
                 //mouse motion dx and dy
                 double mousePosX, mousePosY;
-                glfwGetCursorPos(upsideDownRoomWindow, &mousePosX, &mousePosY);
+                glfwGetCursorPos(window, &mousePosX, &mousePosY);
 
 
                 dx = mousePosX - lastMousePosX;
@@ -814,22 +811,22 @@ namespace upsideDownRoom {
                 normalize(cameraSideVector);
 
                 //move left
-                if (glfwGetKey(upsideDownRoomWindow, GLFW_KEY_A) == GLFW_PRESS) {
+                if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
                     cameraPosition -= cameraSideVector * dt * cameraSpeed;
                 }
 
                 //move right
-                if (glfwGetKey(upsideDownRoomWindow, GLFW_KEY_D) == GLFW_PRESS) {
+                if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
                     cameraPosition += cameraSideVector * dt * cameraSpeed;
                 }
 
                 //move forward
-                if (glfwGetKey(upsideDownRoomWindow, GLFW_KEY_W) == GLFW_PRESS) {
+                if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
                     cameraPosition += cameraLookAt * dt * cameraSpeed;
                 }
 
                 //move backward
-                if (glfwGetKey(upsideDownRoomWindow, GLFW_KEY_S) == GLFW_PRESS) {
+                if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
                     cameraPosition -= cameraLookAt * dt * cameraSpeed;
                 }
 
@@ -840,13 +837,14 @@ namespace upsideDownRoom {
                 setProjectionMatrix(texturedShaderProgram, projectionMatrix);
 
                 // End Frame
-                glfwSwapBuffers(upsideDownRoomWindow);
+                glfwSwapBuffers(window);
                 glfwPollEvents();
-            } while (glfwGetKey(upsideDownRoomWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS);
+            } while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS);
 
-            //    SoundEngine->stopAllSounds();
-            glfwDestroyWindow(upsideDownRoomWindow);
-            // Shutdown GLFW
-            //glfwTerminate();
+            UpsideDownSoundEngine->stopAllSounds();
+            glfwDestroyWindow(window);
+            glfwMakeContextCurrent(oldWindow);
+            glfwShowWindow(oldWindow);
+
         }
     }

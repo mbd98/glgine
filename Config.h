@@ -13,5 +13,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/common.hpp>
 #include <glm/glm.hpp>
+#include "irrKlang.h"
 
 #endif //COMP371_PROJECT_CONFIG_H

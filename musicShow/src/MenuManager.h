@@ -43,14 +43,22 @@ public:
     }
 
     static void RenderMainMenu(void (*musicApplicationCallback)(),void (*colorRoomCallback)(),
-                               void (*upsideDownRoomCallback)()){
+                               void (*upsideDownRoomCallback)(),void (*startTrainRoomCallback)()){
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
         ImGui::SetNextWindowPos({50,50});
         if(ImGui::Begin("Main menu")) {
-            if (ImGui::Button("Click me to start playing music")) {
+
+            if (ImGui::Button("Click me to start the train from hell")) {
+
+                ImGui::End();
+                ImGui::Render();
+                startTrainRoomCallback();
+                return;
+            }
+            else if (ImGui::Button("Click me to start playing music")) {
 
                 ImGui::End();
                 ImGui::Render();
@@ -58,14 +66,14 @@ public:
                 return;
             }
 //            ImGui::SetCursorPos({0,300});
-            if (ImGui::Button("Click me to start the color room")) {
+            else if (ImGui::Button("Click me to start the color room")) {
 
                 ImGui::End();
                 ImGui::Render();
                 colorRoomCallback();
                 return;
             }
-            if (ImGui::Button("Click me to start the upside down room")) {
+            else if (ImGui::Button("Click me to start the upside down room")) {
 
                 ImGui::End();
                 ImGui::Render();

@@ -16,7 +16,7 @@ class MusicApplication {
     std::chrono::steady_clock::time_point begin,start ;
 
     std::vector<float> frequencies;
-    GLFWwindow* window;
+//    GLFWwindow* window;
     Renderer* renderer;
     AudioFile<double> audioFile;
 
@@ -30,7 +30,6 @@ class MusicApplication {
     public:
 
     MusicApplication();
-    void initializeCore();
     void initializeAudioSampler(const std::string&);
     void playMusic(const std::string&);
     void updateAudio();
