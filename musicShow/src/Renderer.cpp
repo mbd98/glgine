@@ -8,6 +8,8 @@
 Renderer::Renderer() {
     main_shader = Shader::CreateShader("../musicShow/shaders/Vertex.shader","../musicShow/shaders/Fragment.shader");
     glUseProgram(main_shader);
+    glDeleteShader(main_shader);
+
 }
 
 Renderer::~Renderer() {

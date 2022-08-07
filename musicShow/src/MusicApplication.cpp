@@ -61,8 +61,9 @@ void MusicApplication::run() {
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS);
 
     SoundEngine->stopAllSounds();
-    ;
+
     MenuManager::endImGui();
+    songInfo.currently_playing = false;
 
     delete renderer;
 

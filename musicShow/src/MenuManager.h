@@ -51,28 +51,28 @@ public:
         ImGui::SetNextWindowPos({50,50});
         if(ImGui::Begin("Main menu")) {
 
-            if (ImGui::Button("Click me to start the train from hell")) {
+            if (ImGui::Button("Click me to start the teleporting train")) {
 
                 ImGui::End();
                 ImGui::Render();
                 startTrainRoomCallback();
                 return;
             }
-            else if (ImGui::Button("Click me to start playing music")) {
+            else if (ImGui::Button("Click me to start the music player")) {
 
                 ImGui::End();
                 ImGui::Render();
                 musicApplicationCallback();
                 return;
             }
-            else if (ImGui::Button("Click me to start the color room")) {
+            else if (ImGui::Button("Click me to start the sphere color room")) {
 
                 ImGui::End();
                 ImGui::Render();
                 colorRoomCallback();
                 return;
             }
-            else if (ImGui::Button("Click me to start the upside down room")) {
+            else if (ImGui::Button("Click me to start the lights room")) {
 
                 ImGui::End();
                 ImGui::Render();
