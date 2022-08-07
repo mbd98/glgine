@@ -21,15 +21,15 @@ class AudioManager {
 public:
 
     // initialize all data buffers
-    static void init(int sr, int bs)
+    static void init(int sr, int buffer_size)
     {
         sample_rate = sr;
-        N = bs;
+        N = buffer_size;
         in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
         out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
 
         plan = fftw_plan_dft_1d(N, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
-        if(plan == NULL){
+        if(plan == nullptr){
             std::cerr << "Bad plan \n";
             exit(-1);
         }
@@ -52,6 +52,10 @@ public:
         for(int i = 0 ; i < N/2 ; i++){
             dbs[i] = 20 * log10(freqs[i]);
         }
+    }
+    static void destroyPlans(){
+
+//        fftw_destroy_plan(plan);
     }
     static void executeFFT(double* freqs,double* dbs){
         hanningWindow();

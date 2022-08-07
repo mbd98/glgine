@@ -65,7 +65,6 @@ public:
                 musicApplicationCallback();
                 return;
             }
-//            ImGui::SetCursorPos({0,300});
             else if (ImGui::Button("Click me to start the color room")) {
 
                 ImGui::End();
@@ -95,9 +94,10 @@ public:
     }
     static void createFileBrowser(){
         fileDialog = new ImGui::FileBrowser();
-        fileDialog->SetTitle("fuck you");
+        fileDialog->SetWindowSize(1000,600);
+        fileDialog->SetTitle("Select song");
 
-        fileDialog->SetTypeFilters({ ".mp3", ".wav" });
+        fileDialog->SetTypeFilters({ ".wav" });
     }
     static void MusicPlayerImGUIUpdate(SongInformation& songInfo){
         ImGui_ImplOpenGL3_NewFrame();
@@ -115,14 +115,14 @@ public:
         ImGui::SetNextWindowPos({600,0});
         ImGui::SetNextWindowSize({1400,150});
         std::string infoTitle = "Now playing : " + songInfo.name;
-        ImGui::Begin(infoTitle.c_str());
-//        if(ImGui::Begin(infoTitle.c_str()))
-//        {
-//            if(songInfo.currently_playing) {
-//                 ImGui::Text("Sampling Rate : %i Hz - %i/%i (s)", songInfo.sample_rate,
-//                             songInfo.current_time,songInfo.duration);
-//            }
-//        }
+
+        if(ImGui::Begin(infoTitle.c_str()))
+        {
+            if(songInfo.currently_playing) {
+                 ImGui::Text("Sampling Rate : %i Hz - %i/%i (s)", songInfo.sample_rate,
+                             songInfo.current_time,songInfo.duration);
+            }
+        }
         ImGui::End();
 
         fileDialog->Display();

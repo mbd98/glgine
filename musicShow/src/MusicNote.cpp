@@ -34,12 +34,6 @@ void MusicNote::createLayout(){
 void MusicNote::setColor(const glm::vec3 c) {
     m_Color = c;
 }
-float map(float a1, float a2, float b1, float b2, float val){
-    float x = (val - a1) / (a2 - a1);
-
-    float result = b1 + (b2 - b1) * x;
-    return result;
-}
 void MusicNote::setUniforms(GLuint shader) {
 
     glm::mat4 model = glm::translate(glm::mat4(1.0f),{2*m_Frequency/ FREQUENCY_CUTOFF - 1,-1,0} );
@@ -60,12 +54,6 @@ void MusicNote::setUniforms(GLuint shader) {
     }
     glUniform3f(glGetUniformLocation(shader, "u_Color"), m_Color.x, m_Color.y, m_Color.z);
 
-//    model = glm::translate(model,{-4*m_Width,0,0});
-//    for(glm::mat4 transform : m_Transforms){
-//        model *= transform ;
-//    }
-//    m_Transforms.clear();
-//    model = glm::translate(model,{-m_Width,0,0} );
     glUniformMatrix4fv(glGetUniformLocation(shader, "u_Model"), 1, GL_FALSE, &model[0][0]);
 }
 
@@ -82,5 +70,15 @@ void MusicNote::createIndexBuffer(std::vector<GLuint> indices) {
     glGenBuffers(1, &vbi);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbi);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,indices.size() * sizeof(GLuint),&indices[0],GL_STATIC_DRAW);
+
+}
+
+void MusicNote::drawBackground(GLuint shader) {
+    glm::mat4 model = glm::translate(glm::mat4(1.0f),{-1,-1,0} );
+    model = glm::scale(model,{2,2,1} );
+    glUniformMatrix4fv(glGetUniformLocation(shader, "u_Model"), 1, GL_FALSE, &model[0][0]);
+    glUniform1f(glGetUniformLocation(shader, "time"),(float)glfwGetTime());
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
 }

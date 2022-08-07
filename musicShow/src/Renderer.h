@@ -9,7 +9,9 @@
 
 class Renderer{
     std::vector<MusicNote> notes;
-    GLuint shader;
+
+    GLuint main_shader;
+    GLuint background_shader;
 
     glm::mat4 view;
     glm::mat4 projection;
@@ -19,7 +21,7 @@ public:
     Renderer();
     ~Renderer();
     void render();
-    inline void addNote(MusicNote& note){
+    inline void addNote(MusicNote note){
         notes.push_back(note);
     }
     inline void clearNotes(){

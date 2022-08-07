@@ -6,10 +6,21 @@
 
 GLFWwindow* main_window = nullptr;
 
+int resolution_x = 0;
+int resolution_y = 0;
+
+
+int menu_width = 800;
+int menu_height = 500;
 
 void initMainMenu(){
-    main_window = glfwCreateWindow(800, 1000, "emaj7b9#11", NULL, NULL);
+    main_window = glfwCreateWindow(menu_width, menu_height , "COMP 371 Project", NULL, NULL);
     glfwMakeContextCurrent(main_window);
+
+    resolution_x = glfwGetVideoMode(glfwGetPrimaryMonitor())->width;
+    resolution_y = glfwGetVideoMode(glfwGetPrimaryMonitor())->height;
+
+    glfwSetWindowPos(main_window,resolution_x/2 - menu_width/2,resolution_y/2 - menu_height/2);
     glewInit();
 
     MenuManager::initImGui(main_window);
@@ -24,12 +35,16 @@ void startMusicApplication(){
 }
 void startUpsideDownRoomApplication(){
     upsideDownRoom::upsideDownRoomMain();
+    glfwSetWindowPos(main_window,resolution_x/2 - menu_width/2,resolution_y/2 - menu_height/2);
 }
 void startColorRoomApplication(){
     colorRoom::colourroom();
+    glfwSetWindowPos(main_window,resolution_x/2 - menu_width/2,resolution_y/2 - menu_height/2);
 }
 void startTrainRoomApplication(){
     Train::teleportingTrain();
+    glfwSetWindowPos(main_window,resolution_x/2 - menu_width/2,resolution_y/2 - menu_height/2);
+
 }
 int main() {
 
@@ -41,13 +56,15 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    main_window = glfwCreateWindow(800, 1000, "emaj7b9#11", NULL, NULL);
-
-    glfwMakeContextCurrent(main_window);
-    glewInit();
-
-    // Init ImGUI using the created window
-    MenuManager::initImGui(main_window);
+    initMainMenu();
+//    main_window = glfwCreateWindow(800, 1000, "emaj7b9#11", NULL, NULL);
+//
+//
+//    glfwMakeContextCurrent(main_window);
+//    glewInit();
+//
+//    // Init ImGUI using the created window
+//    MenuManager::initImGui(main_window);
 
     do {
         glClear(GL_COLOR_BUFFER_BIT);

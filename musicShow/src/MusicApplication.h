@@ -14,10 +14,10 @@
 class MusicApplication {
 
     std::chrono::steady_clock::time_point begin,start ;
-
+    GLuint background;
     std::vector<float> frequencies;
-//    GLFWwindow* window;
-    Renderer* renderer;
+
+   Renderer* renderer;
     AudioFile<double> audioFile;
 
     SongInformation songInfo;

@@ -25,8 +25,17 @@ class MusicNote : public Mesh{
     static void createIndexBuffer(std::vector<GLuint> vertices) ;
     static void createLayout() ;
 
+    static void drawBackground(GLuint);
+
     inline void setWidth(const float width) {m_Width = width;}
     inline GLuint getVAO() const {return m_VAO;}
+
+    inline float map(float a1, float a2, float b1, float b2, float val){
+        float x = (val - a1) / (a2 - a1);
+
+        float result = b1 + (b2 - b1) * x;
+        return result;
+    }
     void setColor(const glm::vec3);
     void draw() override;
     void setUniforms(GLuint shader) override;

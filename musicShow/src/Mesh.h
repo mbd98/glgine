@@ -17,12 +17,8 @@ protected:
     struct Vertex{
         glm::vec3 position;
     };
-
     virtual void setUniforms(GLuint shader) = 0;
     virtual void draw() = 0;
-//    virtual void createVertexBuffer(std::vector<Vertex> vertices) = 0;
-//    virtual void createIndexBuffer(std::vector<GLuint> vertices) = 0;
-//    virtual void createLayout() = 0;
 };
 
 
