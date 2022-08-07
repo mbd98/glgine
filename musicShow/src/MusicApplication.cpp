@@ -24,7 +24,6 @@ void MusicApplication::run() {
 
     renderer = new Renderer();
 
-//    glClearColor(0.2,0.2,0.1,1.0);
     do {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -61,10 +60,12 @@ void MusicApplication::run() {
     }
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS);
 
-    delete renderer;
-    song_index =0;
     SoundEngine->stopAllSounds();
+    ;
     MenuManager::endImGui();
+
+    delete renderer;
+
     glfwDestroyWindow(window);
     glfwMakeContextCurrent(oldWindow);
     glfwShowWindow(oldWindow);
