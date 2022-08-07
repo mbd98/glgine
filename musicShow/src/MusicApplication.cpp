@@ -34,6 +34,9 @@ void MusicApplication::run() {
 
             begin = std::chrono::steady_clock::now();
             start = std::chrono::steady_clock::now();
+            SoundEngine->stopAllSounds();
+            audioFile.samples.clear();
+
             initializeAudioSampler(songInfo.name);
             playMusic(songInfo.name);
 

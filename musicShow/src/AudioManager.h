@@ -54,8 +54,7 @@ public:
         }
     }
     static void destroyPlans(){
-
-//        fftw_destroy_plan(plan);
+        fftw_destroy_plan(plan);
     }
     static void executeFFT(double* freqs,double* dbs){
         hanningWindow();
